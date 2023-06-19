@@ -275,13 +275,13 @@ date_default_timezone_set("Asia/Jakarta");
                             <li><a href="lapprofit.php">Profit Penjualan</a></li>
                             <li><a href="lapkas.php">Kas</a></li>
                             <li><a href="lappendapatan.php">Pendapatan</a></li>
-                            <li><a href="laplogsmenu.php">Keluar Masuk Produk</a></li> -->
+                            <li><a href="laplogsproduk.php">Keluar Masuk Produk</a></li> -->
                             </ul>
                         </li>
                         <!-- <li class="<?php echo (($menu_head == "data" ? 'active'  : ''));  ?> ripple"><a class="tree-toggle nav-header">
                             <span class="fa fa-pencil-square"></span> Master Data <span class="fa-angle-right fa right-arrow text-right"></span> </a>
                         <ul class="nav nav-list tree">
-                            <li><a href="frmmenu.php">Produk</a></li>
+                            <li><a href="frmproduk.php">Produk</a></li>
                             <li><a href="frmsatuan.php">Satuan</a></li>
                             <li><a href="frmsupplier.php">Supplier</a></li>
                             <li><a href="frmkonsumen.php">Konsumen</a></li>
@@ -370,14 +370,14 @@ date_default_timezone_set("Asia/Jakarta");
                                     <li><a href="lapprofit.php">Profit Penjualan</a></li>
                                     <!-- <li><a href="lapkas.php">Kas</a></li> -->
                                     <!-- <li><a href="lappendapatan.php">Pendapatan</a></li> -->
-                                    <!-- <li><a href="laplogsmenu.php">Keluar Masuk Barang</a></li> -->
+                                    <!-- <li><a href="laplogsproduk.php">Keluar Masuk Barang</a></li> -->
                                 </ul>
                             </li>
                             <li class="<?php echo (($menu_head == "data" ? 'active'  : ''));  ?> ripple"><a class="tree-toggle nav-header">
                                     <span class="fa fa-pencil-square"></span> Master Data <span class="fa-angle-right fa right-arrow text-right"></span> </a>
                                 <ul class="nav nav-list tree">
-                                    <li><a href="frmmenu.php">Produk</a></li>
-                                    <li><a href="frmstokmenu.php">Stok Opname</a></li>
+                                    <li><a href="frmproduk.php">Produk</a></li>
+                                    <li><a href="frmstokproduk.php">Stok Opname</a></li>
                                     <li><a href="frmsatuan.php">Satuan</a></li>
                                     <li><a href="frmsupplier.php">Supplier</a></li>
                                     <li><a href="frmuser.php">User</a></li>

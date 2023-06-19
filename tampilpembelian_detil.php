@@ -11,7 +11,7 @@
     $tombol = $_POST['tombol'];
     $tanggalmulai = $_POST['tanggalmulai'];
     $tanggalselesai = $_POST['tanggalselesai'];
-    $menu = $_POST['menu'];
+    $produk = $_POST['produk'];
     $supplier = $_POST['supplier'];
     $user = $_POST['user'];
 
@@ -27,9 +27,9 @@
         if ($user != "ALL") {
             $syarat .= " and tb.id_user='$user'";
         }
-        if ($menu != "ALL"){
-            $syarat .= " and tbd.idmenu='$menu'";
-            $syaratdetil .= " and tbd.idmenu='$menu'";
+        if ($produk != "ALL"){
+            $syarat .= " and tbd.idproduk='$produk'";
+            $syaratdetil .= " and tbd.idproduk='$produk'";
         }
         $sqlsel = "select tb.id_pembelian,tb.tanggal,tk.nama as 'namasupplier',tu.nama as 'namauser' from tbpembelian tb left join tbsupplier tk on tb.id_supplier=tk.id left join tbuser tu on tb.id_user=tu.iduser inner join tbpembeliandetil tbd on tb.id_pembelian=tbd.id_pembelian where tb.id!='' $syarat group by tbd.id_pembelian order by tb.created_at desc";
 //        echo $sqlsel;
@@ -84,14 +84,14 @@
                     <td></td>
                 </tr>
                 <?php
-                $sqldet = "select tbd.jumlah, tbd.harga, tm.nama as 'namamenu', tm.kode_barang, tbd.diskon, tbd.jlhdiskon, tbd.pajak, tbd.jlhpajak, tbd.subtotal from tbpembeliandetil tbd inner join tbproduk tm on tbd.id_menu=tm.id where tbd.id_pembelian='$idtransaksi' $syaratdetil order by tbd.id";
+                $sqldet = "select tbd.jumlah, tbd.harga, tm.nama as 'namaproduk', tm.kode_barang, tbd.diskon, tbd.jlhdiskon, tbd.pajak, tbd.jlhpajak, tbd.subtotal from tbpembeliandetil tbd inner join tbproduk tm on tbd.id_produk=tm.id where tbd.id_pembelian='$idtransaksi' $syaratdetil order by tbd.id";
                 $querydet = mysqli_query($con,$sqldet);
 //                echo $sqldet;
                 while($resdet = mysqli_fetch_array($querydet)){
                     $jumlah = $resdet['jumlah'];
                     $harga = $resdet['harga'];
                     $total = $resdet['subtotal'];
-                    $namamenu = $resdet['namamenu'];
+                    $namaproduk = $resdet['namaproduk'];
                     $kodebarang = $resdet['kode_barang'];
                     $diskon = $resdet['diskon'];
                     $jlhdiskon = $resdet['jlhdiskon'];
@@ -105,7 +105,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td><?php echo $kodebarang." - ".$namamenu;?></td>
+                    <td><?php echo $kodebarang." - ".$namaproduk;?></td>
                     <td><?php echo "Rp ".uang($harga);?></td>
                     <td><?php echo $jumlah;?></td>
                     <td><?php echo "$diskon % (".uang($jlhdiskon).")";?></td>
@@ -123,7 +123,7 @@
                 }
                 $x++;
 
-                if ($menu != "ALL"){
+                if ($produk != "ALL"){
                     $col1 = "Rp ".uang($harga);
                     $col2 = $sumjumlah;
                     $col3 = "Rp ".uang($sumdiskon);

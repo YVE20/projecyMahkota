@@ -116,36 +116,15 @@ if ($act=="new") {
                             <label style="top:-10px">Tanggal Penjualan</label>
                         </div>
                     </div>
-                    <div class="col-md-3" style="display:none">
-                        <div class="form-group form-element">
-                            <label style="top:-10px;">Metode Pembayaran</label>
-                            <select class="form-control col-md-7 col-xs-12 combobox" name="cmbmetodepembayaran"
-                                id="cmbmetodepembayaran" <?php if ($act == 'edit') {
-                                            echo 'disabled';
-                                        } ?>
-                                onchange="metodebayar(this.value)">
-                                <option value="Cash"> Cash </option>
-                                <option value="Kredit"> Kredit </option>
-                            </select>
-                        </div>
-                    </div>
+        
 
-                    <div class="col-md-3" id="jatuhtempo" style="display:none;">
-                        <div class="form-group form-animate-text">
-                            <input type="date" class="form-text" id="txtjatuhtempo" name="txtjatuhtempo" <?php if ($act == 'edit') {
-                                            echo 'disabled';
-                                        } ?>
-                            >
-                            <span class="bar"></span>
-                            <label>Tanggal Jatuh Tempo</label>
-                        </div>
-                    </div>
+                    
 
                     <div class="col-md-12 panel" style="margin-top:20px;">
                         <form class="cmxform" id="frm" method="get" action="">
                             <input type="hidden" name="txtid" id="txtid" />
 
-                            <div id="menunormal" name="menunormal" class="col-md-3">
+                            <div id="produknormal" name="produknormal" class="col-md-3">
                             </div>
 
                             <div class="col-md-7">
@@ -173,19 +152,7 @@ if ($act=="new") {
                                         <span class="bar"></span>
                                     </div>
                                 </div>
-                                <div style="display:none" class="col-md-2">
-                                    <div class="form-group form-animate-text">
-                                        <label
-                                            style="top:-10px;color:#918C8C;font-size:13px !important;font-weight:400;">Pajak</label>
-                                        <input type="text" <?php if ($act == 'edit') {
-                                            // echo 'disabled';
-                                        } ?>
-                                        class="form-text" id="txtpajak" name="txtpajak" value="0"
-                                        onfocus="f_tonumber(this.id)" onblur="f_tocurrency(this.id);hitungharga()">
-                                        <input type="hidden" id="txtjlhpajak" name="txtjlhpajak" value="0" />
-                                        <span class="bar"></span>
-                                    </div>
-                                </div>
+                                
                                 <div class="col-md-2">
                                     <div class="form-group form-animate-text">
                                         <label
@@ -321,7 +288,7 @@ if ($act=="new") {
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="modalRetur" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<!-- <div class="modal fade" id="modalRetur" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -369,7 +336,7 @@ if ($act=="new") {
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 <!-- page content -->
 <?php include "Footer.php";?>
@@ -380,7 +347,7 @@ if ($act=="new") {
 
     // VARIABEL UNTUK DETAIL PENJUALAN
     var $id = $("#txtid");
-    var $menu = $("#cmbmenu");
+    var $produk = $("#cmbproduk");
     var $jumlah = $("#txtjumlah");
     var $harga = $("#txtharga");
     var $total = $("#txttotal");
@@ -392,16 +359,11 @@ if ($act=="new") {
     var $tiperetur;
     var $rdkelayakan = $("input[name=rdkelayakan]:checked");
     // VARIABEL UNTUK PROSES PENJUALAN
-    var $metodepembayaran = $("#cmbmetodepembayaran");
-    var $jatuhtempo = $("#txtjatuhtempo");
     var $idkonsumen = $("#cmbkonsumen");
-    var $kodecanvas = $("#cmbcanvas");
     var $subtotal = $("#txtsubtotal");
     var $totaldiskon = $("#txttotaldiskon");
     var $totalpajak = $("#txttotalpajak");
     var $grandtotal = $("#txtgrandtotal");
-    var $shiftkaryawan = $("#txtshiftkaryawan");
-    var $jlhretur = $("#txtjlhretur");
     var $satuan = $("#txtsatuan");
     var $jlhpersatuan = $("#txtjlhpersatuan");
     var $isisatuan = $("#txtisipersatuan");
@@ -419,26 +381,25 @@ if ($act=="new") {
         }
     });
 
-    function metodebayar(param) {
-        if (param == "Cash") {
-            $("#jatuhtempo").css('display', 'none');
-        } else {
-            $("#jatuhtempo").css('display', 'block');
-        }
-    }
+    // function metodebayar(param) {
+    //     if (param == "Cash") {
+    //         $("#jatuhtempo").css('display', 'none');
+    //     } else {
+    //         $("#jatuhtempo").css('display', 'block');
+    //     }
+    // }
 
     function f_simpan() {
         // Swal.showLoading();
         var tombol = $("#simpan").val();
 
-        if ($menu.val() != "" && $jumlah.val() != "") {
+        if ($produk.val() != "" && $jumlah.val() != "") {
             $.post("savepenjualan.php", {
                     tombol: tombol,
                     idjual: $idjual.val(),
                     id: $id.val(),
-                    kodecanvas: $kodecanvas.val(),
                     idkonsumen: $idkonsumen.val(),
-                    menu: $menu.val(),
+                    produk: $produk.val(),
                     jumlah: $jumlah.val(),
                     harga: accounting.unformat($harga.val(), ','),
                     total: accounting.unformat($total.val(), ','),
@@ -454,7 +415,7 @@ if ($act=="new") {
                         loaddata();
                         $("#reset").click();
 
-                        // $('#cmbmenu').selectpicker('toggle');
+                        // $('#cmbproduk').selectpicker('toggle');
 
                     } else if (data == "kosong") {
                         Swal.fire({
@@ -482,10 +443,7 @@ if ($act=="new") {
                     tombol: "proses",
                     act: act,
                     idjual: $idjual.val(),
-                    kodecanvas: $kodecanvas.val(),
                     tgltransaksi: $tgltransaksi.val(),
-                    metodepembayaran: $metodepembayaran.val(),
-                    jatuhtempo: $jatuhtempo.val(),
                     subtotal: accounting.unformat($subtotal.val(), ','),
                     diskon: $diskon.val(),
                     pajak: $pajak.val(),
@@ -516,55 +474,55 @@ if ($act=="new") {
         }
     }
 
-    function f_pilihretur(tipe) {
-        if ($menu.val() != '') {
-            $tiperetur = tipe;
-            $('#modalRetur').modal('show')
-        }
-    }
+    // function f_pilihretur(tipe) {
+    //     if ($produk.val() != '') {
+    //         $tiperetur = tipe;
+    //         $('#modalRetur').modal('show')
+    //     }
+    // }
 
-    function f_prosesretur() {
-        $("input[name=rdkelayakan]").change(function() {
-            $("input[name=rdkelayakan]:checked").val()
-        });
+    // function f_prosesretur() {
+    //     $("input[name=rdkelayakan]").change(function() {
+    //         $("input[name=rdkelayakan]:checked").val()
+    //     });
 
-        if ($("input[name=rdkelayakan]:checked").val() == 'tidaklayak') {
-            $jlhretur.val(0);
-        }
+    //     if ($("input[name=rdkelayakan]:checked").val() == 'tidaklayak') {
+    //         $jlhretur.val(0);
+    //     }
 
-        $.post("savepenjualan.php", {
-                tombol: "prosesretur",
-                act: act,
-                idjual: idget,
-                menu: $menu.val(),
-                tipe: 'kurang',
-                jlhretur: $jlhretur.val(),
-                kelayakan: $("input[name=rdkelayakan]:checked").val(),
-            })
-            .done(function(data) {
-                $('#modalRetur').modal('hide')
-                Swal.fire(
-                    'Berhasil',
-                    'Berhasil Retur',
-                    'success'
-                )
+    //     $.post("savepenjualan.php", {
+    //             tombol: "prosesretur",
+    //             act: act,
+    //             idjual: idget,
+    //             produk: $produk.val(),
+    //             tipe: 'kurang',
+    //             jlhretur: $jlhretur.val(),
+    //             kelayakan: $("input[name=rdkelayakan]:checked").val(),
+    //         })
+    //         .done(function(data) {
+    //             $('#modalRetur').modal('hide')
+    //             Swal.fire(
+    //                 'Berhasil',
+    //                 'Berhasil Retur',
+    //                 'success'
+    //             )
 
-            }).fail(function() {
-                Swal.fire(
-                    'Gagal',
-                    'Gagal Retur',
-                    'warning'
-                )
-            })
-        f_bersih()
-        loaddata()
-        hitungtotal()
-    }
+    //         }).fail(function() {
+    //             Swal.fire(
+    //                 'Gagal',
+    //                 'Gagal Retur',
+    //                 'warning'
+    //             )
+    //         })
+    //     f_bersih()
+    //     loaddata()
+    //     hitungtotal()
+    // }
 
     function f_bersih() {
         $simpan.val("simpan");
-        $menu.val("");
-        $menu.prop("disabled", false);
+        $produk.val("");
+        $produk.prop("disabled", false);
         $jumlah.val("0");
         $harga.val("0");
         $total.val("0");
@@ -609,10 +567,10 @@ if ($act=="new") {
             })
             .done(function(data) {
                 console.log(data);
-                // echo "|".$id."|".$menu."|".$idkonsumen."|".$idsales."|".$jumlah."|".$harga."|".$total."|".$diskon."|".$jlhdiskon."|".$pajak."|".$jlhpajak."|".$note."|".$isi_kemasan."|".$satuan."|";
+                // echo "|".$id."|".$produk."|".$idkonsumen."|".$idsales."|".$jumlah."|".$harga."|".$total."|".$diskon."|".$jlhdiskon."|".$pajak."|".$jlhpajak."|".$note."|".$isi_kemasan."|".$satuan."|";
                 var pecah = data.split("|");
                 $id.val(pecah[1]);
-                $menu.val(pecah[2]);
+                $produk.val(pecah[2]);
                 $idkonsumen.val(pecah[3]);
                 $jumlah.val(pecah[5]);
                 $harga.val(accounting.formatNumber(pecah[6], 0, '.', ','));
@@ -627,12 +585,12 @@ if ($act=="new") {
                 $jlhpersatuan.text(1 / parseInt(pecah[13]));
 
                 $('.selectpicker').selectpicker('refresh');
-                $menu.prop("disabled", true);
+                $produk.prop("disabled", true);
                 $simpan.val("edit");
             });
     }
 
-    function loadmenu() {
+    function loadproduk() {
         $.post("savepenjualan.php", {
                 tombol: "cekkonsumen",
                 idkonsumen: $idkonsumen.val(),
@@ -646,63 +604,40 @@ if ($act=="new") {
                 pajak_global = pecah[4];
                 $pajak.val(0);
 
-                if ($kodecanvas.val()) {
-                    $.post("savepenjualan.php", {
-                            tombol: "tampildatamenucanvas",
-                            kodecanvas: $kodecanvas.val(),
-                            menu: $menu.val(),
-                        })
-                        .done(function(data) {
-                            var pecah = data.split("|");
-                            var canvas = pecah[1];
-                            let JSONcanvas = JSON.parse(canvas);
-
-                            $jumlah.val(JSONcanvas.jlhterjual ? JSONcanvas.jlhterjual : 1);
-
-                        });
-                } else {
-                    $.post("savepenjualan.php",{
-                        tombol : "pilihhargaproduk",
-                        idproduk : $menu.val()
-                    }).done(function(data){
-                        $jumlah.val(1);
-                        const dataJson = JSON.parse(data);
-                        $harga.val(dataJson.harga_dk);
-                    })
-                }
+                
 
                 $.post("savepenjualan.php", {
-                        tombol: "tampilmenu",
-                        menu: $menu.val()
+                        tombol: "tampilproduk",
+                        produk: $produk.val()
                     })
                     .done(function(data) {
-                        //echo "|".$id."|".$menu."|".$wilayah."|".$jenis."|".$hargadk."|".$hargalk."|".$hargadepo."|".$hargamodern."|".$hargatradisional."|".$hargaagen."|".$hargauser."|".$diskon."|".$pajak."|".$satuan."|".$kategori."|".$jumlah."|".$isikemasan."|";
+                        //echo "|".$id."|".$produk."|".$wilayah."|".$jenis."|".$hargadk."|".$hargalk."|".$hargadepo."|".$hargamodern."|".$hargatradisional."|".$hargaagen."|".$hargauser."|".$diskon."|".$pajak."|".$satuan."|".$kategori."|".$jumlah."|".$isikemasan."|";
 
-                        var pecahMenu = data.split("|");
+                        var pecahProduk = data.split("|");
 
-                        let kategori_barang = pecahMenu[15];
+                        let kategori_barang = pecahProduk[15];
                         if (kategori_barang == 'Bulk') {
                             if (kategori_konsumen == 'depo') {
-                                $harga.val(accounting.formatNumber(pecahMenu[7], 0, '.', ','));
+                                $harga.val(accounting.formatNumber(pecahProduk[7], 0, '.', ','));
                             }
                             if (kategori_konsumen == 'modern') {
-                                $harga.val(accounting.formatNumber(pecahMenu[8], 0, '.', ','));
+                                $harga.val(accounting.formatNumber(pecahProduk[8], 0, '.', ','));
                             }
                             if (kategori_konsumen == 'tradisional') {
-                                $harga.val(accounting.formatNumber(pecahMenu[9], 0, '.', ','));
+                                $harga.val(accounting.formatNumber(pecahProduk[9], 0, '.', ','));
                             }
                             if (kategori_konsumen == 'agen') {
-                                $harga.val(accounting.formatNumber(pecahMenu[10], 0, '.', ','));
+                                $harga.val(accounting.formatNumber(pecahProduk[10], 0, '.', ','));
                             }
                             if (kategori_konsumen == 'user') {
-                                $harga.val(accounting.formatNumber(pecahMenu[11], 0, '.', ','));
+                                $harga.val(accounting.formatNumber(pecahProduk[11], 0, '.', ','));
                             }
                         } else {
                             if (wilayah == 'dalam') {
-                                $harga.val(accounting.formatNumber(pecahMenu[5], 0, '.', ','));
+                                $harga.val(accounting.formatNumber(pecahProduk[5], 0, '.', ','));
                             }
                             if (wilayah == 'luar') {
-                                $harga.val(accounting.formatNumber(pecahMenu[6], 0, '.', ','));
+                                $harga.val(accounting.formatNumber(pecahProduk[6], 0, '.', ','));
                             }
                         }
 
@@ -715,24 +650,20 @@ if ($act=="new") {
 
     function loadcanvas() {
         $.post("savepenjualan.php", {
-                tombol: "tampilmenucanvas",
-                kodecanvas: $kodecanvas.val(),
+                tombol: "tampilprodukcanvas",
             })
             .done(function(data) {
-                $("#menunormal").html(data);
+                $("#produknormal").html(data);
                 $('.selectpicker').selectpicker('refresh');
-                $menu = $("#cmbmenu");
+                $produk = $("#cmbproduk");
             });
 
         if ($kodecanvas.val()) {
             $.post("savepenjualan.php", {
                     tombol: "tampildatacanvas",
-                    kodecanvas: $kodecanvas.val(),
                 })
                 .done(function(data) {
-                    var pecah = data.split("|");
-                    var canvas = pecah[1];
-                    let JSONcanvas = JSON.parse(canvas);
+
                     $('.selectpicker').selectpicker('refresh');
                 });
         }
@@ -947,7 +878,7 @@ if ($act=="new") {
         if (code.length > 5) {
             document.getElementById(code).selected = true;
             $('.selectpicker').selectpicker('refresh');
-            loadmenu();
+            loadproduk();
             setTimeout(() => {
                 $('#txtjumlah').focus();
             }, 100);

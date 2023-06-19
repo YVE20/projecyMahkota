@@ -1,17 +1,12 @@
 <?php
-/**
- * Created By :    
- * User: Welly
- * Date: 11/02/2018
- * Time: 12:45
- */
+
     include "Koneksi.php";
     include "asset/function/function.php";
 
     $tombol = $_POST['tombol'];
     $tanggalmulai = $_POST['tanggalmulai'];
     $tanggalselesai = $_POST['tanggalselesai'];
-    $menu = $_POST['menu'];
+    $produk = $_POST['produk'];
 
     if($tombol == "tampilcari") {
         $syarat = "";
@@ -19,10 +14,10 @@
         if ($tanggalmulai != "" && $tanggalselesai != "") {
             $syarat .= " and (tj.tanggal between '$tanggalmulai' and '$tanggalselesai')";
         }
-        if ($menu != "ALL"){
-            $syarat .= " and tjd.idmenu='$menu'";
+        if ($produk != "ALL"){
+            $syarat .= " and tjd.idproduk='$produk'";
         }
-        $sqlsel = "select sum(tjd.jumlah) as 'totaljumlah', sum(tjd.total) as 'totalakhir',tm.nama as nama_barang, tm.satuan, tm.kode_barang, tm.harga_beli as harga from tbjualdetil tjd inner join tbproduk tm on tjd.idmenu=tm.id inner join tbjual tj on tjd.idjual=tj.id where tjd.id!='' $syarat group by tjd.idmenu";
+        $sqlsel = "select sum(tjd.jumlah) as 'totaljumlah', sum(tjd.total) as 'totalakhir',tm.nama as nama_barang, tm.satuan, tm.kode_barang, tm.harga_beli as harga from tbjualdetil tjd inner join tbproduk tm on tjd.idproduk=tm.id inner join tbjual tj on tjd.idjual=tj.id where tjd.id!='' $syarat group by tjd.idproduk";
 //        echo $sqlsel;
 
         ?>

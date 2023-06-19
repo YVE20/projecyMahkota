@@ -1,21 +1,15 @@
 <?php
-/**
- * Created By :    
- * User: Welly
- * Date: 11/02/2018
- * Time: 12:45
- */
+
     include "Koneksi.php";
 
     $tombol = $_POST['tombol'];
     $id = $_POST['id'];
     $kategori = $_POST['kategori'];
-    $printer =0;
     // $kategori = $_POST['kategori'];
     // $satuan = $_POST['satuan'];
 
     if($tombol == "simpan"){
-      $sql = "insert into tbkategori (kategori,id_printer) values ('$kategori','$printer')";
+      $sql = "insert into tbkategori (kategori) values ('$kategori')";
       $query =  mysqli_query($con,$sql) or die ($sql);
 
       // $sqlselect = "select * from tbkategori order by created_at asc limit 0,1";
@@ -25,7 +19,7 @@
     //   echo mysql_error($con);
     }
     else if($tombol == "edit"){
-      $sql = "update tbkategori set kategori='$kategori', id_printer='$printer' where id_kategori='$id'";
+      $sql = "update tbkategori set kategori='$kategori' where id_kategori='$id'";
       $query = mysqli_query($con,$sql) or  die ($sql);
     }
     else if($tombol == "hapus"){
@@ -39,9 +33,8 @@
       $re = mysqli_fetch_array($query);
       $id = $re['id_kategori'];
       $kategori = $re['kategori'];
-      $printer = $re['id_printer'];
 
-      echo "|".$id."|".$kategori."|".$printer."|";
+      echo "|".$id."|".$kategori."|";
     }
     else if($tombol == "tampil"){
     ?>
@@ -51,7 +44,6 @@
             <tr>
                 <th>No</th>
                 <th>Kategori</th>
-                <!-- <th>Printer</th> -->
                 <th>Action</th>
             </tr>
         </thead>
@@ -64,14 +56,13 @@
                 while($res = mysqli_fetch_array($querysel)){
                 $id = $res['id_kategori'];
                 $kategori = $res['kategori'];
-                $printer = 0;
+                
                 //   $kategori = $res['kategori'];
                 //   $satuan = $res['satuan'];
                 ?>
             <tr>
                 <td><?php echo $no;?></td>
                 <td><?php echo $kategori;?></td>
-                <!-- <td><?php //echo $printer;?></td> -->
 
                 <td>
                     <button class="btn btn-sm btn-warning" onclick="f_edit('<?php echo $id;?>')"><span class="fa fa-pencil"></span></button>

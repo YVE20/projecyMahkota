@@ -90,22 +90,7 @@ if ($_SESSION['status'] != "Admin") {
                                 <span class="bar"></span>
                                 <label>Tel No.</label>
                             </div>
-                            <div class="form-group form-animate-text" hidden <?php echo $hilang; ?>>
-                                <input type="text" class="form-text" id="txtidtoko" name="txtidtoko">
-                                <span class="bar"></span>
-                                <label>ID Toko</label>
-                            </div>
-                            <div class="form-group form-element" hidden>
-                                <label style="top:-10px;">Stok Bahan Minus</label>
-                                <div class="row">
-                                    <label class="col-md-1">
-                                        <input id="Y" type="radio" name="minus" onclick="rad('Y')" value="Y" checked /> Ya
-                                    </label>
-                                    <label class="col-md-1">
-                                        <input id="N" type="radio" name="minus" onclick="rad('N')" value="N" /> Tidak
-                                    </label>
-                                </div>
-                            </div>
+                            
 
                             <div class="form-group form-element" style="margin-bottom: 10px;">
                                 <button type="submit" class="submit btn btn-success" name="simpan" id="simpan" value="simpan"> Save </button>
@@ -153,34 +138,15 @@ if ($_SESSION['status'] != "Admin") {
                 var tombol = $("#simpan").val();
                 var nama = $("#txtnama").val();
                 var alamat = $("#txtalamat").val();
-                var instagram = $("#txtinstagram").val();
-                var password = $("#txtpassword").val();
                 var telp = $("#txttelp").val();
                 var icon = $("#txticon").val();
-                var idtoko = $("#txtidtoko").val();
-                var printer = $("#txtprinter").val();
-                var ppn = $("#txtppn").val();
-                var meja = $("#txtmeja").val();
-                var minus = "";
-                if (document.getElementById("Y").checked) {
-                    minus = "Y";
-
-                } else {
-                    minus = "N";
-                }
+                
 
                 var formData = new FormData();
                 formData.append('tombol', 'edit');
                 formData.append('nama', nama);
                 formData.append('alamat', alamat);
-                formData.append('instagram', instagram);
-                formData.append('password', password);
                 formData.append('telp', telp);
-                formData.append('minus', minus);
-                formData.append('printer', printer);
-                formData.append('idtoko', idtoko);
-                formData.append('ppn', ppn);
-                formData.append('meja', meja);
                 formData.append('icon', $('input[type=file]')[0].files[0]);
 
                 $.ajax({
@@ -223,13 +189,6 @@ if ($_SESSION['status'] != "Admin") {
                 $("#txtalamat").val(pecah[2]);
                 $("#txttelp").val(pecah[3]);
                 //   $("#txticon").val(pecah[4]);
-                $("#txtshift1").val(pecah[6]);
-                $("#txtshift2").val(pecah[7]);
-                $("#txtshift3").val(pecah[8]);
-                $("#txtidtoko").val(pecah[9]);
-                $("#txtlembur").val(pecah[13]);
-                $("#txtpassword").val(pecah[14]);
-                $("#namatoko").text(pecah[1]);
                 //   $('#img_profile').attr('src', "asset/img/"+pecah[4]);
                 $('.img-profile').prepend('<img id="img_profile" style="height:16rem;width:16rem" src="asset/img/' + pecah[4] + '" />')
                 if (pecah[5] == "Y") {

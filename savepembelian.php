@@ -15,7 +15,7 @@
     $pajakakhir = $_POST['pajakakhir'];
     $grandtotalakhir = $_POST['grandtotalakhir'];
     
-    $menu = $_POST['menu'];
+    $produk = $_POST['produk'];
     $jumlah = $_POST['jumlah'];
     $harga = $_POST['harga'];
     $diskon = $_POST['diskon'];
@@ -27,12 +27,12 @@
     $iduser = $_SESSION['iduser'];
     
     if($tombol == "simpan"){
-        $sql = "insert into temppembeliandetil (id_pembelian,id_menu,jumlah,harga,pajak,jlhpajak,diskon,jlhdiskon,subtotal) values ('$idpembelian','$menu','$jumlah','$harga','$pajak','$jlhpajak','$diskon','$jlhdiskon','$subtotal')";
+        $sql = "insert into temppembeliandetil (id_pembelian,id_produk,jumlah,harga,pajak,jlhpajak,diskon,jlhdiskon,subtotal) values ('$idpembelian','$produk','$jumlah','$harga','$pajak','$jlhpajak','$diskon','$jlhdiskon','$subtotal')";
         $query = mysqli_query($con,$sql) or die ($sql);
         
         echo "sukses";
     }else if($tombol == "edit"){
-        $sql = "update temppembeliandetil set id_menu='$menu',jumlah='$jumlah',harga='$harga',pajak='$pajak',jlhpajak='$jlhpajak',diskon='$diskon',jlhdiskon='$jlhdiskon',subtotal='$subtotal' where id='$id'";
+        $sql = "update temppembeliandetil set id_produk='$produk',jumlah='$jumlah',harga='$harga',pajak='$pajak',jlhpajak='$jlhpajak',diskon='$diskon',jlhdiskon='$jlhdiskon',subtotal='$subtotal' where id='$id'";
         $query = mysqli_query($con,$sql) or die ($sql);
     
         echo "sukses";
@@ -47,7 +47,7 @@
     
         $re = mysqli_fetch_array($query);
         $jumlah = $re['jumlah'];
-        $idmenu = $re['id_menu'];
+        $idproduk = $re['id_produk'];
         $harga = $re['harga'];
         $total = $re['subtotal'];
         $diskon = $re['diskon'];
@@ -55,7 +55,7 @@
         $pajak = $re['pajak'];
         $jlhpajak = $re['jlhpajak'];
     
-        echo "|".$id."|".$idmenu."|".$jumlah."|".$harga."|".$total."|".$diskon."|".$jlhdiskon."|".$pajak."|".$jlhpajak."|";
+        echo "|".$id."|".$idproduk."|".$jumlah."|".$harga."|".$total."|".$diskon."|".$jlhdiskon."|".$pajak."|".$jlhpajak."|";
     }else if($tombol == "approvetransaksi"){
         $sql = "select * from tbpembelian where id_pembelian='$idpembelian'";
         $query = mysqli_query($con,$sql) or die ($sql);
@@ -75,7 +75,7 @@
         $sql2 = "select * from tbpembeliandetil where id_pembelian='$idpembelian'";
         $query2 = mysqli_query($con, $sql2) or die ($sql2);
         while ($res2 = mysqli_fetch_array($query2)) {
-            $idmenu = $res2['id_menu'];
+            $idproduk = $res2['id_produk'];
             $jumlah = $res2['jumlah'];
             $harga = $res2['harga'];
             $diskon = $res2['diskon'];
@@ -84,7 +84,7 @@
             $jlhpajak = $res2['jlhpajak'];
             $subtotaldetil = $res2['subtotal'];
         
-            $sql3 = "insert into temppembeliandetil (id_pembelian,id_menu,jumlah,harga,pajak,jlhpajak,diskon,jlhdiskon,subtotal) values ('$idpembelian','$idmenu','$jumlah','$harga','$pajak','$jlhpajak','$diskon','$jlhdiskon','$subtotaldetil')";
+            $sql3 = "insert into temppembeliandetil (id_pembelian,id_produk,jumlah,harga,pajak,jlhpajak,diskon,jlhdiskon,subtotal) values ('$idpembelian','$idproduk','$jumlah','$harga','$pajak','$jlhpajak','$diskon','$jlhdiskon','$subtotaldetil')";
             $query3 = mysqli_query($con, $sql3);
         }
         // end While tbpembeliandetil
@@ -131,7 +131,7 @@
             $sql2 = "select * from temppembeliandetil where id_pembelian='$idpembelian'";
             $query2 = mysqli_query($con, $sql2) or die ($sql2);
             while ($res2 = mysqli_fetch_array($query2)) {
-                $idmenu = $res2['id_menu'];
+                $idproduk = $res2['id_produk'];
                 $jumlah = $res2['jumlah'];
                 $harga = $res2['harga'];
                 $diskon = $res2['diskon'];
@@ -140,18 +140,18 @@
                 $jlhpajak = $res2['jlhpajak'];
                 $subtotaldetil = $res2['subtotal'];
             
-                $sql3 = "insert into tbpembeliandetil (id_pembelian,id_menu,jumlah,harga,pajak,jlhpajak,diskon,jlhdiskon,subtotal) values ('$idpembelian','$idmenu','$jumlah','$harga','$pajak','$jlhpajak','$diskon','$jlhdiskon','$subtotaldetil')";
+                $sql3 = "insert into tbpembeliandetil (id_pembelian,id_produk,jumlah,harga,pajak,jlhpajak,diskon,jlhdiskon,subtotal) values ('$idpembelian','$idproduk','$jumlah','$harga','$pajak','$jlhpajak','$diskon','$jlhdiskon','$subtotaldetil')";
                 $query3 = mysqli_query($con, $sql3);
     
                 if($act == "approve"){
-                    $sqlmenu = "select * from tbproduk where id='$idmenu'";
+                    $sqlmenu = "select * from tbproduk where id='$idproduk'";
                     $querymenu = mysqli_query($con,$sqlmenu);
                     $resmenu = mysqli_fetch_array($querymenu);
                     $stoklama = $resmenu['jumlah'];
                     
                     $stokbaru = $jumlah + $stoklama;
                     
-                    $sqlupdate = "update tbproduk set jumlah='$stokbaru', harga_beli='$harga' where id='$idmenu'";
+                    $sqlupdate = "update tbproduk set jumlah='$stokbaru', harga_beli='$harga' where id='$idproduk'";
                     $queryupdate = mysqli_query($con,$sqlupdate);
                 }
             }
@@ -187,12 +187,12 @@
             <?php
         
             $no = 1;
-            $sqlsel = "select temppembeliandetil.*,tbproduk.nama, tbproduk.kode_barang as kodebarang, tbproduk.satuan from temppembeliandetil left join tbproduk on temppembeliandetil.id_menu=tbproduk.id where id_pembelian='$idpembelian'";
+            $sqlsel = "select temppembeliandetil.*,tbproduk.nama, tbproduk.kode_barang as kodebarang, tbproduk.satuan from temppembeliandetil left join tbproduk on temppembeliandetil.id_produk=tbproduk.id where id_pembelian='$idpembelian'";
             $querysel = mysqli_query($con,$sqlsel);
             while($res = mysqli_fetch_array($querysel)){
                 $id = $res['id'];
-                $idmenu_ = $res['idmenu'];
-                $menu = $res['nama'];
+                $idproduk_ = $res['idproduk'];
+                $produk = $res['nama'];
                 $jumlah = $res['jumlah'];
                 $satuan = $res['satuan'];
                 $harga = $res['harga'];
@@ -205,7 +205,7 @@
                 ?>
                 <tr>
                     <td> <?php echo $no;?>. </td>
-                    <td> <?php echo $menu;?> </td>
+                    <td> <?php echo $produk;?> </td>
                     <td> <?php echo $kodebarang;?> </td>
                     <td> <?php echo number_format($jumlah,0,',','.');?> </td>
                     <td> <?php echo $satuan;?> </td>
@@ -351,7 +351,7 @@
 
         //Get Data Detail Pembelian
         $sqlDetailPembelian = "SELECT temppembeliandetil.*,tbproduk.nama, tbproduk.kode_barang AS kodebarang, tbproduk.satuan 
-        FROM temppembeliandetil LEFT JOIN tbproduk ON temppembeliandetil.id_menu=tbproduk.id WHERE id_pembelian='$idTransaksi' ";
+        FROM temppembeliandetil LEFT JOIN tbproduk ON temppembeliandetil.id_produk=tbproduk.id WHERE id_pembelian='$idTransaksi' ";
         $queryDetailPembelian = mysqli_query($con,$sqlDetailPembelian);
 
         $tanggal = date("Y-m-d H:i:s");
@@ -386,7 +386,7 @@
 
         //Get Data Detail Pembelian
         $sqlDetailPembelian = "SELECT temppembeliandetil.*,tbproduk.nama, tbproduk.kode_barang AS kodebarang, tbproduk.satuan 
-        FROM temppembeliandetil LEFT JOIN tbproduk ON temppembeliandetil.id_menu=tbproduk.id WHERE id_pembelian='$idTransaksi' ";
+        FROM temppembeliandetil LEFT JOIN tbproduk ON temppembeliandetil.id_produk=tbproduk.id WHERE id_pembelian='$idTransaksi' ";
         $queryDetailPembelian = mysqli_query($con,$sqlDetailPembelian);
 
         $tanggal = date("Y-m-d H:i:s");

@@ -1,11 +1,4 @@
 <?php
-
-/**
- * Created By :    
- * User: Welly
- * Date: 11/02/2018
- * Time: 12:45
- */
 include "Koneksi.php";
 include "asset/vendor/samayo/bulletproof/src/bulletproof.php";
 session_start();
@@ -17,10 +10,7 @@ $tombol = $_POST['tombol'];
 $nama = $_POST['nama'];
 $alamat = $_POST['alamat'];
 $telp = $_POST['telp'];
-// $icon = $_POST['icon'];
-$minus = $_POST['minus'];
 $password = $_POST['password'];
-$idtoko = $_POST['idtoko'];
 $icon = $_FILES['icon'];
 
 if ($tombol == "edit") {
@@ -45,7 +35,7 @@ if ($tombol == "edit") {
       if (move_uploaded_file($_FILES["icon"]["tmp_name"], $targetFilePath)) {
         //memasukkan file data ke dalam database jika diperlukan
         //........                
-        $sql = "update license set nama='$nama',alamat='$alamat',telp='$telp',icon='$namaFile',minus='$minus',idtoko='$idtoko',password='$password' where id='1'";
+        $sql = "update license set nama='$nama',alamat='$alamat',telp='$telp',icon='$namaFile' where id='1'";
         $query = mysqli_query($con, $sql) or  die($sql);
 
         $respon['status'] = 'ok';
@@ -57,7 +47,7 @@ if ($tombol == "edit") {
     }
     echo "sukses";
   } else { //gambar kosong
-    $sql = "update license set nama='$nama',alamat='$alamat',telp='$telp',minus='$minus',idtoko='$idtoko',password='$password' where id='1'";
+    $sql = "update license set nama='$nama',alamat='$alamat',telp='$telp' where id='1'";
     $query = mysqli_query($con, $sql) or  die($sql);
 
     echo "sukses";
@@ -66,8 +56,6 @@ if ($tombol == "edit") {
   $_SESSION['alamat_perusahaan'] = $alamat;
   $_SESSION['telp_perusahaan'] = $telp;
   $_SESSION['icon'] = $namaFile;
-  $_SESSION['minus'] = $minus;
-  $_SESSION['idtoko'] = $idtoko;
 } else if ($tombol == "tampil") {
   $sql = "select * from license where id='1'";
   $query = mysqli_query($con, $sql) or die($sql);
@@ -77,9 +65,6 @@ if ($tombol == "edit") {
   $alamat = $re['alamat'];
   $telp = $re['telp'];
   $icon = $re['icon'];
-  $minus = $re['minus'];
-  $idtoko = $re['idtoko'];
-  $password = $re['password'];
 
-  echo "|" . $nama . "|" . $alamat . "|" . $telp . "|" . $icon . "|" . $minus . "|" . $idtoko . "|"  . $password . "|";
+  echo "|" . $nama . "|" . $alamat . "|" . $telp . "|" . $icon . "|";
 }

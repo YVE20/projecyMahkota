@@ -38,7 +38,7 @@
                                         <div class="col-md-3">
                                             <div class="form-group form-element">
                                                 <label style="top:-10px;">Produk</label>
-                                                <select class="form-control col-md-7 col-xs-12 combobox selectpicker" data-live-search="true" data-size="5" name="cmbmenu" id="cmbmenu">
+                                                <select class="form-control col-md-7 col-xs-12 combobox selectpicker" data-live-search="true" data-size="5" name="cmbproduk" id="cmbproduk">
                                                     <option value="ALL" selected> Semua Produk </option>
                                                     <?php
                                                     $sqlmenu = "select * from tbproduk order by nama asc";
@@ -134,14 +134,14 @@
 <?php include "Footer.php";?>
 
 <script>
-    var $menu = $("#cmbmenu");
+    var $produk = $("#cmbproduk");
     var $user = $("#cmbuser"); 
     var $sales = $("#cmbsales"); 
     var $konsumen = $("#cmbkonsumen"); 
 
     function f_bersih() {
         $("#btnsearch").val("search");
-        $menu.val("ALL");
+        $produk.val("ALL");
         $user.val("ALL");
         $sales.val("ALL");
         $konsumen.val("ALL");
@@ -164,7 +164,7 @@
         $.post("tampilpenjualan_detil.php", {
                 tombol: "tampilcari",
                 user: $user.val(),
-                menu: $menu.val(),
+                produk: $produk.val(),
                 sales: $sales.val(),
                 konsumen: $konsumen.val(),
                 tanggalmulai: tanggalmulai,

@@ -1,17 +1,12 @@
 <?php
-/**
- * Created By :    
- * User: Welly
- * Date: 11/02/2018
- * Time: 12:45
- */
+
     include "Koneksi.php";
     include "asset/function/function.php";
 
     $tombol = $_POST['tombol'];
     $tanggalmulai = $_POST['tanggalmulai'];
     $tanggalselesai = $_POST['tanggalselesai'];
-    $menu = $_POST['menu'];
+    $produk = $_POST['produk'];
     $karyawan = $_POST['karyawan'];
     $shift = $_POST['shift'];
     $user = $_POST['user'];
@@ -35,9 +30,9 @@
         if ($user != "ALL") {
             $syarat .= " and tj.iduser='$user'";
         }
-        if ($menu != "ALL"){
-            $syarat .= " and tjd.idmenu='$menu'";
-            $syaratdetil .= " and tjd.idmenu='$menu'";
+        if ($produk != "ALL"){
+            $syarat .= " and tjd.idproduk='$produk'";
+            $syaratdetil .= " and tjd.idproduk='$produk'";
         }
         $sqlsel = "select tj.id,tj.tanggal,tj.shift,tj.meja,tk.nama as 'namakaryawan',tu.nama as 'namauser', tj.alasan from trashjual tj left join tbkaryawan tk on tj.idkaryawan=tk.id left join tbuser tu on tj.iduser=tu.iduser inner join trashjualdetil tjd on tj.id=tjd.idjual where tj.id!='' $syarat  group by tjd.idjual order by tj.created_at asc";
 //        echo $sqlsel;
@@ -54,7 +49,7 @@
                 <th>Shift</th>
                 <th>Meja</th>
                 <th>Karyawan</th>
-                <th>Menu</th>
+                <th>Produk</th>
                 <th>Harga</th>
                 <th>Jumlah</th>
                 <th>Total</th>
@@ -93,14 +88,14 @@
                     <td><?php echo $alasan; ?></td>
                 </tr>
                 <?php
-                $sqldet = "select tjd.jumlah, tjd.harga, tjd.total, tm.nama as 'namamenu' from trashjualdetil tjd inner join tbproduk tm on tjd.idmenu=tm.id where tjd.idjual='$idtransaksi' $syaratdetil order by tjd.id";
+                $sqldet = "select tjd.jumlah, tjd.harga, tjd.total, tm.nama as 'namaproduk' from trashjualdetil tjd inner join tbproduk tm on tjd.idproduk=tm.id where tjd.idjual='$idtransaksi' $syaratdetil order by tjd.id";
                 $querydet = mysqli_query($con,$sqldet);
 //                echo $sqldet;
                 while($resdet = mysqli_fetch_array($querydet)){
                     $jumlah = $resdet['jumlah'];
                     $harga = $resdet['harga'];
                     $total = $resdet['total'];
-                    $namamenu = $resdet['namamenu'];
+                    $namaproduk = $resdet['namaproduk'];
                 ?>
                 <tr>
                     <td></td>
@@ -110,7 +105,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td><?php echo $namamenu;?></td>
+                    <td><?php echo $namaproduk;?></td>
                     <td><?php echo "Rp ".uang($harga);?></td>
                     <td><?php echo $jumlah;?></td>
                     <td><?php echo "Rp ".uang($total);?></td>
@@ -123,7 +118,7 @@
                 }
                 $x++;
 
-                if ($menu != "ALL"){
+                if ($produk != "ALL"){
                     $col1 = "Rp ".uang($harga);
                     $col2 = $sumjumlah;
                 }else{
@@ -156,7 +151,7 @@
             var user = '<?php echo $_POST['user'] ?>';
             var tanggalmulai = '<?php echo $tanggalmulai ?>';
             var tanggalselesai = '<?php echo $tanggalselesai ?>';
-            var menu = '<?php echo $_POST['menu']; ?>';
+            var produk = '<?php echo $_POST['produk']; ?>';
 
             $('#datatable-fixed-header').DataTable({
                 "ordering": false,
@@ -171,7 +166,7 @@
                     { extend: 'print', footer:true},
                     {  text: 'PDF', 
                         action :function(){
-                            window.location.href="cetak_lappenjualanterhapus.php?ts="+tanggalselesai+"&tm="+tanggalmulai+"&karyawan="+karyawan+"&shift="+shift+"&user="+user+"&menu="+menu;
+                            window.location.href="cetak_lappenjualanterhapus.php?ts="+tanggalselesai+"&tm="+tanggalmulai+"&karyawan="+karyawan+"&shift="+shift+"&user="+user+"&produk="+produk;
                         }
                     }
                 ],

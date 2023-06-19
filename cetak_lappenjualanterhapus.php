@@ -8,7 +8,7 @@
     (isset($_GET['karyawan']) ? $karyawan = $_GET['karyawan'] : $karyawan='');
     (isset($_GET['shift']) ? $shift = $_GET['shift'] : $shift='');
     (isset($_GET['user']) ? $user = $_GET['user'] : $user='');
-    (isset($_GET['menu']) ? $menu = $_GET['menu'] : $menu='');
+    (isset($_GET['produk']) ? $produk = $_GET['produk'] : $produk='');
 
     // print_r($_GET);
     $tgl_cetak = date("d-m-Y");
@@ -33,9 +33,9 @@
         if ($user != "ALL") {
             $syarat .= " and tj.iduser='$user'";
         }
-        if ($menu != "ALL"){
-            $syarat .= " and tjd.idmenu='$menu'";
-            $syaratdetil .= " and tjd.idmenu='$menu'";
+        if ($produk != "ALL"){
+            $syarat .= " and tjd.idproduk='$produk'";
+            $syaratdetil .= " and tjd.idproduk='$produk'";
         }
         $sqlsel = "select tj.id,tj.tanggal,tj.shift,tj.meja,tk.nama as 'namakaryawan',tu.nama as 'namauser', tj.alasan from trashjual tj left join tbkaryawan tk on tj.idkaryawan=tk.id left join tbuser tu on tj.iduser=tu.iduser inner join trashjualdetil tjd on tj.id=tjd.idjual where tj.id!='' $syarat  group by tjd.idjual order by tj.created_at asc";
 //        echo $sqlsel;
@@ -137,7 +137,7 @@
                 // $pdf->SetDrawColor(150, 150, 150);
 
                 $pdf->Cell(15 ,7,'No',1,0,'C');
-                $pdf->Cell(78 ,7,'Menu',1,0,'C');
+                $pdf->Cell(78 ,7,'Produk',1,0,'C');
                 $pdf->Cell(35 ,7,'Harga (Rp)',1,0,'R');
                 $pdf->Cell(25 ,7,'Qty',1,0,'C');
                 $pdf->SetFont('Times','B',10);
@@ -147,7 +147,7 @@
                 // $pdf->SetTextColor(0, 0, 0);
                 // $pdf->SetFillColor(255,255,255);
 
-                $sqldet = "select tjd.jumlah, tjd.harga, tjd.total, tm.nama as 'namamenu' from trashjualdetil tjd inner join tbproduk tm on tjd.idmenu=tm.id where tjd.idjual='$idtransaksi' $syaratdetil order by tjd.id";
+                $sqldet = "select tjd.jumlah, tjd.harga, tjd.total, tm.nama as 'namaproduk' from trashjualdetil tjd inner join tbproduk tm on tjd.idproduk=tm.id where tjd.idjual='$idtransaksi' $syaratdetil order by tjd.id";
                 $querydet = mysqli_query($con,$sqldet);
               //  echo $sqldet;
                 $no_ = 1;
@@ -158,11 +158,11 @@
                     $jumlah = $resdet['jumlah'];
                     $harga = $resdet['harga'];
                     $total = $resdet['total'];
-                    $namamenu = $resdet['namamenu'];
+                    $namaproduk = $resdet['namaproduk'];
 
                     $total_ =  ((int)$subtotal + (int)$jlhpajak) - (int)$jlhdiskon;
                     $pdf->Cell(15 ,8,$no_,1,0,'C');
-                    $pdf->Cell(78 ,8,$namamenu,1,0,'L');
+                    $pdf->Cell(78 ,8,$namaproduk,1,0,'L');
                     $pdf->Cell(35 ,8,uang($harga),1,0,'R');
                     $pdf->Cell(25 ,8,$jumlah,1,0,'C');
                     $pdf->SetFont('Times','',11);

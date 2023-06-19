@@ -22,7 +22,7 @@
         if ($kategori != "ALL"){
             $syarat .= " and tm.satuan='$kategori'";
         }
-        $sqlsel = "select sum(tjd.jumlah) as 'totaljumlah', sum(tjd.total) as 'totalakhir',tm.satuan, tm.satuan, tjd.harga from tbjualdetil tjd inner join tbproduk tm on tjd.idmenu=tm.id inner join tbjual tj on tjd.idjual=tj.id where tjd.id!='' $syarat group by tm.satuan";
+        $sqlsel = "select sum(tjd.jumlah) as 'totaljumlah', sum(tjd.total) as 'totalakhir',tm.satuan, tm.satuan, tjd.harga from tbjualdetil tjd inner join tbproduk tm on tjd.idproduk=tm.id inner join tbjual tj on tjd.idjual=tj.id where tjd.id!='' $syarat group by tm.satuan";
 //        echo $sqlsel;
 
         ?>

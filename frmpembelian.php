@@ -88,7 +88,7 @@
                                     <div class="col-md-3" style="padding-right:0px;">
                                         <div class="form-group" style="margin-top:10px;">
                                             <label style="top:-10px;">Barang</label>
-                                            <select class="form-control col-md-7 col-xs-12 combobox selectpicker" data-live-search="true" data-size="5" name="cmbmenu" id="cmbmenu" onchange="loadmenu();">
+                                            <select class="form-control col-md-7 col-xs-12 combobox selectpicker" data-live-search="true" data-size="5" name="cmbproduk" id="cmbproduk" onchange="loadproduk();">
                                                 <option value="" disabled selected> --Pilih Barang-- </option>
                                                 <?php
                                                     $sqlmenu = "select * from tbproduk order by nama asc";
@@ -214,7 +214,7 @@
   function f_simpan(){
       var tombol = $("#simpan").val();
       var id = $("#txtid").val();
-      var menu = $("#cmbmenu").val();
+      var produk = $("#cmbproduk").val();
       var jumlah = accounting.unformat($("#txtjumlah").val(),',');
       var harga = accounting.unformat($("#txtharga").val(),',');
       var total = accounting.unformat($("#txttotal").val(),',');
@@ -224,8 +224,8 @@
       var pajak = accounting.unformat($("#txtpajak").val(),',');
       var jlhpajak = $("#txtjlhpajak").val();
 
-      if( menu != "" && menu != null && menu != "null"){
-          $.post("savepembelian.php",{tombol:tombol,idpembelian:idpembelian,id:id,menu:menu,jumlah:jumlah,harga:harga,total:total,diskon:diskon,jlhdiskon:jlhdiskon,pajak:pajak,jlhpajak:jlhpajak})
+      if( produk != "" && produk != null && produk != "null"){
+          $.post("savepembelian.php",{tombol:tombol,idpembelian:idpembelian,id:id,produk:produk,jumlah:jumlah,harga:harga,total:total,diskon:diskon,jlhdiskon:jlhdiskon,pajak:pajak,jlhpajak:jlhpajak})
               .done(function(data){
                   if(data == "sukses"){
                     loaddata();
@@ -266,7 +266,7 @@
                 alertify.minimalDialog().destroy();
                 console.log(data);
                 if(data == "kosong"){
-                    alertify.alert("Peringatan","Tambahkan menu terlebih dahulu");
+                    alertify.alert("Peringatan","Tambahkan produk terlebih dahulu");
                 }else {
                     Swal.fire({
                         title: 'Informasi',
@@ -289,8 +289,8 @@
 
   function f_bersih(){
       $("#simpan").val("simpan");
-      $("#cmbmenu").val("");
-      $("#cmbmenu").prop("disabled",false);
+      $("#cmbproduk").val("");
+      $("#cmbproduk").prop("disabled",false);
       $("#txtjumlah").val("0");
       $("#txtharga").val("0");
       $("#txttotal").val("0");
@@ -316,7 +316,7 @@
           .done(function(data){
               var pecah = data.split("|");
               $("#txtid").val(pecah[1]);
-              $("#cmbmenu").val(pecah[2]);
+              $("#cmbproduk").val(pecah[2]);
               $("#txtjumlah").val(accounting.formatNumber(pecah[3],0,'.',','));
               $("#txtharga").val(accounting.formatNumber(pecah[4],0,'.',','));
               $("#txttotal").val(accounting.formatNumber(pecah[5],0,'.',','));
@@ -325,14 +325,14 @@
               $("#txtpajak").val(accounting.formatNumber(pecah[8],0,'.',','));
               $("#txtjlhpajak").val(pecah[9]);
               $('.selectpicker').selectpicker('refresh');
-              $("#cmbmenu").prop("disabled",true);
+              $("#cmbproduk").prop("disabled",true);
               $("#simpan").val("edit");
           });
   }
 
-  function loadmenu(){
-      var menu = $("#cmbmenu").find('option:selected').attr('id');
-      var pecah = menu.split("|");
+  function loadproduk(){
+      var produk = $("#cmbproduk").find('option:selected').attr('id');
+      var pecah = produk.split("|");
       $("#txtjumlah").val("1");
       $("#txtharga").val(accounting.formatNumber(pecah[1],0,'.',','));
       $("#txttotal").val(accounting.formatNumber(pecah[1],0,'.',','));

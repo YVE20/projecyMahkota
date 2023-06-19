@@ -31,9 +31,9 @@
                                     </div>
 
                                     <div class="form-group form-element hidden">
-                                        <label style="top:-10px;">Menu</label>
-                                        <select class="form-control col-md-7 col-xs-12 combobox selectpicker" data-live-search="true" data-size="5" name="cmbmenu" id="cmbmenu">
-                                            <option value="ALL" selected> Semua Menu </option>
+                                        <label style="top:-10px;">Produk</label>
+                                        <select class="form-control col-md-7 col-xs-12 combobox selectpicker" data-live-search="true" data-size="5" name="cmbproduk" id="cmbproduk">
+                                            <option value="ALL" selected> Semua Produk </option>
                                             <?php
                                             $sqlmenu = "select * from tbproduk order by nama asc";
                                             $querymenu = mysqli_query($con,$sqlmenu);
@@ -118,7 +118,7 @@
 
   function f_bersih(){
       $("#btnsearch").val("search");
-      $("#cmbmenu").val("ALL");
+      $("#cmbproduk").val("ALL");
       $("#cmbshift").val("ALL");
       $("#cmbkaryawan").val("ALL");
       $("#cmbuser").val("ALL");
@@ -128,14 +128,14 @@
   }
 
   function f_search(){
-      var menu = $("#cmbmenu").val();
+      var produk = $("#cmbproduk").val();
       var shift = $("#cmbshift").val();
       var karyawan = $("#cmbkaryawan").val();
       var user = $("#cmbuser").val();
       var tanggalmulai = $("#txttanggalmulai").val();
       var tanggalselesai = $("#txttanggalselesai").val();
 
-//      alert(menu);
+//      alert(produk);
 //      alert(shift);
 //      alert(karyawan);
 //      alert(user);
@@ -149,7 +149,7 @@
           tanggalselesai = tanggalmulai;
       }
 
-      $.post("tampiljualterhapus.php",{tombol:"tampilcari",shift:shift,user:user,menu:menu,karyawan:karyawan,tanggalmulai:tanggalmulai,tanggalselesai:tanggalselesai})
+      $.post("tampiljualterhapus.php",{tombol:"tampilcari",shift:shift,user:user,produk:produk,karyawan:karyawan,tanggalmulai:tanggalmulai,tanggalselesai:tanggalselesai})
           .done(function(data){
               $("#table").html(data);
           });

@@ -77,14 +77,14 @@
 
   function f_bersih(){
       $("#btnsearch").val("search");
-      $("#cmbmenu").val("ALL");
+      $("#cmbproduk").val("ALL");
       document.getElementById('txttanggalmulai').valueAsDate = new Date();
       document.getElementById('txttanggalselesai').valueAsDate = new Date();
       $('.selectpicker').selectpicker('refresh');
   }
 
   function f_search(){
-      var menu = $("#cmbmenu").val();
+      var produk = $("#cmbproduk").val();
       var tanggalmulai = $("#txttanggalmulai").val();
       var tanggalselesai = $("#txttanggalselesai").val();
 
@@ -95,7 +95,7 @@
           tanggalselesai = tanggalmulai;
       }
 
-      $.post("tampilprofit.php",{tombol:"tampilcari",menu:menu,tanggalmulai:tanggalmulai,tanggalselesai:tanggalselesai})
+      $.post("tampilprofit.php",{tombol:"tampilcari",produk:produk,tanggalmulai:tanggalmulai,tanggalselesai:tanggalselesai})
           .done(function(data){
               $("#table").html(data);
           });

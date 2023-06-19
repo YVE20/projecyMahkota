@@ -65,21 +65,21 @@
                     <td></td>
                 </tr>
                 <?php
-                $sqldet = "select tjd.jumlah, tjd.harga, tjd.total, tm.nama as 'namamenu' from tbjualdetil tjd inner join tbproduk tm on tjd.idmenu=tm.id where tjd.idjual='$idtransaksi' $syaratdetil order by tjd.id";
+                $sqldet = "select tjd.jumlah, tjd.harga, tjd.total, tm.nama as 'namaproduk' from tbjualdetil tjd inner join tbproduk tm on tjd.idproduk=tm.id where tjd.idjual='$idtransaksi' $syaratdetil order by tjd.id";
                 $querydet = mysqli_query($con,$sqldet);
 //                echo $sqldet;
                 while($resdet = mysqli_fetch_array($querydet)){
                     $jumlah = $resdet['jumlah'];
                     $harga = $resdet['harga'];
                     $total = $resdet['total'];
-                    $namamenu = $resdet['namamenu'];
+                    $namaproduk = $resdet['namaproduk'];
                 ?>
                 <tr>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td><?php echo $namamenu;?></td>
+                    <td><?php echo $namaproduk;?></td>
                     <td><?php echo "Rp ".uang($harga);?></td>
                     <td><?php echo $jumlah;?></td>
                     <td><?php echo "Rp ".uang($total);?></td>

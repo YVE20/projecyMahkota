@@ -1,18 +1,12 @@
 <?php
 
-/**
- * Created By :    
- * User: Welly
- * Date: 11/02/2018
- * Time: 12:45
- */
 include "Koneksi.php";
 include "asset/function/function.php";
 
 $tombol = $_POST['tombol'];
 $tanggalmulai = $_POST['tanggalmulai'];
 $tanggalselesai = $_POST['tanggalselesai'];
-$menu = $_POST['menu'];
+$produk = $_POST['produk'];
 $user = $_POST['user'];
 $sales = $_POST['sales'];
 $konsumen = $_POST['konsumen'];
@@ -33,9 +27,9 @@ if ($tombol == "tampilcari") {
     if ($sales != "ALL") {
         $syarat .= " AND tj.idsales='$sales'";
     }
-    if ($menu != "ALL") {
-        $syarat .= " AND tjd.idmenu='$menu'";
-        $syaratdetil .= " AND tjd.idmenu='$menu'";
+    if ($produk != "ALL") {
+        $syarat .= " AND tjd.idproduk='$produk'";
+        $syaratdetil .= " AND tjd.idproduk='$produk'";
     }
     $sqlsel = "SELECT tj.id,tj.tanggal,tk.nama AS 'namakonsumen',tu.nama AS 'namauser', tj.created_at FROM tbjual tj LEFT JOIN tbuser tu on tj.iduser=tu.iduser LEFT JOIN tbkonsumen tk ON tj.idkonsumen=tk.id INNER JOIN tbjualdetil tjd ON tj.id=tjd.idjual WHERE tj.id!='' $syarat  GROUP BY tjd.idjual ORDER BY tj.created_at DESC";
 ?>
@@ -97,14 +91,14 @@ if ($tombol == "tampilcari") {
                     <td></td>
                 </tr>
                 <?php
-                $sqldet = "select tjd.jumlah, tjd.harga, tjd.total, tp.nama as 'namamenu', tjd.diskon, tjd.jlhdiskon,tjd.subtotal from tbjualdetil tjd inner join tbproduk tp on tjd.idmenu=tp.id where tjd.idjual='$idtransaksi' $syaratdetil order by tjd.id";
+                $sqldet = "select tjd.jumlah, tjd.harga, tjd.total, tp.nama as 'namaproduk', tjd.diskon, tjd.jlhdiskon,tjd.subtotal from tbjualdetil tjd inner join tbproduk tp on tjd.idproduk=tp.id where tjd.idjual='$idtransaksi' $syaratdetil order by tjd.id";
                 $querydet = mysqli_query($con, $sqldet);
                 //                echo $sqldet;
                 while ($resdet = mysqli_fetch_array($querydet)) {
                     $jumlah = $resdet['jumlah'];
                     $harga = $resdet['harga'];
                     $total = $resdet['total'];
-                    $namamenu = $resdet['namamenu'];
+                    $namaproduk = $resdet['namaproduk'];
                     $diskon = $resdet['diskon'];
                     $jlhdiskon = $resdet['jlhdiskon'];
                     $subtotal = $resdet['subtotal'];
@@ -117,7 +111,7 @@ if ($tombol == "tampilcari") {
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td><?php echo $namamenu; ?></td>
+                        <td><?php echo $namaproduk; ?></td>
                         <td><?php echo "Rp " . uang($harga); ?></td>
                         <td><?php echo $jumlah; ?></td>
                         <td><?php echo "$diskon % (" . uang($jlhdiskon) . ")"; ?></td>
@@ -133,7 +127,7 @@ if ($tombol == "tampilcari") {
                 }
                 $x++;
 
-                if ($menu != "ALL") {
+                if ($produk != "ALL") {
                     $col1 = "Rp " . uang($harga);
                     $col2 = $sumjumlah;
                     $col3 = "Rp " . uang($sumdiskon);
@@ -172,7 +166,7 @@ if ($tombol == "tampilcari") {
         var user = '<?php echo $_POST['user'] ?>';
         var tanggalmulai = '<?php echo $tanggalmulai ?>';
         var tanggalselesai = '<?php echo $tanggalselesai ?>';
-        var menu = '<?php echo $_POST['menu']; ?>';
+        var produk = '<?php echo $_POST['produk']; ?>';
         var sales = '<?php echo $_POST['sales']; ?>';
         var konsumen = '<?php echo $_POST['konsumen']; ?>';
 
@@ -201,7 +195,7 @@ if ($tombol == "tampilcari") {
                 {
                     text: 'PDF',
                     action: function() {
-                        window.location.href = "cetak_lappenjualan_detail.php?ts=" + tanggalselesai + "&tm=" + tanggalmulai + "&user=" + user + "&sales=" + sales + "&konsumen=" + konsumen + "&menu=" + menu;
+                        window.location.href = "cetak_lappenjualan_detail.php?ts=" + tanggalselesai + "&tm=" + tanggalmulai + "&user=" + user + "&sales=" + sales + "&konsumen=" + konsumen + "&produk=" + produk;
                     }
                 }
             ],

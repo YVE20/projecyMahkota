@@ -60,8 +60,8 @@ if ($_POST['page'] == "About" || $_POST['page'] == "Index" || $_POST['page'] == 
 
                         //Isi tblogsmenu
                         //Notes : 0 => Konsumen diluar
-                        $idmenu = $res2['id'];
-                        $sql4 = "INSERT INTO tblogsmenu (idmenu,jumlah,kategori,iduser) VALUES ('$idmenu','$qty','keluar','0')";
+                        $idproduk = $res2['id'];
+                        $sql4 = "INSERT INTO tblogsmenu (idproduk,jumlah,kategori,iduser) VALUES ('$idproduk','$qty','keluar','0')";
                         $query4 =  mysqli_query($con, $sql4);
 
 
@@ -85,7 +85,7 @@ if ($_POST['page'] == "About" || $_POST['page'] == "Index" || $_POST['page'] == 
                         $grandtotal = $subtotal - ($diskon + $pajak);
 
                         //Isi Tbdetail Penjualan
-                        $sql7 = "INSERT INTO tbjualdetil (idjual,idmenu,jumlah,harga,total,diskon,jlhdiskon,subtotal,note) VALUES ('$idtransaksi','$idproduk','$qty','$harga','$subtotal','$diskon','0','$subtotal','-')";
+                        $sql7 = "INSERT INTO tbjualdetil (idjual,idproduk,jumlah,harga,total,diskon,jlhdiskon,subtotal,note) VALUES ('$idtransaksi','$idproduk','$qty','$harga','$subtotal','$diskon','0','$subtotal','-')";
                         $query7 = mysqli_query($con, $sql7);
 
                         //Hapus Table Keranjang
@@ -98,6 +98,7 @@ if ($_POST['page'] == "About" || $_POST['page'] == "Index" || $_POST['page'] == 
         $subTotalPenjualan += $re['subtotal'];
         $grandTotalPenjualan = $subTotalPenjualan - ($diskon + $pajak);
     }
-    $sql5 = "INSERT INTO tbjual (id,kodecanvas,iduser,idkonsumen,idsales,tanggal,subtotal,diskon,grandtotal,cash,status_antar) VALUES ('$idtransaksi','','0','$iduser','','$tgltransaksi','$subTotalPenjualan','$diskon','$grandTotalPenjualan','0','disiapkan')";
+    $sql5 = "INSERT INTO tbjual (id,iduser,idkonsumen,tanggal,subtotal,diskon,grandtotal,cash,status_antar) 
+                        VALUES ('$idtransaksi','0','$iduser','$tgltransaksi','$subTotalPenjualan','$diskon','$grandTotalPenjualan','0','disiapkan')";
     $query5 = mysqli_query($con, $sql5);
 }

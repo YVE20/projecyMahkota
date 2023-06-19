@@ -30,7 +30,7 @@
             $syarat .= " AND tj.iduser='$user'";
         }
 
-        $sqlsel = "SELECT tj.id,tj.tanggal,tj.idkonsumen,tj.idsales,tj.subtotal,tj.diskon,tj.grandtotal,tk.nama AS 'namakonsumen',tu.nama AS 'namauser', tj.created_at FROM tbjual tj LEFT JOIN tbkonsumen tk ON tj.idkonsumen=tk.id LEFT JOIN tbuser tu ON tj.iduser=tu.iduser WHERE tj.id!='' $syarat ORDER BY tj.created_at DESC";
+        $sqlsel = "SELECT tj.id,tj.tanggal,tj.idkonsumen,tj.subtotal,tj.diskon,tj.grandtotal,tk.nama AS 'namakonsumen',tu.nama AS 'namauser', tj.created_at FROM tbjual tj LEFT JOIN tbkonsumen tk ON tj.idkonsumen=tk.id LEFT JOIN tbuser tu ON tj.iduser=tu.iduser WHERE tj.id!='' $syarat ORDER BY tj.created_at DESC";
 
         ?>
         <table id="datatable-fixed-header" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
@@ -57,7 +57,6 @@
 
             while ($res = mysqli_fetch_array($querysel)) {
                 $idtransaksi = $res['id'];
-                $kodecanvas = $res['kodecanvas'];
                 $tanggal = tgl_bahasa($res['tanggal']);
                 $created_at = $res['created_at'];
                 $user = $res['namauser'];

@@ -31,9 +31,9 @@
                                     </div>
 
                                     <div class="form-group form-element">
-                                        <label style="top:-10px;">Menu</label>
+                                        <label style="top:-10px;">Produk</label>
                                         <select class="form-control col-md-7 col-xs-12 combobox selectpicker" data-live-search="true" data-size="5" name="cmbmenu" id="cmbmenu">
-                                            <option value="ALL" selected> Semua Menu </option>
+                                            <option value="ALL" selected> Semua Produk </option>
                                             <?php
                                             $sqlmenu = "SELECT * FROM tbproduk ORDER BY nama ASC";
                                             $querymenu = mysqli_query($con,$sqlmenu);
@@ -67,11 +67,11 @@
 <?php include "Footer.php";?>
 
 <script>
-    let $menu = $("#cmbmenu");
+    let $produk = $("#cmbproduk");
 
     function f_bersih() {
         $("#btnsearch").val("search");
-        $menu.val("ALL");
+        $produk.val("ALL");
         document.getElementById('txttanggalmulai').valueAsDate = new Date();
         document.getElementById('txttanggalselesai').valueAsDate = new Date();
         $('.selectpicker').selectpicker('refresh');
@@ -90,7 +90,7 @@
 
         $.post("tampilpenjualan_peritem.php", {
                 tombol: "tampilcari",
-                menu: $menu.val(),
+                produk: $produk.val(),
                 tanggalmulai: tanggalmulai,
                 tanggalselesai: tanggalselesai
             })

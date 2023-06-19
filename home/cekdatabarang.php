@@ -37,8 +37,8 @@ if ($_POST['page'] == "About") {
 
                     //Isi tblogsmenu
                     //Notes : 0 => Konsumen diluar
-                    $idmenu = $res2['id'];
-                    $sql4 = "INSERT INTO tblogsmenu (idmenu,jumlah,kategori,iduser) VALUES ('$idmenu','$qty','keluar','0')";
+                    $idproduk = $res2['id'];
+                    $sql4 = "INSERT INTO tblogsmenu (idproduk,jumlah,kategori,iduser) VALUES ('$idproduk','$qty','keluar','0')";
                     $query4 =  mysqli_query($con, $sql4);
 
                     //ISI tb Penjualan
@@ -81,11 +81,12 @@ if ($_POST['page'] == "About") {
                     $grandtotal = $subtotal - ($diskon + $pajak);
 
 
-                    $sql5 = "INSERT INTO tbjual (id,kodecanvas,iduser,idkonsumen,idsales,tanggal,subtotal,diskon,grandtotal,cash,status_antar) VALUES ('$idtransaksi','','0','$iduser','','$tgltransaksi','$subtotal','$diskon','$grandtotal','0','disiapkan')";
+                    $sql5 = "INSERT INTO tbjual (id,iduser,idkonsumen,tanggal,subtotal,diskon,grandtotal,cash,status_antar) 
+                                        VALUES ('$idtransaksi','0','$iduser','$tgltransaksi','$subtotal','$diskon','$grandtotal','0','disiapkan')";
                     $query5 = mysqli_query($con, $sql5);
 
                     //Isi Tbdetail Penjualan
-                    $sql7 = "INSERT INTO tbjualdetil (idjual,idmenu,jumlah,harga,total,diskon,jlhdiskon,subtotal,note) VALUES ('$idtransaksi','$idproduk','$qty','$harga','$subtotal','$diskon','0','$subtotal','-')";
+                    $sql7 = "INSERT INTO tbjualdetil (idjual,idproduk,jumlah,harga,total,diskon,jlhdiskon,subtotal,note) VALUES ('$idtransaksi','$idproduk','$qty','$harga','$subtotal','$diskon','0','$subtotal','-')";
                     $query7 = mysqli_query($con, $sql7) or die($sql7);
 
                     //Hapus Table Keranjang
@@ -124,9 +125,9 @@ if ($_POST['page'] == "About") {
             $query6 = mysqli_query($con, $sql6);
 
             //Insert tblogs
-            $idmenu = $re['id'];
+            $idproduk = $re['id'];
             $qtyKeranjang = $re['jumlah'];
-            $sql4 = "INSERT INTO tblogsmenu (idmenu,jumlah,kategori,iduser) VALUES ('$idmenu','$qtyKeranjang','keluar','0')";
+            $sql4 = "INSERT INTO tblogsmenu (idproduk,jumlah,kategori,iduser) VALUES ('$idproduk','$qtyKeranjang','keluar','0')";
             $query4 =  mysqli_query($con, $sql4);
 
             //ISI tb Penjualan
@@ -162,7 +163,7 @@ if ($_POST['page'] == "About") {
             $qty = $re['jumlah'];
 
             //Isi Tbdetail Penjualan
-            $sql9 = "INSERT INTO tbjualdetil (idjual,idmenu,jumlah,harga,total,diskon,jlhdiskon,subtotal,note) VALUES ('$idtransaksi','$idproduk','$qty','$harga','$subtotalDetil','$diskon','0','$subtotalDetil','-')";
+            $sql9 = "INSERT INTO tbjualdetil (idjual,idproduk,jumlah,harga,total,diskon,jlhdiskon,subtotal,note) VALUES ('$idtransaksi','$idproduk','$qty','$harga','$subtotalDetil','$diskon','0','$subtotalDetil','-')";
             $query9 = mysqli_query($con, $sql9) or die($sql9);
 
             //Hapus tbkeranjang by id
@@ -174,13 +175,14 @@ if ($_POST['page'] == "About") {
             echo $ex;
         }
     }
-    $sql8 = "INSERT INTO tbjual (id,kodecanvas,iduser,idkonsumen,idsales,tanggal,subtotal,diskon,grandtotal,cash,status_antar) VALUES ('$idtransaksi','','0','$iduser','','$tgltransaksi','$subtotalPenjualan','$diskon','$grandtotal','0','disiapkan')";
+    $sql8 = "INSERT INTO tbjual (id,iduser,idkonsumen,tanggal,subtotal,diskon,grandtotal,cash,status_antar) 
+    VALUES ('$idtransaksi','0','$iduser','$tgltransaksi','$subtotalPenjualan','$diskon','$grandtotal','0','disiapkan')";
     $query8 = mysqli_query($con, $sql8);
 } else if ($_POST['page'] == "Profile") {
     $iduser = $_POST['iduser'];
     $idjual = $_POST['id_jual'];
 
-    $sql = "select tbproduk.nama as 'namaBarang', tbjualdetil.jumlah as 'jumlahBarang', tbjualdetil.harga as 'Harga', tbjualdetil.subtotal as 'subTotal' from tbjual inner join tbjualdetil on tbjual.id = tbjualdetil.idjual inner join tbproduk on tbjualdetil.idmenu = tbproduk.id  where tbjual.idkonsumen = '$iduser' and tbjualdetil.idjual = '$idjual'";
+    $sql = "select tbproduk.nama as 'namaBarang', tbjualdetil.jumlah as 'jumlahBarang', tbjualdetil.harga as 'Harga', tbjualdetil.subtotal as 'subTotal' from tbjual inner join tbjualdetil on tbjual.id = tbjualdetil.idjual inner join tbproduk on tbjualdetil.idproduk = tbproduk.id  where tbjual.idkonsumen = '$iduser' and tbjualdetil.idjual = '$idjual'";
     $query = mysqli_query($con, $sql);
 
     $isi = '';

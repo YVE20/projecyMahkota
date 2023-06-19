@@ -38,7 +38,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group form-element">
                                                 <label style="top:-10px;">Produk</label>
-                                                <select class="form-control col-md-7 col-xs-12 combobox selectpicker" data-live-search="true" data-size="5" name="cmbmenu" id="cmbmenu">
+                                                <select class="form-control col-md-7 col-xs-12 combobox selectpicker" data-live-search="true" data-size="5" name="cmbproduk" id="cmbproduk">
                                                     <option value="ALL" selected> Semua Produk </option>
                                                     <?php
                                                     $sqlmenu = "select * from tbproduk order by nama asc";
@@ -116,7 +116,7 @@
 
   function f_bersih(){
       $("#btnsearch").val("search");
-      $("#cmbmenu").val("ALL");
+      $("#cmbproduk").val("ALL");
       $("#cmbsupplier").val("ALL");
       $("#cmbuser").val("ALL");
       document.getElementById('txttanggalmulai').valueAsDate = new Date();
@@ -125,7 +125,7 @@
   }
 
   function f_search(){
-      var menu = $("#cmbmenu").val();
+      var produk = $("#cmbproduk").val();
       var karyawan = $("#cmbkaryawan").val();
       var user = $("#cmbuser").val();
       var supplier = $("#cmbsupplier").val();
@@ -140,7 +140,7 @@
           tanggalselesai = tanggalmulai;
       }
 
-      $.post("tampilpembelian_detil.php",{tombol:"tampilcari",user:user,supplier:supplier,menu:menu,karyawan:karyawan,tanggalmulai:tanggalmulai,tanggalselesai:tanggalselesai})
+      $.post("tampilpembelian_detil.php",{tombol:"tampilcari",user:user,supplier:supplier,produk:produk,karyawan:karyawan,tanggalmulai:tanggalmulai,tanggalselesai:tanggalselesai})
           .done(function(data){
               $("#table").html(data);
           });

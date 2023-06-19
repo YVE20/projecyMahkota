@@ -61,7 +61,7 @@
         <?php
     }else if($tombol == "pie") {
     
-      $sqlsel = "SELECT tbjual.*, tbjualdetil.*, SUM(tbjualdetil.jumlah) qty, tbproduk.nama FROM tbjual JOIN tbjualdetil ON tbjual.id = tbjualdetil.idjual JOIN tbproduk ON tbjualdetil.idmenu = tbproduk.id WHERE MONTH(tanggal) = '$bulan'  AND YEAR(tanggal) = '$tahun' GROUP BY nama ORDER BY qty DESC LIMIT 5";
+      $sqlsel = "SELECT tbjual.*, tbjualdetil.*, SUM(tbjualdetil.jumlah) qty, tbproduk.nama FROM tbjual JOIN tbjualdetil ON tbjual.id = tbjualdetil.idjual JOIN tbproduk ON tbjualdetil.idproduk = tbproduk.id WHERE MONTH(tanggal) = '$bulan'  AND YEAR(tanggal) = '$tahun' GROUP BY nama ORDER BY qty DESC LIMIT 5";
       $querysel = mysqli_query($con,$sqlsel);
       $x = 1;
       $json_array = array();

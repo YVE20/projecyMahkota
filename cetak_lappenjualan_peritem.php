@@ -5,7 +5,7 @@
     require 'asset/plugins/fpdf/fpdf.php';
     (isset($_GET['tm']) ? $tanggalmulai = $_GET['tm'] : $tanggalmulai='');
     (isset($_GET['ts']) ? $tanggalselesai = $_GET['ts'] : $tanggalselesai='');
-    (isset($_GET['menu']) ? $menu = $_GET['menu'] : $menu='');
+    (isset($_GET['produk']) ? $produk = $_GET['produk'] : $produk='');
     (isset($_GET['shift']) ? $shift = $_GET['shift'] : $shift='');
     // (isset($_GET['user']) ? $user = $_GET['user'] : $user='');
 
@@ -24,10 +24,10 @@
             $syarat .= " and (tj.shift='1' or tj.shift='2' or tj.shift='3') ";
         }
     }
-    if ($menu != "ALL"){
-        $syarat .= " and tjd.idmenu='$menu'";
+    if ($produk != "ALL"){
+        $syarat .= " and tjd.idproduk='$produk'";
     }
-    $sqlsel = "select sum(tjd.jumlah) as 'totaljumlah', sum(tjd.total) as 'totalakhir',tj.shift,tm.nama, tm.satuan, tm.harga from tbjualdetil tjd inner join tbproduk tm on tjd.idmenu=tm.id inner join tbjual tj on tjd.idjual=tj.id where tjd.id!='' $syarat group by tjd.idmenu";
+    $sqlsel = "select sum(tjd.jumlah) as 'totaljumlah', sum(tjd.total) as 'totalakhir',tj.shift,tm.nama, tm.satuan, tm.harga from tbjualdetil tjd inner join tbproduk tm on tjd.idproduk=tm.id inner join tbjual tj on tjd.idjual=tj.id where tjd.id!='' $syarat group by tjd.idproduk";
 
     // echo "SELECT * FROM tbjual INNER JOIN tbuser USING(iduser) WHERE statbayar='bayar' $syarat ";
     class PDF extends FPDF
@@ -87,7 +87,7 @@
 
         $pdf->Cell(10 ,7,'No',1,0,'C');
         $pdf->Cell(19 ,7,'Shift',1,0,'C');
-        $pdf->Cell(53 ,7,'Menu',1,0,'C');
+        $pdf->Cell(53 ,7,'Produk',1,0,'C');
         $pdf->Cell(20 ,7,'Harga (Rp)',1,0,'C');
         $pdf->Cell(12 ,7,'Jumlah',1,0,'C');
         $pdf->Cell(15 ,7,'Satuan',1,0,'C');

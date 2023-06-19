@@ -20,7 +20,7 @@
     if ($kategori != "ALL"){
         $syarat .= " and tm.kategori='$kategori'";
     }
-    $sqlsel = "select sum(tjd.jumlah) as 'totaljumlah', sum(tjd.total) as 'totalakhir',tm.kategori, tm.satuan, tm.harga from tbjualdetil tjd inner join tbproduk tm on tjd.idmenu=tm.id inner join tbjual tj on tjd.idjual=tj.id where tjd.id!='' $syarat group by tm.kategori";
+    $sqlsel = "select sum(tjd.jumlah) as 'totaljumlah', sum(tjd.total) as 'totalakhir',tm.kategori, tm.satuan, tm.harga from tbjualdetil tjd inner join tbproduk tm on tjd.idproduk=tm.id inner join tbjual tj on tjd.idjual=tj.id where tjd.id!='' $syarat group by tm.kategori";
 
     // echo "SELECT * FROM tbjual INNER JOIN tbuser USING(iduser) WHERE statbayar='bayar' $syarat ";
     class PDF extends FPDF
