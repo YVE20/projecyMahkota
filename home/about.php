@@ -104,24 +104,21 @@ $icon = $res['icon'];
       <div class="container">
          <?php
          if ($_GET['kode_barang'] == "") {
-         ?>
-            <div class="row d_flex">
-               <div class="col-md-5">
-                  <div class="titlepage">
-                     <h3> <b> Indomie Goreng 1 Dus </b> </h3>
-                     <h5> Pangan </h5>
-                     <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-                     <button onclick="minus('1')" class="btn"> - </button>
-                     <input type="text" id="qty" value="1" style="width:30px;text-align: center;border:none;" readonly>
-                     <button onclick="plus('1')" class="btn"> + </button>
-                     <button class="btn w-25" onclick="beli()"> Beli</button>
+         ?><hr>
+            <div class="row d_flex mt-5">
+               <center>
+                  <div class="col-md-12">
+                     <div class="about_img">
+                        <figure><img src="../asset/img/<?= $icon ?>" alt="#" style="height:40%;width:40%" /></figure>
+                     </div>
+                     <font>
+                        Kami toko Mahkota Komputer & ATK sudah berdiri selama lebih dari 10 tahun. Kami menyediakan barang original dan resmi sehingga pihak pembeli mendapatkan barang terbaik dari kami. Kami mengedepankan pelayanan dan kualitas produk sehingga pelanggan akan lebih percaya dan nyaman berbelanja dengan kami. Barang yang tidak terdapat pada etalase bisa di tanyakan langsung melalui DM, PM atau WA pada no hp yang tertera.
+                     </font>
                   </div>
-               </div>
-               <div class="col-md-7">
-                  <div class="about_img">
-                     <figure><img src="images/indomie-dus.jpg" alt="#" style="height:70%;width:70%" /></figure>
+                  <div class="col-md-12 mt-5" style="margin-bottom: -100px;">
+                     <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15959.271224627384!2d109.3386919!3d-0.0290885!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e1d59d5fd760891%3A0x76822d4c71b12574!2sMahkota%20Stationery!5e0!3m2!1sen!2sid!4v1687184479618!5m2!1sen!2sid" style="border:0;width:100%;height:350px" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                   </div>
-               </div>
+               </center>
             </div>
             <?php
          } else {
@@ -163,6 +160,9 @@ $icon = $res['icon'];
       <div class="three_box">
          <div class="container">
             <div class="row">
+               <div class="col-md-12 mb-5 mt-5">
+                  <center> <h1> <b> Produk Kami </b> </h1></center>
+               </div>   
                <?php
                $sql3 = "select * from tbproduk order by rand() LIMIT 4";
                $query3 = mysqli_query($con, $sql3);
@@ -181,7 +181,7 @@ $icon = $res['icon'];
                            <h5> <b> <?= strtoupper($re['nama']) ?> </b> <sub> (<?= $re['satuan'] ?>) </sub> </h5>
                            <font> <?= "Rp. " . number_format($re['harga_dk'], 0, ',', '.'); ?> </font> <sub> Stock : <?= $re['jumlah'] ?> </sub>
                         </div>
-                        <button class="btn" onclick="beliSekarang('<?= $re['kode_barang'] ?>')"> Beli sekarang </button>
+                        <button class="btn" onclick="beliSekarang('<?= $re['kode_barang'] ?>')"> Lihat Detail </button>
                         <button class="btn" onclick="keranjang('<?= $re['kode_barang'] ?>')"> <img src="images/keranjang.png" alt="#"> </button>
                      </div>
                   </div>

@@ -97,7 +97,7 @@ if ($_POST['typeKeranjang'] == "count" || $_POST['typeKeranjang'] == "view") {
                     <td>' . $re4['namaBarang'] . '</td>
                     <td> 
                         <button class="btn" type="button" onclick="minus(1)"> - </button> 
-                        <input type="text" id="qtyJumlahKeranjang" value="' . $re4['jumlahBarang'] . '" style="width:30px;text-align: center;border:none;" readonly>
+                        <input type="text" name="qtyJumlahKeranjang" id="qtyJumlahKeranjang_'.$re4['idKeranjang'].'" value="' . $re4['jumlahBarang'] . '" style="width:30px;text-align: center;border:none;" readonly>
                         <button class="btn" type="button" onclick="plus(1)"> + </button> 
                     </td>
                     <td>

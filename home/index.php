@@ -7,7 +7,7 @@ $res = mysqli_fetch_array($query2);
 
 $namausaha = $res['nama'];
 $icon = $res['icon'];
-print_r($_SESSION);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -129,7 +129,7 @@ print_r($_SESSION);
                         </div>
                      </div>
                      <div>
-                        <button class="btn" onclick="beliSekarang('<?= $re['kode_barang'] ?>')"> Beli sekarang </button>
+                        <button class="btn" onclick="beliSekarang('<?= $re['kode_barang'] ?>')"> Lihat Detail </button>
                         <button class="btn" onclick="keranjang('<?= $re['kode_barang'] ?>')"> <img src="images/keranjang.png" alt="#"> </button>
                      </div>
 
@@ -346,7 +346,7 @@ print_r($_SESSION);
          </div>
       </div>
    </div>
-   <input type="text" id="checkVerified" value="<?= $_SESSION['verified']?>"> 
+   <input type="hidden" id="checkVerified" value="<?= $_SESSION['verified']?>"> 
    <!-- End of modal -->
    <!-- end footer -->
    <!-- Javascript files-->
@@ -363,23 +363,21 @@ print_r($_SESSION);
       function checkEmailVerified(){
          var verifiedStatus = $('#checkVerified').val();
          if(verifiedStatus == "yes"){
-           alert("Akun sudah aktif");
-           Swal.fire({
+            Swal.fire({
                icon: 'success',
                title: 'Berhasil',
-               text: 'Akun berhasil di verifikasi',
+               text : 'Selamat akun anda sudah aktif',
                showConfirmButton: false,
-               timer: 1500
-            });
-            sessionStorage.removeItem('verified');
-         }else{
-            alert("Akun belum di verifikasi");
+               timer: 3500
+            })
+            deleteSession();
+         }else if(verifiedStatus == "not"){
             Swal.fire({
                icon: 'error',
                title: 'Gagal',
                text: 'Akun belum di verifikasi',
                showConfirmButton: false,
-               timer: 1500
+               timer: 3500
             });
          }
       }
@@ -388,8 +386,13 @@ print_r($_SESSION);
          countKeranjang();
          viewDataKeranjang();
          checkEmailVerified();
+         deleteSession();
       });
 
+      function deleteSession(){
+         sessionStorage.removeItem('verified');
+         <?php unset($_SESSION['verified']) ?>
+      }
       function showPassword() {
          var x = document.getElementById("password");
          if (x.type === "password") {
@@ -590,13 +593,12 @@ print_r($_SESSION);
                pass: $('#pass').val()
             })
             .done(function(data) {
-               console.log(data);
                if (data == "kosong") {
                   //Akun ada tapi data keranjang 0
                   $('#qtyKeranjang').html("0");
                   $('#loginModal').modal('hide');
                   $('#loginText').css('display', 'none');
-                  //location.reload();
+                  location.reload();
                } else if (data == "invalid") {
                   //Akun tidak ada
                   Swal.fire({
@@ -612,7 +614,7 @@ print_r($_SESSION);
                      icon: 'error',
                      title: 'Gagal',
                      html : '<font style="font-size:0.9em"> Akun anda belum aktif, segera cek email anda </font>',
-                     footer : '<a href="verifiyemail.php" style="color:#3489eb"> Klik disini untuk verifikasi email </a>',
+                     footer : '<a href="javascript:void()" onclick="checkEmail()" style="color:#3489eb"> Klik disini untuk verifikasi email </a>',
                      showConfirmButton: false,
                      timer: 2500
                   });
@@ -624,15 +626,34 @@ print_r($_SESSION);
                      showConfirmButton: false,
                      timer: 2500
                   });
-                  // $('#qtyKeranjang').html(data);
-                  // location.reload();
+                  $('#qtyKeranjang').html(data);
+                  location.reload();
                }
             });
+      }
+      function checkEmail(){
+         $('#loginModal').modal('hide');
+         Swal.fire({
+            title : 'Perhatian',
+            text: 'Tuliskan email yang digunakan untuk mendaftar',
+            input: 'text',
+            inputAttributes: {
+               autocapitalize: 'off'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Kirim',
+            showLoaderOnConfirm: true,
+            preConfirm: (login) => {
+               location.href="verifyemail.php?email="+login+"&retry=true";
+            }
+         })
       }
 
       function beliByKeranjang() {
          var formData = new FormData();
+         var qtyDalamKeranjang = $('#qtyJumlahKeranjang').val();
          formData.append('page', 'Index');
+         //formData.append('qtyDalamKeranjang', qtyDalamKeranjang);
 
          $.ajax({
             url: "cekstockout.php",
@@ -642,6 +663,7 @@ print_r($_SESSION);
             cache: false,
             processData: false,
             success: function(data) {
+               console.log(data);
                if (data == "kosong") {
                   Swal.fire({
                      icon: 'error',

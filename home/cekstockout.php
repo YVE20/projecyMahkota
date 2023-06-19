@@ -7,6 +7,7 @@ if ($_POST['page'] == "About" || $_POST['page'] == "Index" || $_POST['page'] == 
     //Ambil data dari table keranjang by ID User
 
     $iduser = $_SESSION['iduser'];
+
     $sqlKeranjangByIDUser = "SELECT *FROM tbkeranjang WHERE id_user='$iduser'";
     $queryKeranjangByIDUser = mysqli_query($con, $sqlKeranjangByIDUser);
 

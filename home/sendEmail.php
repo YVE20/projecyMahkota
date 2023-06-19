@@ -49,9 +49,10 @@ $body = "
         $mail->Port = 465; // TLS only
         //$mail->SMTPSecure = 'tls'; // ssl is depracated
         //$mail->SMTPAuth = true;
-        $mail->Username = "euaggeliony28@gmail.com";
-        $mail->Password = "fhxfirkvjobkkzvv";
+        $mail->Username = "joshuanatan199@gmail.com";
+        $mail->Password = "qcypgifhjblyniyx";
         $mail->setFrom("joshuanatan199@gmail.com", "Mahkota Stationery");
+        $mail->addReplyTo('joshuanatal199@gmail.com', 'Mahkota Stationery');
         $mail->addAddress($email, $nama);
         $mail->Subject = 'Verifikasi Email';
         $mail->IsHTML(true);
