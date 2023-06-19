@@ -275,16 +275,19 @@ $icon = $res['icon'];
                         </center>
                      </div>
                      <div class="col-lg-12 col-12 mt-3">
-                        <input type="text" name="nama" id="nama" class="form-control" placeholder="Masukkan Nama">
+                        <input type="email" name="email" required id="email" class="form-control" placeholder="Masukkan Email">
+                     </div>
+                     <div class="col-lg-12 col-12 mt-3">
+                        <input type="text" name="nama" id="nama" class="form-control" placeholder="Masukkan Nama" required>
                      </div>
                      <div class="col-lg-12 col-12 mt-3">
                         <textarea name="alamat" id="alamat" class="form-control" placeholder="Masukkan alamat anda" style="resize:none;"></textarea>
                      </div>
                      <div class="col-lg-12 col-12 mt-3">
-                        <input type="text" name="no_hp_register" id="no_hp_register" class="form-control" placeholder="Masukkan No HP">
+                        <input type="text" name="no_hp_register" required id="no_hp_register" class="form-control" placeholder="Masukkan No HP">
                      </div>
                      <div class="col-lg-11 col-11 mt-3">
-                        <input type="password" id="password" name="password" class="form-control" placeholder="*********">
+                        <input type="password" id="password" required name="password" class="form-control" placeholder="*********">
                      </div>
                      <div class="col-lg-1 col-1">
                         <input type="checkbox" onclick="showPassword()" style="height:200%;width:200%;margin-top: -20px;margin-left:-15px">
@@ -577,6 +580,7 @@ $icon = $res['icon'];
             alamat: $('#alamat').val(),
             no_hp: $('#no_hp_register').val(),
             password: $('#password').val(),
+            email : $('#email').val(),
             page: "About"
          }).done(function(data) {
             if (data == "sukses") {
@@ -608,18 +612,29 @@ $icon = $res['icon'];
                pass: $('#pass').val()
             })
             .done(function(data) {
+               console.log(data);
                if (data == "kosong") {
                   //Akun ada tapi data keranjang 0
                   $('#qtyKeranjang').html("0");
                   $('#loginModal').modal('hide');
                   $('#loginText').css('display', 'none');
-                  location.reload();
+                  //location.reload();
                } else if (data == "invalid") {
                   //Akun tidak ada
                   Swal.fire({
                      icon: 'error',
                      title: 'Gagal',
                      text: 'Anda belum memiliki akun',
+                     showConfirmButton: false,
+                     timer: 2500
+                  });
+               } else if(data == "!verified"){
+                  //Akun belum di verified
+                  Swal.fire({
+                     icon: 'error',
+                     title: 'Gagal',
+                     html : '<font style="font-size:0.9em"> Akun anda belum aktif, segera cek email anda </font>',
+                     footer : '<a href="verifiyemail.php" style="color:#3489eb"> Klik disini untuk verifikasi email </a>',
                      showConfirmButton: false,
                      timer: 2500
                   });
@@ -631,12 +646,11 @@ $icon = $res['icon'];
                      showConfirmButton: false,
                      timer: 2500
                   });
-                  $('#qtyKeranjang').html(data);
-                  location.reload();
+                  // $('#qtyKeranjang').html(data);
+                  // location.reload();
                }
             });
       }
-
       function beliByKeranjang() {
          var formData = new FormData();
          formData.append('page', 'About');

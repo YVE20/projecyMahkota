@@ -10,6 +10,7 @@ $alamat = $_POST['alamat'];
 $no_hp = $_POST['no_hp'];
 $password = $_POST['password'];
 $passEncrypt = encryptIt($password);
+$email = $_POST['email'];
 
 
 if($_POST['page'] == "Index" || $_POST['page'] == "About" || $_POST['page'] == "Profile"){
@@ -19,12 +20,16 @@ if($_POST['page'] == "Index" || $_POST['page'] == "About" || $_POST['page'] == "
     $row = mysqli_num_rows($queryCekData);
 
     if($row == 0){
-        $sqlInsert = "insert into tbkonsumen (nama,alamat,no_hp,password) values ('$nama','$alamat','$no_hp','$passEncrypt')";
+
+        $token = bin2hex(random_bytes(64));
+        $auth = "http://".$_SERVER['SERVER_NAME']."/mahkota/mahkota/Home/verifyemail.php?email=$email&token=$token";
+
+        $sqlInsert = "insert into tbkonsumen (nama,alamat,no_hp,password,email,token,auth) values ('$nama','$alamat','$no_hp','$passEncrypt','$email','$token','$auth')";
         $queryInsert = mysqli_query($con,$sqlInsert);
 
-        echo "sukses";
+        echo "sukses|".$auth."|".$email."|".$nama;
     }else{
-        echo "gagal";
+        echo "gagal|gagal|gagal|gagal";
     }
 }else if($_POST['page'] == "ProfileUpdateNoHP"){
     $noHP = $_POST['noHP'];
@@ -41,7 +46,6 @@ if($_POST['page'] == "Index" || $_POST['page'] == "About" || $_POST['page'] == "
 
     echo "sukses"; 
 }
-
 
 
 

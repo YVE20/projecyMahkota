@@ -17,17 +17,27 @@ if($row == 0){
     echo "invalid";
 }else {
     while($re = mysqli_fetch_array($query)){
-        $_SESSION['iduser'] = $re['id'];
-        $id_user = $re['id'];
         //Cek tbkeranjang
         $sql2 = "select *from tbkeranjang where id_user ='$id_user'";
         $query2 = mysqli_query($con,$sql2);
         $row2 = mysqli_num_rows($query2);
 
         if($row2 == 0){
-            echo "kosong";
+            if($re['verified']){
+                echo "kosong";
+                $_SESSION['iduser'] = $re['id'];
+                $id_user = $re['id'];
+            }else{
+                echo "!verified";
+            }
         }else{
-            echo $row2;
+            if($re['verified']){
+                echo $row2;
+                $_SESSION['iduser'] = $re['id'];
+                $id_user = $re['id'];
+            }else{
+                echo "!verified";
+            }
         }
     }
 }
