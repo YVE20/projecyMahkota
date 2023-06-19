@@ -604,45 +604,17 @@ if ($act=="new") {
                 pajak_global = pecah[4];
                 $pajak.val(0);
 
-                
-
                 $.post("savepenjualan.php", {
                         tombol: "tampilproduk",
                         produk: $produk.val()
                     })
                     .done(function(data) {
                         //echo "|".$id."|".$produk."|".$wilayah."|".$jenis."|".$hargadk."|".$hargalk."|".$hargadepo."|".$hargamodern."|".$hargatradisional."|".$hargaagen."|".$hargauser."|".$diskon."|".$pajak."|".$satuan."|".$kategori."|".$jumlah."|".$isikemasan."|";
-
+                        $jumlah.val(1)
                         var pecahProduk = data.split("|");
-
-                        let kategori_barang = pecahProduk[15];
-                        if (kategori_barang == 'Bulk') {
-                            if (kategori_konsumen == 'depo') {
-                                $harga.val(accounting.formatNumber(pecahProduk[7], 0, '.', ','));
-                            }
-                            if (kategori_konsumen == 'modern') {
-                                $harga.val(accounting.formatNumber(pecahProduk[8], 0, '.', ','));
-                            }
-                            if (kategori_konsumen == 'tradisional') {
-                                $harga.val(accounting.formatNumber(pecahProduk[9], 0, '.', ','));
-                            }
-                            if (kategori_konsumen == 'agen') {
-                                $harga.val(accounting.formatNumber(pecahProduk[10], 0, '.', ','));
-                            }
-                            if (kategori_konsumen == 'user') {
-                                $harga.val(accounting.formatNumber(pecahProduk[11], 0, '.', ','));
-                            }
-                        } else {
-                            if (wilayah == 'dalam') {
-                                $harga.val(accounting.formatNumber(pecahProduk[5], 0, '.', ','));
-                            }
-                            if (wilayah == 'luar') {
-                                $harga.val(accounting.formatNumber(pecahProduk[6], 0, '.', ','));
-                            }
-                        }
-
-                        // $isisatuan.val(pecah[17]);
-                        // $satuan.val(pecah[14]);
+                        console.log(pecahProduk);
+                        // $id.val(pecahProduk[0])
+                        $harga.val(accounting.formatNumber(pecahProduk[2], 0, '.', ','));
                         hitungharga();
                     });
             });
@@ -658,15 +630,15 @@ if ($act=="new") {
                 $produk = $("#cmbproduk");
             });
 
-        if ($kodecanvas.val()) {
-            $.post("savepenjualan.php", {
-                    tombol: "tampildatacanvas",
-                })
-                .done(function(data) {
+        // if ($kodecanvas.val()) {
+        //     $.post("savepenjualan.php", {
+        //             tombol: "tampildatacanvas",
+        //         })
+        //         .done(function(data) {
 
-                    $('.selectpicker').selectpicker('refresh');
-                });
-        }
+        //             $('.selectpicker').selectpicker('refresh');
+        //         });
+        // }
     }
     function hitungharga() {
         var jumlah = parseInt($jumlah.val());
@@ -692,7 +664,7 @@ if ($act=="new") {
             jlhpajak = ((jumlah * harga) - jlhdiskon) * pajak / 100;
         }
 
-        var totalharga = (jumlah * harga) - jlhdiskon + jlhpajak;
+        var totalharga = (jumlah * harga) - jlhdiskon + 0;
         $total.val(accounting.formatNumber(totalharga, 0, '.', ','));
         $pajak.val(String(pajak));
         $jlhpajak.val(accounting.formatNumber(jlhpajak, 0, '.', ','));

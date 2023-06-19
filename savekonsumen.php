@@ -7,14 +7,16 @@
     $id = $_POST['id'];
     $nama = $_POST['nama'];
     $alamat = $_POST['alamat'];
-
+    $nohp = $_POST['nohp'];
 
     if ($tombol == "simpan") {
-        $sql = "INSERT INTO tbkonsumen (nama,alamat) VALUES ('$nama','$alamat')";
+        $sql = "INSERT INTO tbkonsumen (nama,alamat,no_hp) VALUES ('$nama','$alamat','$nohp')";
         $query = mysqli_query($con, $sql) or die($sql);
+
+        echo $sql;
     }
     else if($tombol == "edit"){
-        $sql = "UPDATE tbkonsumen SET nama='$nama', alamat='$alamat' where id='$id'";
+        $sql = "UPDATE tbkonsumen SET nama='$nama', alamat='$alamat', no_hp='$nohp' where id='$id'";
         $query = mysqli_query($con,$sql) or  die ($sql);
     }
     else if($tombol == "hapus"){
@@ -29,8 +31,9 @@
       $id = $re['id'];
       $nama = $re['nama'];
       $alamat = $re['alamat'];
+      $nohp = $re['nohp'];
 
-      echo "|".$id."|".$nama."|".$alamat."|";
+      echo "|".$id."|".$nama."|".$alamat."|".$nohp;
     }
     else if($tombol == "tampil"){
     ?>
@@ -40,6 +43,7 @@
               <th>No</th>
               <th>Nama</th>
               <th>Alamat</th>
+              <th>No HP</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -53,12 +57,14 @@
               $id = $res['id'];
               $nama = $res['nama'];
               $alamat = $res['alamat'];
+              $nohp = $res['no_hp'];
               
               ?>
                 <tr>
                   <td><?php echo $no++;?></td>
                   <td><?php echo $nama;?></td>
                   <td><?php echo $alamat;?></td>
+                  <td><?php echo $nohp;?></td>
                   <td>
                     <button class="btn btn-sm btn-warning" onclick="f_edit('<?php echo $id;?>')"><span class="fa fa-pencil"></span></button>
                     <button class="btn btn-sm btn-danger" onclick="f_hapus('<?php echo $id;?>')"><span class="fa fa-times"></span></button>

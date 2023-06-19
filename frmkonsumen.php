@@ -27,33 +27,30 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group form-animate-text" style="">
-                                                <input type="text" class="form-text" id="txtalamat" name="txtalamat"
-                                                    >
+                                                <input type="text" class="form-text" id="txtalamat" name="txtalamat">
                                                 <span class="bar"></span>
                                                 <label>Alamat</label>
                                             </div>
                                         </div>
-                                    </div>
 
+                                        <div class="col-md-6">
+                                            <div class="form-group form-animate-text" style="">
+                                                <input type="text" class="form-text" id="txtnohp" name="txtnohp">
+                                                <span class="bar"></span>
+                                                <label>No HP</label>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row" style="display:none">
-                                        
-                                        
-                                        
                                     </div>
                                     
                                     <div class="row">
-                                        
-                                        
                                     </div>
-
                                     <br>
                                     <br>
-
                                     <div class="form-group form-element">
-                                        <button type="submit" class="submit btn btn-success" name="simpan" id="simpan"
-                                            value="simpan"> Save </button>
-                                        <button type="reset" class="submit btn btn-primary" name="reset" id="reset"
-                                            value="simpan" onclick="f_bersih();"> Reset </button>
+                                        <button type="submit" class="submit btn btn-success" name="simpan" id="simpan" value="simpan"> Save </button>
+                                        <button type="reset" class="submit btn btn-primary" name="reset" id="reset" value="simpan" onclick="f_bersih();"> Reset </button>
                                     </div>
                                 </form>
 
@@ -77,14 +74,16 @@
         var id = $("#txtid").val();
         var nama = $("#txtnama").val();
         var alamat = $("#txtalamat").val();
+        var nohp = $("#txtnohp").val();
 
-        if (nama != "" && alamat != "") {
+        if (nama != "" && alamat != "" && nohp != "") {
 
             var formData = new FormData();
             formData.append('tombol', tombol);
             formData.append('id', id);
             formData.append('nama', nama);
             formData.append('alamat', alamat);
+            formData.append('nohp', nohp);
 
             $.ajax({
                 url: "savekonsumen.php",
@@ -94,6 +93,7 @@
                 cache: false,
                 processData: false,
                 success: function (data) {
+                    console.log(data);
                     loaddata();
                     $("#reset").click();
                 }
@@ -133,6 +133,7 @@
                 $("#txtid").val(pecah[1]);
                 $("#txtnama").val(pecah[2]);
                 $("#txtalamat").val(pecah[3]);
+                $("#txtnohp").val(pecah[4]);
                 $("#simpan").val("edit");
 
                 window.scrollTo(0, 0);

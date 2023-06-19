@@ -48,10 +48,13 @@
     $tab = $_POST['tab'];
     $value_cari = $_POST['value'];
 
-    $minus = $_SESSION['minus'];
+    $minus = "Y";
     $iduser = $_SESSION['iduser'];
     $role_ = $_SESSION['status'];
 
+    
+    
+    
     if ($tombol == "simpan") {
         $sql1 = "SELECT * FROM tempjualdetil WHERE idjual='$idjual' AND idproduk='$produk'";
         $query1 = mysqli_query($con, $sql1);
@@ -60,9 +63,9 @@
             $sqlmenu = "SELECT * FROM tbproduk where id='$produk'";
             $querymenu = mysqli_query($con, $sqlmenu);
             $cekjumlah = mysqli_fetch_assoc($querymenu);
-            if (empty($kodecanvas)) {
-                if ($minus == 'Y') {
-                    $sql = "INSERT INTO tempjualdetil (idjual,idkonsumen,idproduk,iduser,jumlah,harga,total,pajak,jlhpajak,diskon,jlhdiskon,subtotal,note) VALUES ('$idjual','$idkonsumen','$produk','$iduser','$jumlah','$harga','$subtotaldetil','$pajak','$jlhpajak','$diskon','$jlhdiskon','$subtotal_','$note')";
+            if ($minus == 'Y') {
+
+                    $sql = "INSERT INTO tempjualdetil (idjual,idkonsumen,idproduk,iduser,jumlah,harga,total,pajak,jlhpajak,diskon,jlhdiskon,subtotal,note) VALUES ('$idjual','$idkonsumen','$produk','$iduser','$jumlah','$harga','$subtotaldetil',0,0,'$diskon','$jlhdiskon','$subtotal_','note')";
                     $query = mysqli_query($con, $sql) or die($sql);
 
                     echo "sukses";
@@ -77,13 +80,7 @@
                         echo "kosong";
                     }
                 }
-            } else {
-                $sql = "INSERT INTO tempjualdetil (idjual,idkonsumen,idproduk,iduser,jumlah,harga,total,pajak,jlhpajak,diskon,jlhdiskon,subtotal,note) \
-                VALUES ('$idjual','$idkonsumen','$produk','$iduser','$jumlah','$harga','$subtotaldetil','$pajak','$jlhpajak','$diskon','$jlhdiskon','$subtotal_','$note')";
-                $query = mysqli_query($con, $sql) or die($sql);
-
-                echo "sukses";
-            }
+          
         } else { //else cek tempjual
             echo "sudah ada";
         }
@@ -142,17 +139,9 @@
                 $query = mysqli_query($con, $sql);
             }
             if ($act == "new") {
-                if ($metodepembayaran == "Cash") {
                     $sql = "INSERT INTO tbjual (id,iduser,idkonsumen,tanggal,subtotal,diskon,grandtotal,cash,status_antar) VALUES ('$idjual','$iduser','$rescek[idkonsumen]','$tgltransaksi','$subtotal','$rescek[jlhdiskon]','$grandtotal','1','disiapkan')";
                     $query = mysqli_query($con, $sql);
                     
-                } else {
-                    $sql = "INSERT INTO tbjual (id,iduser,idkonsumen,tanggal,jatuh_tempo,subtotal,diskon,grandtotal,cash,status_antar) VALUES ('$idjual','$iduser','$rescek[idkonsumen]','$tgltransaksi','$jatuhtempo','$subtotal','$rescek[jlhdiskon]','$grandtotal','1','disiapkan')";
-                    $query = mysqli_query($con, $sql);
-
-                    $sql = "INSERT INTO tbpiutang (id_penjualan,jumlah,sisa,jatuh_tempo) VALUES ('$idjual','$jumlah','$grandtotal','$jatuhtempo')";
-                    $query = mysqli_query($con, $sql);
-                }
 
             }
             if ($act == "bayar") {
@@ -534,7 +523,7 @@
         $kategori = $re['kategori'];
         $jumlah = $re['jumlah'];
         
-        echo "|".$id."|".$produk."|".$wilayah."|".$jenis."|".$hargadk."|".$hargalk."|".$hargadepo."|".$hargamodern."|".$hargatradisional."|".$hargaagen."|".$hargauser."|".$diskon."|".$pajak."|".$satuan."|".$kategori."|".$jumlah."|";
+        echo $id."|".$produk."|".$hargadk."|".$satuan."|".$kategori."|".$jumlah;
     } elseif ($tombol == "tampidetailcanvas") {
     } elseif ($tombol == "tampiljoinview") {
         ?>
