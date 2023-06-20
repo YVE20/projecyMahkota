@@ -558,7 +558,7 @@ $icon = $res['icon'];
                   Swal.fire({
                      icon: 'success',
                      title: 'Berhasil',
-                     text: 'No HP berhasil diganti',
+                     text: 'Alamat berhasil diganti',
                      showConfirmButton: false,
                      timer: 1500
                   })
