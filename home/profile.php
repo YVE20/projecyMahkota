@@ -166,7 +166,7 @@ $icon = $res['icon'];
                <h3> <i class="fa fa-bars" aria-hidden="true"></i> Pesanan </h3>
                <?php
                $iduser = $_SESSION['iduser'];
-               $sql3 = "select *from tbjual where idkonsumen = '$iduser' order by created_at DESC";
+               $sql3 = "select *from tbjual where idkonsumen = '$iduser' order by created_at DESC";   
 
                $query3 = mysqli_query($con, $sql3);
                $row = mysqli_num_rows($query3);

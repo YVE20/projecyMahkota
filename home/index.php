@@ -347,6 +347,7 @@ $icon = $res['icon'];
       </div>
    </div>
    <input type="hidden" id="checkVerified" value="<?= $_SESSION['verified']?>"> 
+   <input type="text" id="listIdKeranjang"> 
    <!-- End of modal -->
    <!-- end footer -->
    <!-- Javascript files-->
@@ -411,21 +412,21 @@ $icon = $res['icon'];
          }
       }
 
-      function plus(satu) {
-         var qty = $('#qtyJumlahKeranjang').val();
-         var harga = $('#harga').val();
+      function plus(satu,idKeranjang) {
+         var qty = $('#qtyJumlahKeranjang_'+idKeranjang).val();
+         var harga = $('#harga_'+idKeranjang).val();
          var hasil = parseInt(qty) + parseInt(satu);
       
          var formatedHarga = harga.replace(/\./g, "");
          var hitungSubTotal = hasil * formatedHarga;
          
-         $('#qtyJumlahKeranjang').val(hasil);
-         $('#subTotal').val(hitungSubTotal.toLocaleString());
+         $('#qtyJumlahKeranjang_'+idKeranjang).val(hasil);
+         $('#subTotal_'+idKeranjang).val(hitungSubTotal.toLocaleString());
       }
 
-      function minus(satu) {
-         var qty = $('#qtyJumlahKeranjang').val();
-         var harga = $('#harga').val();
+      function minus(satu,idKeranjang) {
+         var qty = $('#qtyJumlahKeranjang_'+idKeranjang).val();
+         var harga = $('#harga_'+idKeranjang).val();
          var hasil = parseInt(qty) - parseInt(satu);
 
          var formatedHarga = harga.replace(/\./g, "");
@@ -438,10 +439,10 @@ $icon = $res['icon'];
                showConfirmButton: false,
                timer: 1500
             })
-            $('#qtyJumlahKeranjang').val(1);
+            $('#qtyJumlahKeranjang_'+idKeranjang).val(1);
          } else {
-            $('#qtyJumlahKeranjang').val(hasil);
-            $('#subTotal').val(hitungSubTotal.toLocaleString());
+            $('#qtyJumlahKeranjang_'+idKeranjang).val(hasil);
+            $('#subTotal_'+idKeranjang).val(hitungSubTotal.toLocaleString());
          }
       }
 
@@ -451,7 +452,9 @@ $icon = $res['icon'];
             iduser: iduser,
             typeKeranjang: "dataKeranjang"
          }).done(function(data) {
-            $('.isiDataKeranjang').html(data);
+            var split = data.split('###');
+            $('.isiDataKeranjang').html(split[0]);
+            $('#listIdKeranjang').val(split[1]);
          })
       }
 
@@ -650,10 +653,21 @@ $icon = $res['icon'];
       }
 
       function beliByKeranjang() {
+         var listIdKeranjang = $('#listIdKeranjang').val();
+         var removeLastChar = listIdKeranjang.substring(0, listIdKeranjang.length - 1);
+         var dataIdKeranjang = removeLastChar.split("|");
+
+         var dataQty = "";
+
+         dataIdKeranjang.forEach(function(item){
+            var qty = $('#qtyJumlahKeranjang_'+item).val();
+            dataQty += qty+"|"+item+"_";
+         });
+
          var formData = new FormData();
          var qtyDalamKeranjang = $('#qtyJumlahKeranjang').val();
          formData.append('page', 'Index');
-         //formData.append('qtyDalamKeranjang', qtyDalamKeranjang);
+         formData.append('dataQty', dataQty);
 
          $.ajax({
             url: "cekstockout.php",
@@ -663,7 +677,6 @@ $icon = $res['icon'];
             cache: false,
             processData: false,
             success: function(data) {
-               console.log(data);
                if (data == "kosong") {
                   Swal.fire({
                      icon: 'error',
