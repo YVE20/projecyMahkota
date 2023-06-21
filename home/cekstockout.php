@@ -8,6 +8,19 @@ if ($_POST['page'] == "About" || $_POST['page'] == "Index" || $_POST['page'] == 
 
     $iduser = $_SESSION['iduser'];
 
+    //Split Data
+    $deleteLastChar = substr($_POST['dataQty'],0,-1);
+    $splitData = explode("_",$deleteLastChar);
+
+    //Update Tb Keranjang
+    foreach($splitData as $data){
+        $split = explode("|",$data);
+        $jumlahData = $split[0];
+        $idKeranjang = $split[1];
+        $sqlUpdateTableKeranjang = "UPDATE tbkeranjang set jumlah='$jumlahData' WHERE id ='$idKeranjang' ";
+        $queryUpdateTableKeranjang = mysqli_query($con,$sqlUpdateTableKeranjang);
+    }
+
     $sqlKeranjangByIDUser = "SELECT *FROM tbkeranjang WHERE id_user='$iduser'";
     $queryKeranjangByIDUser = mysqli_query($con, $sqlKeranjangByIDUser);
 
@@ -62,9 +75,8 @@ if ($_POST['page'] == "About" || $_POST['page'] == "Index" || $_POST['page'] == 
                         //Isi tblogsmenu
                         //Notes : 0 => Konsumen diluar
                         $idproduk = $res2['id'];
-                        $sql4 = "INSERT INTO tblogsmenu (idproduk,jumlah,kategori,iduser) VALUES ('$idproduk','$qty','keluar','0')";
+                        $sql4 = "INSERT INTO tblogsmenu (idmenu,jumlah,kategori,iduser) VALUES ('$idproduk','$qty','keluar','0')";
                         $query4 =  mysqli_query($con, $sql4);
-
 
                         $metodepembayaran = "COD";
 
@@ -86,20 +98,20 @@ if ($_POST['page'] == "About" || $_POST['page'] == "Index" || $_POST['page'] == 
                         $grandtotal = $subtotal - ($diskon + $pajak);
 
                         //Isi Tbdetail Penjualan
-                        $sql7 = "INSERT INTO tbjualdetil (idjual,idproduk,jumlah,harga,total,diskon,jlhdiskon,subtotal,note) VALUES ('$idtransaksi','$idproduk','$qty','$harga','$subtotal','$diskon','0','$subtotal','-')";
+                        $sql7 = "INSERT INTO tbjualdetil (idjual,idmenu,jumlah,harga,total,diskon,jlhdiskon,subtotal,note) VALUES ('$idtransaksi','$idproduk','$qty','$harga','$subtotal','$diskon','0','$subtotal','-')";
                         $query7 = mysqli_query($con, $sql7);
 
                         //Hapus Table Keranjang
                         $sql10 = "DELETE FROM tbkeranjang WHERE id_user = '$iduser'";
                         $query10 = mysqli_query($con, $sql10);
+                        
                     }
                 }
             }
         }
-        $subTotalPenjualan += $re['subtotal'];
+        $subTotalPenjualan += $re['subtotal'] * $re['jumlah'];
         $grandTotalPenjualan = $subTotalPenjualan - ($diskon + $pajak);
     }
-    $sql5 = "INSERT INTO tbjual (id,iduser,idkonsumen,tanggal,subtotal,diskon,grandtotal,cash,status_antar) 
-                        VALUES ('$idtransaksi','0','$iduser','$tgltransaksi','$subTotalPenjualan','$diskon','$grandTotalPenjualan','0','disiapkan')";
+    $sql5 = "INSERT INTO tbjual (id,kodecanvas,iduser,idkonsumen,idsales,tanggal,subtotal,diskon,grandtotal,cash,status_antar) VALUES ('$idtransaksi','','0','$iduser','','$tgltransaksi','$subTotalPenjualan','$diskon','$grandTotalPenjualan','0','disiapkan')";
     $query5 = mysqli_query($con, $sql5);
 }

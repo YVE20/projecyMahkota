@@ -182,7 +182,7 @@ if ($_POST['page'] == "About") {
     $iduser = $_POST['iduser'];
     $idjual = $_POST['id_jual'];
 
-    $sql = "select tbproduk.nama as 'namaBarang', tbjualdetil.jumlah as 'jumlahBarang', tbjualdetil.harga as 'Harga', tbjualdetil.subtotal as 'subTotal' from tbjual inner join tbjualdetil on tbjual.id = tbjualdetil.idjual inner join tbproduk on tbjualdetil.idproduk = tbproduk.id  where tbjual.idkonsumen = '$iduser' and tbjualdetil.idjual = '$idjual'";
+    $sql = "select tbproduk.nama as 'namaBarang', tbjualdetil.jumlah as 'jumlahBarang', tbjualdetil.harga as 'Harga', tbjualdetil.subtotal as 'subTotal' from tbjual inner join tbjualdetil on tbjual.id = tbjualdetil.idjual inner join tbproduk on tbjualdetil.idmenu = tbproduk.id  where tbjual.idkonsumen = '$iduser' and tbjualdetil.idjual = '$idjual'";
     $query = mysqli_query($con, $sql);
 
     $isi = '';

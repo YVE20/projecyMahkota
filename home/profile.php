@@ -166,7 +166,7 @@ $icon = $res['icon'];
                <h3> <i class="fa fa-bars" aria-hidden="true"></i> Pesanan </h3>
                <?php
                $iduser = $_SESSION['iduser'];
-               $sql3 = "select *from tbjual where idkonsumen = '$iduser' order by created_at DESC";
+               $sql3 = "select *from tbjual where idkonsumen = '$iduser' order by created_at DESC";   
 
                $query3 = mysqli_query($con, $sql3);
                $row = mysqli_num_rows($query3);
@@ -433,6 +433,8 @@ $icon = $res['icon'];
          </div>
       </div>
    </div>
+   <input type="hidden" id="checkVerified" value="<?= $_SESSION['verified']?>"> 
+   <input type="text" id="listIdKeranjang"> 
    <!-- End of modal -->
    <!-- end footer -->
    <!-- Javascript files-->
@@ -445,10 +447,39 @@ $icon = $res['icon'];
    <script src="js/custom.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
    <script>
+      function checkEmailVerified(){
+         var verifiedStatus = $('#checkVerified').val();
+         if(verifiedStatus == "yes"){
+            Swal.fire({
+               icon: 'success',
+               title: 'Berhasil',
+               text : 'Selamat akun anda sudah aktif',
+               showConfirmButton: false,
+               timer: 3500
+            })
+            deleteSession();
+         }else if(verifiedStatus == "not"){
+            Swal.fire({
+               icon: 'error',
+               title: 'Gagal',
+               text: 'Akun belum di verifikasi',
+               showConfirmButton: false,
+               timer: 3500
+            });
+         }
+      }
+
       $(document).ready(function() {
          countKeranjang();
          viewDataKeranjang();
+         checkEmailVerified();
+         deleteSession();
       });
+
+      function deleteSession(){
+         sessionStorage.removeItem('verified');
+         <?php unset($_SESSION['verified']) ?>
+      }
 
       function showPassword() {
          var x = document.getElementById("password");
@@ -527,7 +558,7 @@ $icon = $res['icon'];
                   Swal.fire({
                      icon: 'success',
                      title: 'Berhasil',
-                     text: 'No HP berhasil diganti',
+                     text: 'Alamat berhasil diganti',
                      showConfirmButton: false,
                      timer: 1500
                   })
@@ -546,21 +577,21 @@ $icon = $res['icon'];
             });
       }
 
-      function plus(satu) {
-         var qty = $('#qtyJumlahKeranjang').val();
-         var harga = $('#harga').val();
+      function plus(satu,idKeranjang) {
+         var qty = $('#qtyJumlahKeranjang_'+idKeranjang).val();
+         var harga = $('#harga_'+idKeranjang).val();
          var hasil = parseInt(qty) + parseInt(satu);
       
          var formatedHarga = harga.replace(/\./g, "");
          var hitungSubTotal = hasil * formatedHarga;
          
-         $('#qtyJumlahKeranjang').val(hasil);
-         $('#subTotal').val(hitungSubTotal.toLocaleString());
+         $('#qtyJumlahKeranjang_'+idKeranjang).val(hasil);
+         $('#subTotal_'+idKeranjang).val(hitungSubTotal.toLocaleString());
       }
 
-      function minus(satu) {
-         var qty = $('#qtyJumlahKeranjang').val();
-         var harga = $('#harga').val();
+      function minus(satu,idKeranjang) {
+         var qty = $('#qtyJumlahKeranjang_'+idKeranjang).val();
+         var harga = $('#harga_'+idKeranjang).val();
          var hasil = parseInt(qty) - parseInt(satu);
 
          var formatedHarga = harga.replace(/\./g, "");
@@ -573,10 +604,10 @@ $icon = $res['icon'];
                showConfirmButton: false,
                timer: 1500
             })
-            $('#qtyJumlahKeranjang').val(1);
+            $('#qtyJumlahKeranjang_'+idKeranjang).val(1);
          } else {
-            $('#qtyJumlahKeranjang').val(hasil);
-            $('#subTotal').val(hitungSubTotal.toLocaleString());
+            $('#qtyJumlahKeranjang_'+idKeranjang).val(hasil);
+            $('#subTotal_'+idKeranjang).val(hitungSubTotal.toLocaleString());
          }
       }
 
@@ -586,7 +617,9 @@ $icon = $res['icon'];
             iduser: iduser,
             typeKeranjang: "dataKeranjang"
          }).done(function(data) {
-            $('.isiDataKeranjang').html(data);
+            var split = data.split('###');
+            $('.isiDataKeranjang').html(split[0]);
+            $('#listIdKeranjang').val(split[1]);
          })
       }
 
@@ -663,24 +696,51 @@ $icon = $res['icon'];
             alamat: $('#alamat').val(),
             no_hp: $('#no_hp_register').val(),
             password: $('#password').val(),
-            page: "Profile"
+            email : $('#email').val(),
+            page: "Index"
          }).done(function(data) {
-            if (data == "sukses") {
-               Swal.fire({
-                  icon: 'success',
-                  title: 'Berhasil',
-                  text: 'Akun anda berhasil dibuat',
-                  showConfirmButton: false,
-                  timer: 2500
+            var split = data.split("|");
+            console.log(data);
+            if (split[0] == "sukses") {
+               $.post("sendEmail.php",{
+                  auth : split[1],
+                  email : split[2],
+                  nama : split[3]
+               }).done(function(data){
+                  console.log(data);
+                     Swal.fire({
+                        icon: 'warning',
+                        title: 'Peringatan',
+                        text: 'Mohon tunggu sebentar',
+                        showConfirmButton: false,
+                        timer: 5500
+                     });
+                  if(data == "sukses"){
+                     Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: 'Akun anda berhasil dibuat, silahkan melakukan verifikasi email',
+                        showConfirmButton: false,
+                        timer: 2500
+                     });
+                  }
                });
-               $('#loginModal').modal('show');
+               $('#loginModal').modal('hide');
                $('#registerModal').modal('hide');
                clearRegisForm();
-            } else if (data == "gagal") {
+            } else if (split[0] == "gagal") {
                Swal.fire({
                   icon: 'error',
                   title: 'Gagal',
-                  text: 'Akun dengan no HP ' + $('#no_hp_register').val() + 'sudah pernah terdaftar',
+                  text: 'Akun dengan no HP ' + $('#no_hp_register').val() + ' sudah pernah terdaftar',
+                  showConfirmButton: false,
+                  timer: 2500
+               });
+            }else if(split[0] == "errorEmail"){
+               Swal.fire({
+                  icon: 'error',
+                  title: 'Gagal',
+                  text: 'Terdapat permasalahan pada saat mengirim email',
                   showConfirmButton: false,
                   timer: 2500
                });
@@ -709,6 +769,16 @@ $icon = $res['icon'];
                      showConfirmButton: false,
                      timer: 2500
                   });
+               } else if(data == "!verified"){
+                  //Akun belum di verified
+                  Swal.fire({
+                     icon: 'error',
+                     title: 'Gagal',
+                     html : '<font style="font-size:0.9em"> Akun anda belum aktif, segera cek email anda </font>',
+                     footer : '<a href="javascript:void()" onclick="checkEmail()" style="color:#3489eb"> Klik disini untuk verifikasi email </a>',
+                     showConfirmButton: false,
+                     timer: 2500
+                  });
                } else {
                   //Akun ada dan data keranjang tidak kosong
                   Swal.fire({
@@ -722,10 +792,40 @@ $icon = $res['icon'];
                }
             });
       }
+      function checkEmail(){
+         $('#loginModal').modal('hide');
+         Swal.fire({
+            title : 'Perhatian',
+            text: 'Tuliskan email yang digunakan untuk mendaftar',
+            input: 'text',
+            inputAttributes: {
+               autocapitalize: 'off'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Kirim',
+            showLoaderOnConfirm: true,
+            preConfirm: (login) => {
+               location.href="verifyemail.php?email="+login+"&retry=true";
+            }
+         })
+      }
 
       function beliByKeranjang() {
+         var listIdKeranjang = $('#listIdKeranjang').val();
+         var removeLastChar = listIdKeranjang.substring(0, listIdKeranjang.length - 1);
+         var dataIdKeranjang = removeLastChar.split("|");
+
+         var dataQty = "";
+
+         dataIdKeranjang.forEach(function(item){
+            var qty = $('#qtyJumlahKeranjang_'+item).val();
+            dataQty += qty+"|"+item+"_";
+         });
+
          var formData = new FormData();
-         formData.append('page', 'profile');
+         var qtyDalamKeranjang = $('#qtyJumlahKeranjang').val();
+         formData.append('page', 'Index');
+         formData.append('dataQty', dataQty);
 
          $.ajax({
             url: "cekstockout.php",
@@ -735,7 +835,6 @@ $icon = $res['icon'];
             cache: false,
             processData: false,
             success: function(data) {
-               console.log(data);
                if (data == "kosong") {
                   Swal.fire({
                      icon: 'error',
