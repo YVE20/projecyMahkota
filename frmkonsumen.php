@@ -92,7 +92,7 @@
             formData.append('id', id);
             formData.append('nama', nama);
             formData.append('alamat', alamat);
-            formData.append('nohp', nohp);
+            formData.append('no_hp', nohp);
             formData.append('email', email);
 
             $.ajax({
@@ -144,7 +144,7 @@
                 $("#txtnama").val(pecah[2]);
                 $("#txtalamat").val(pecah[3]);
                 $("#txtnohp").val(pecah[4]);
-                $("#email").val(pecah[5]);
+                $("#txtemail").val(pecah[5]);
                 $("#simpan").val("edit");
 
                 window.scrollTo(0, 0);
