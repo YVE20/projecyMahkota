@@ -18,7 +18,7 @@
             $syarat .= " and tjd.idproduk='$produk'";
         }
         $sqlsel = "select sum(tjd.jumlah) as 'totaljumlah', sum(tjd.total) as 'totalakhir',tm.nama as nama_barang, tm.satuan, tm.kode_barang, tm.harga_beli as harga from tbjualdetil tjd inner join tbproduk tm on tjd.idproduk=tm.id inner join tbjual tj on tjd.idjual=tj.id where tjd.id!='' $syarat group by tjd.idproduk";
-//        echo $sqlsel;
+       
 
         ?>
         <table id="datatable-fixed-header" class="table table-striped table-bordered dt-responsive nowrap"

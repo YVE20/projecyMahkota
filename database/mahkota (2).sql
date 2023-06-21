@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 19 Jun 2023 pada 14.51
+-- Waktu pembuatan: 19 Jun 2023 pada 18.31
 -- Versi server: 10.4.19-MariaDB
 -- Versi PHP: 7.4.19
 
@@ -99,7 +99,10 @@ INSERT INTO `tbjual` (`id`, `iduser`, `idkonsumen`, `tanggal`, `subtotal`, `disk
 ('J-20230618-1-12-00030', 0, 12, '2023-06-18', 2500, 0, 2500, 0, 'selesai', '2023-06-18 15:41:07', '2023-06-18 15:44:18'),
 ('J-20230618-1-12-00031', 0, 12, '2023-06-18', 7000, 0, 7000, 0, 'disiapkan', '2023-06-18 15:42:39', '2023-06-18 15:42:39'),
 ('J-20230618-1-12-00032', 0, 12, '2023-06-18', 2500, 0, 2500, 0, 'selesai', '2023-06-18 15:54:24', '2023-06-18 15:55:10'),
-('J-20230618-1-12-00033', 0, 12, '2023-06-18', 21000, 0, 21000, 0, 'selesai', '2023-06-18 15:57:28', '2023-06-18 15:57:41');
+('J-20230618-1-12-00033', 0, 12, '2023-06-18', 21000, 0, 21000, 0, 'selesai', '2023-06-18 15:57:28', '2023-06-18 15:57:41'),
+('J-20230619-1-1-00034', 1, 12, '2023-06-19', 2000, 200, 1800, 1, 'selesai', '2023-06-19 15:10:50', '2023-06-19 15:10:59'),
+('J-20230619-1-1-00035', 1, 12, '2023-06-19', 2000, 200, 1800, 1, 'disiapkan', '2023-06-19 15:13:45', '2023-06-19 15:13:45'),
+('J-20230619-1-1-00036', 1, 18, '2023-06-19', 2000, 0, 2000, 1, 'disiapkan', '2023-06-19 16:20:29', '2023-06-19 16:20:29');
 
 -- --------------------------------------------------------
 
@@ -143,7 +146,10 @@ INSERT INTO `tbjualdetil` (`id`, `idjual`, `idproduk`, `jumlah`, `harga`, `disko
 (14, 'J-20230618-1-12-00030', 39, '1', 2500, 0, 0, 2500, 2500, '-', '2023-06-18 15:41:07', '2023-06-18 15:41:07'),
 (15, 'J-20230618-1-12-00031', 41, '1', 7000, 0, 0, 7000, 7000, '-', '2023-06-18 15:42:39', '2023-06-18 15:42:39'),
 (16, 'J-20230618-1-12-00032', 39, '1', 2500, 0, 0, 2500, 2500, '-', '2023-06-18 15:54:24', '2023-06-18 15:54:24'),
-(17, 'J-20230618-1-12-00033', 41, '3', 7000, 0, 0, 21000, 21000, '-', '2023-06-18 15:57:28', '2023-06-18 15:57:28');
+(17, 'J-20230618-1-12-00033', 41, '3', 7000, 0, 0, 21000, 21000, '-', '2023-06-18 15:57:28', '2023-06-18 15:57:28'),
+(18, 'J-20230619-1-1-00034', 40, '1', 2000, 10, 200, 2000, 1800, 'note', '2023-06-19 15:10:50', '2023-06-19 15:10:50'),
+(19, 'J-20230619-1-1-00035', 40, '1', 2000, 10, 200, 2000, 1800, 'note', '2023-06-19 15:13:45', '2023-06-19 15:13:45'),
+(20, 'J-20230619-1-1-00036', 40, '1', 2000, 0, 0, 2000, 2000, 'note', '2023-06-19 16:20:29', '2023-06-19 16:20:29');
 
 -- --------------------------------------------------------
 
@@ -191,8 +197,11 @@ CREATE TABLE `tbkonsumen` (
   `nama` varchar(100) NOT NULL,
   `alamat` text NOT NULL,
   `no_hp` varchar(200) NOT NULL,
-  `email` varchar(200) NOT NULL,
   `password` varchar(200) NOT NULL,
+  `auth` varchar(200) NOT NULL,
+  `email` varchar(200) NOT NULL,
+  `verified` tinyint(1) NOT NULL,
+  `token` longtext NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -201,8 +210,12 @@ CREATE TABLE `tbkonsumen` (
 -- Dumping data untuk tabel `tbkonsumen`
 --
 
-INSERT INTO `tbkonsumen` (`id`, `nama`, `alamat`, `no_hp`, `email`, `password`, `created_at`, `updated_at`) VALUES
-(12, 'Joshua Natanael', 'Serdam', '085156310035', '', 'MTIzNDU2', '2023-06-18 22:39:55', '2023-06-18 23:07:32');
+INSERT INTO `tbkonsumen` (`id`, `nama`, `alamat`, `no_hp`, `password`, `auth`, `email`, `verified`, `token`, `created_at`, `updated_at`) VALUES
+(17, 'joshua', 'purnama', '085156310036', 'MTIzNDU2', 'http://localhost/mahkota/mahkota/Home/verifyemail.php?email=joshuanatanael33@gmail.com&token=2ca000d226810003a4352c2270a08af8e91c4622eb3874ab4a6b79fd6b6b3bd20e8f012d6c52509ca7cb557136dddbb0c4b1b773cbb', 'joshuanatanael33@gmail.com', 0, '2ca000d226810003a4352c2270a08af8e91c4622eb3874ab4a6b79fd6b6b3bd20e8f012d6c52509ca7cb557136dddbb0c4b1b773cbb85942049fd06e844f7026', '2023-06-19 22:35:45', '2023-06-19 22:35:45'),
+(18, 'joshua natanael', 'purnama', '12312412312', 'MTIzNDU2', 'http://localhost/mahkota/Home/verifyemail.php?email=joshuanatanael33@gmail.com&token=2ffa3b72189c5b587fb866b2ccb34a024825fb2fa2b41f3ec98c5cde97bec0d5484ce8b4c04060f157ffbe8f1cb718cfff1e32e32f1d65a338e', 'joshuanatanael33@gmail.com', 0, '2ffa3b72189c5b587fb866b2ccb34a024825fb2fa2b41f3ec98c5cde97bec0d5484ce8b4c04060f157ffbe8f1cb718cfff1e32e32f1d65a338e2d055b5a08a32', '2023-06-19 22:40:20', '2023-06-19 22:40:20'),
+(20, 'testing', 'anto', '9790879', 'MTIzNDU2', 'http://localhost/mahkota/Home/verifyemail.php?email=babywinkle2020@gmail.com&token=a67cec58db296bafedff08a9177fcee3c6c8491e7d0949c94385cef530886b4e424fef6b1ae555400f97ce8bea9dc4ad4caa683281d7d3d0b3dcb', 'babywinkle2020@gmail.com', 0, 'a67cec58db296bafedff08a9177fcee3c6c8491e7d0949c94385cef530886b4e424fef6b1ae555400f97ce8bea9dc4ad4caa683281d7d3d0b3dcbc5e134b0153', '2023-06-19 22:44:42', '2023-06-19 22:44:42'),
+(21, 'testing', 'anto', '0379879', 'MTIzNDU2', 'http://localhost/mahkota/Home/verifyemail.php?email=babywinkle2020@gmail.com&token=c7c3687bdd6d4298329a686c4955f5ff908a4ca3aa5a4aa8e695f79b18ecc549df1f5949ad621723dd0d1fbe58fe7a06818f796294b73629ec32c', 'babywinkle2020@gmail.com', 0, 'c7c3687bdd6d4298329a686c4955f5ff908a4ca3aa5a4aa8e695f79b18ecc549df1f5949ad621723dd0d1fbe58fe7a06818f796294b73629ec32c0fd8dffe833', '2023-06-19 22:45:24', '2023-06-19 22:45:24'),
+(31, 'a', 'a', 'a', '', '', 'aaa', 0, '', '2023-06-19 23:16:04', '2023-06-19 23:16:04');
 
 -- --------------------------------------------------------
 
@@ -249,7 +262,10 @@ INSERT INTO `tblogsproduk` (`id`, `idproduk`, `jumlah`, `kategori`, `iduser`, `c
 (22, 39, 1, 'keluar', 0, '2023-06-18 15:54:24', '2023-06-18 15:54:24'),
 (23, 41, 3, 'keluar', 0, '2023-06-18 15:57:28', '2023-06-18 15:57:28'),
 (24, 40, 3, 'masuk', 1, '2023-06-19 12:01:39', '2023-06-19 12:01:39'),
-(25, 40, -4, 'keluar', 1, '2023-06-19 12:02:29', '2023-06-19 12:02:29');
+(25, 40, -4, 'keluar', 1, '2023-06-19 12:02:29', '2023-06-19 12:02:29'),
+(26, 40, 1, 'keluar', 1, '2023-06-19 15:10:50', '2023-06-19 15:10:50'),
+(27, 40, 1, 'keluar', 1, '2023-06-19 15:13:45', '2023-06-19 15:13:45'),
+(28, 40, 1, 'keluar', 1, '2023-06-19 16:20:29', '2023-06-19 16:20:29');
 
 -- --------------------------------------------------------
 
@@ -357,7 +373,7 @@ CREATE TABLE `tbproduk` (
 
 INSERT INTO `tbproduk` (`id`, `kode_barang`, `nama`, `deskripsi`, `img_url`, `harga_beli`, `harga_dk`, `satuan`, `kategori`, `jumlah`, `created_at`, `updated_at`) VALUES
 (39, 'BRG01', 'Pulpen Vokus JOYKO BP-338', 'ukuran produk : panjang 14.1 cm x diameter 1cm ; warna : hitam ; tip : 0.7 mm ; 100 % Original', 'Screenshot_1.png', 0, 2500, 'Pcs', 'Alat Tulis', '2', '2023-06-11 17:17:39', '2023-06-18 15:54:24'),
-(40, 'BRG02', 'Penghapus Mini JOYKO BP-40', 'menghapus dengan bersih ; warna putih ; merk : joyko', 'Screenshot_2.png', 500, 2000, 'Pcs', 'Alat Tulis', '2', '2023-06-11 17:18:48', '2023-06-19 12:16:43'),
+(40, 'BRG02', 'Penghapus Mini JOYKO BP-40', 'menghapus dengan bersih ; warna putih ; merk : joyko', 'Screenshot_2.png', 500, 2000, 'Pcs', 'Alat Tulis', '-1', '2023-06-11 17:18:48', '2023-06-19 16:20:29'),
 (41, 'BRG03', 'Tip Ex Cair Joyko JK-01', 'warna kombinasi merah putih  ; ukuran produk : panjang 9cm x lebar 3.9 cm ; cairan mudah kering ; type : Jk - 01', 'Screenshot_3.png', 1000, 7000, 'Pcs', 'Alat Tulis', '15', '2023-06-11 17:19:55', '2023-06-18 15:57:28'),
 (42, 'BRG04', 'Pulpen Standard AE7 Hitam 0.5mm', '100% Original ; cocok untuk sekolah, kantor dll ; warna hitam', 'Screenshot_4.png', 0, 2000, 'Pcs', 'Alat Tulis', '0', '2023-06-11 17:21:19', '2023-06-11 17:37:05');
 
@@ -428,7 +444,7 @@ CREATE TABLE `tbuser` (
 --
 
 INSERT INTO `tbuser` (`iduser`, `username`, `password`, `status`, `nama`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'am9zaHVh', 'Admin', 'Admin', '2018-02-15 13:53:30', '2023-05-09 03:43:13'),
+(1, 'admin', 'MTIzNDU2', 'Admin', 'Admin', '2018-02-15 13:53:30', '2023-06-19 13:25:58'),
 (2, 'test', 'MTIzNDU2', 'Admin', 'admin', '2022-10-27 08:41:04', '2023-04-14 16:34:06'),
 (8, 'joshua', 'MTIzNDU2', 'Karyawan', 'joshua', '2023-04-28 07:27:43', '2023-04-28 07:27:43'),
 (10, 'a', 'YQ==', 'Kasir', 'a', '2023-06-12 03:27:46', '2023-06-12 03:27:46'),
@@ -470,7 +486,8 @@ INSERT INTO `tempjualdetil` (`id`, `idjual`, `idkonsumen`, `idproduk`, `iduser`,
 (26, 'J-20230428-1-1-00002', 8, 37, 1, 1, 9000, 0, 0, 0, 0, 9000, 9000, '', '2023-04-28 07:23:39', '2023-04-28 07:23:39'),
 (37, 'J-20230612-1-11-00028', 1, 40, 11, 1, 2000, 0, 0, 10, 200, 2000, 1800, '', '2023-06-12 03:25:44', '2023-06-12 03:25:44'),
 (38, 'J-20230618-1-1-00029', 11, 40, 1, 1, 2000, 0, 0, 0, 0, 2000, 2000, '', '2023-06-18 15:37:41', '2023-06-18 15:37:41'),
-(39, 'J-20230618-1-12-00031', 12, 41, 1, 1, 7000, 0, 0, 10, 700, 7000, 5600, '', '2023-06-18 15:47:43', '2023-06-18 15:47:56');
+(39, 'J-20230618-1-12-00031', 12, 41, 1, 1, 7000, 0, 0, 10, 700, 7000, 5600, '', '2023-06-18 15:47:43', '2023-06-18 15:47:56'),
+(42, 'J-20230619-1-1-00034', 12, 40, 1, 1, 2000, 0, 0, 10, 200, 2000, 1800, '', '2023-06-19 15:13:02', '2023-06-19 15:13:02');
 
 -- --------------------------------------------------------
 
@@ -678,7 +695,7 @@ ALTER TABLE `trashjualdetil`
 -- AUTO_INCREMENT untuk tabel `tbjualdetil`
 --
 ALTER TABLE `tbjualdetil`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbkategori`
@@ -696,13 +713,13 @@ ALTER TABLE `tbkeranjang`
 -- AUTO_INCREMENT untuk tabel `tbkonsumen`
 --
 ALTER TABLE `tbkonsumen`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT untuk tabel `tblogsproduk`
 --
 ALTER TABLE `tblogsproduk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbpembelian`
@@ -744,7 +761,7 @@ ALTER TABLE `tbuser`
 -- AUTO_INCREMENT untuk tabel `tempjualdetil`
 --
 ALTER TABLE `tempjualdetil`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT untuk tabel `temppembeliandetil`

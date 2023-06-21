@@ -1,10 +1,5 @@
 <?php
-/**
- * Created By :    
- * User: Welly
- * Date: 25/02/2018
- * Time: 12:02
- */
+
 
 // Function to get the client IP address
 function get_ip() {

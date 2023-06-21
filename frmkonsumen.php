@@ -27,7 +27,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group form-animate-text" style="">
-                                                <input type="text" class="form-text" id="txtalamat" name="txtalamat">
+                                                <input type="text" class="form-text" id="txtalamat" name="txtalamat" required>
                                                 <span class="bar"></span>
                                                 <label>Alamat</label>
                                             </div>
@@ -35,9 +35,17 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group form-animate-text" style="">
-                                                <input type="text" class="form-text" id="txtnohp" name="txtnohp">
+                                                <input type="text" class="form-text" id="txtnohp" name="txtnohp" required>
                                                 <span class="bar"></span>
                                                 <label>No HP</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group form-animate-text" style="">
+                                                <input type="text" class="form-text" id="txtemail" name="txtemail" required>
+                                                <span class="bar"></span>
+                                                <label>Email</label>
                                             </div>
                                         </div>
                                     </div>
@@ -75,8 +83,9 @@
         var nama = $("#txtnama").val();
         var alamat = $("#txtalamat").val();
         var nohp = $("#txtnohp").val();
+        var email = $("#txtemail").val();
 
-        if (nama != "" && alamat != "" && nohp != "") {
+        if (nama != "" && alamat != "" && nohp != "" && email != "") {
 
             var formData = new FormData();
             formData.append('tombol', tombol);
@@ -84,6 +93,7 @@
             formData.append('nama', nama);
             formData.append('alamat', alamat);
             formData.append('nohp', nohp);
+            formData.append('email', email);
 
             $.ajax({
                 url: "savekonsumen.php",
@@ -134,6 +144,7 @@
                 $("#txtnama").val(pecah[2]);
                 $("#txtalamat").val(pecah[3]);
                 $("#txtnohp").val(pecah[4]);
+                $("#email").val(pecah[5]);
                 $("#simpan").val("edit");
 
                 window.scrollTo(0, 0);

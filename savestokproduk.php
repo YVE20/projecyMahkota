@@ -1,10 +1,5 @@
 <?php
-/**
- * Created By :    
- * User: Welly
- * Date: 11/02/2018
- * Time: 12:45
- */
+
     include "Koneksi.php";
 
     session_start();

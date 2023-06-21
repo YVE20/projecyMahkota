@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Created By :    
- * User: Welly
- * Date: 11/05/2018
- * Time: 13:58
- */
 include "Security.php";
 include "Koneksi.php";
 include "asset/function/function.php";
@@ -152,22 +146,7 @@ date_default_timezone_set("Asia/Jakarta");
             margin: 0 auto;
         }
 
-        /* .get-nicer {
-            overflow: auto;
-            height: 280px;
-        } */
-
-        /* .left-menu {}
-
-        .nicescroll-rails {
-            background-color: rgb(51, 122, 183);
-        }
-
-        .nicescroll-cursors {
-            border: none !important;
-            background-color: #000 !important;
-            border-radius: 0 !important;
-        } */
+        
     </style>
 
     <script src="asset/js/jquery.min.js"></script>
@@ -214,81 +193,8 @@ date_default_timezone_set("Asia/Jakarta");
                         <h1 class="animated fadeInLeft">21:00</h1>
                         <p class="animated fadeInRight">Sat,October 1st 2029</p>
                     </li>
-                    <?php if ($_SESSION['status'] == "admin_gudang") { ?>
-                        <!-- <li class=" <?php echo (($menu_head == "penjualan" ? 'active'  : ''));  ?> ripple">
-                        <a class="tree-toggle nav-header">
-                            <span class="fa-money fa"></span> Penjualan
-                            <span class="fa-angle-right fa right-arrow text-right"></span>
-                        </a>
-                        <ul class="nav nav-list tree">
-                            <li><a href="frmpenjualan.php?act=new&id="><span class="fa fa-cart-plus"></span> Penjualan</a></li>
-                            <li><a href="frmlistpenjualan.php"><span class="fa fa-list"></span> List Penjualan</a></li>
-                        </ul>
-                    </li> -->
-                        <!-- <li class=" <?php echo (($menu_head == "gudang" ? 'active'  : ''));  ?> ripple">
-                        <a class="tree-toggle nav-header">
-                            <span class="fa-truck fa"></span> Gudang
-                            <span class="fa-angle-right fa right-arrow text-right"></span>
-                        </a>
-                        <ul class="nav nav-list tree">
-                            <li><a href="frmcanvas.php?act=new&id="><span class="fa fa-tags"></span> Canvas</a></li>
-                            <li><a href="frmlistcanvas.php"><span class="fa fa-list"></span> List Canvas</a></li>
-                            <li><a href="frmgudangantar.php"><span class="fa fa-check-square-o"></span> Konfirmasi Ambil Barang</a></li>
-                            <li><a href="laprekapgudang.php"><span class="fa fa-list"></span> Rekap Gudang</a></li>
-                        </ul>
-                    </li> -->
-                    <?php } else if ($_SESSION['status'] == "admin_logistik") { ?>
-                        <!-- <li class=" <?php echo (($menu_head == "pembelian" ? 'active'  : ''));  ?> ripple">
-                        <a class="tree-toggle nav-header">
-                            <span class="fa-sticky-note fa"></span> Pembelian
-                            <span class="fa-angle-right fa right-arrow text-right"></span>
-                        </a>
-                        <ul class="nav nav-list tree">
-                            <li><a href="frmpembelian.php?act=po&id="><span class="fa fa-credit-card"></span>PO Pembelian</a></li>
-                            <li><a href="frmlistpembelian.php"><span class="fa fa-list"></span>Daftar Pembelian</a></li>
-                        </ul>
-                    </li>
-                    <li class=" <?php echo (($menu_head == "keuangan" ? 'active'  : ''));  ?> ripple">
-                        <a class="tree-toggle nav-header">
-                            <span class="fa-dollar-sign fa"></span> Keuangan
-                            <span class="fa-angle-right fa right-arrow text-right"></span>
-                        </a>
-                        <ul class="nav nav-list tree">
-                            <li><a href="frmhutang.php"><span class="fas fa-receipt"></span>Pembayaran Hutang</a></li>
-                            <li><a href="frmpiutang.php"><span class="fas fa-receipt"></span>Pembayaran Piutang</a></li>
-                        </ul>
-                    </li> -->
-                        <li class=" <?php echo (($menu_head == "laporan" ? 'active'  : ''));  ?> ripple">
-                            <a class="tree-toggle nav-header">
-                                <span class="fa-area-chart fa"></span> Laporan
-                                <span class="fa-angle-right fa right-arrow text-right"></span>
-                            </a>
-                            <ul class="nav nav-list tree">
-                                <li><a href="lappenjualan.php">Penjualan</a></li>
-                                <li><a href="lappenjualan_detil.php">Penjualan Detil</a></li>
-                                <li><a href="lappenjualan_pertoko.php">Penjualan Konsumen</a></li>
-                                <li><a href="lappenjualan_live.php">Penjualan Live</a></li>
-                                <!-- <li><a href="lappembelian.php">Pembelian</a></li>
-                            <li><a href="lappembelian_detil.php">Pembelian Detil</a></li>
-                            <li><a href="laphutang.php">Hutang</a></li>
-                            <li><a href="lappiutang.php">Piutang</a></li>
-                            <li><a href="lapprofit.php">Profit Penjualan</a></li>
-                            <li><a href="lapkas.php">Kas</a></li>
-                            <li><a href="lappendapatan.php">Pendapatan</a></li>
-                            <li><a href="laplogsproduk.php">Keluar Masuk Produk</a></li> -->
-                            </ul>
-                        </li>
-                        <!-- <li class="<?php echo (($menu_head == "data" ? 'active'  : ''));  ?> ripple"><a class="tree-toggle nav-header">
-                            <span class="fa fa-pencil-square"></span> Master Data <span class="fa-angle-right fa right-arrow text-right"></span> </a>
-                        <ul class="nav nav-list tree">
-                            <li><a href="frmproduk.php">Produk</a></li>
-                            <li><a href="frmsatuan.php">Satuan</a></li>
-                            <li><a href="frmsupplier.php">Supplier</a></li>
-                            <li><a href="frmkonsumen.php">Konsumen</a></li>
-                            <li><a href="frmsales.php">Sales</a></li>
-                        </ul>
-                    </li> -->
-                    <?php } else { ?>
+
+
                         <li class="<?php echo (($menu_head == "home" ? 'active'  : ''));  ?> ripple"><a href="home.php"><span class="fa fa-home"></span>Home</a></li>
 
                         <li class=" <?php echo (($menu_head == "penjualan" ? 'active'  : ''));  ?> ripple">
@@ -305,8 +211,38 @@ date_default_timezone_set("Asia/Jakarta");
                                 <?php } ?>
                             </ul>
                         </li>
+
+
                         <?php
-                        if ($_SESSION['status'] == "Admin" || $_SESSION['status'] == "Karyawan") {
+                        if ($_SESSION['status'] == "Admin" || $_SESSION['status'] == "Karyawan" || $_SESSION['status'] == "Owner") {
+                        ?>
+                            <li class=" <?php echo (($menu_head == "pembelian" ? 'active'  : ''));  ?> ripple">
+                                <a class="tree-toggle nav-header">
+                                    <span class="fa-sticky-note fa"></span> Pembelian
+                                    <span class="fa-angle-right fa right-arrow text-right"></span>
+                                </a>
+                                <ul class="nav nav-list tree">
+                                    <?php
+                                    if ($_SESSION['status'] == "Karyawan" || $_SESSION['status'] == "Admin" || $_SESSION['status'] == "Owner") {
+                                    ?>
+                                        <li><a href="frmpembelian.php?act=po&id="><span class="fa fa-credit-card"></span>PO Pembelian</a></li>
+                                    <?php
+                                    } ?>
+
+                                    <?php
+                                    if ($_SESSION['status'] == "Admin"|| $_SESSION['status'] == "Owner") {
+                                    ?>
+                                        <li><a href="frmlistpembelian.php"><span class="fa fa-list"></span>Daftar Pembelian</a></li>
+                                    <?php } ?>
+                                </ul>
+                            </li>
+                        <?php
+                        }
+                        ?>
+
+
+                        <?php
+                        if ($_SESSION['status'] == "Supervisor") {
                         ?>
                             <li class=" <?php echo (($menu_head == "pembelian" ? 'active'  : ''));  ?> ripple">
                                 <a class="tree-toggle nav-header">
@@ -331,25 +267,7 @@ date_default_timezone_set("Asia/Jakarta");
                         <?php
                         }
                         ?>
-                        <!-- <li class=" <?php echo (($menu_head == "keuangan" ? 'active'  : ''));  ?> ripple">
-                            <a class="tree-toggle nav-header">
-                                <span class="fa-dollar-sign fa"></span> Keuangan
-                                <span class="fa-angle-right fa right-arrow text-right"></span>
-                            </a>
-                            <ul class="nav nav-list tree">
-                                <li><a href="frmhutang.php"><span class="fas fa-receipt"></span>Pembayaran Hutang</a></li>
-                                <li><a href="frmpiutang.php"><span class="fas fa-receipt"></span>Pembayaran Piutang</a></li>
-                            </ul>
-                        </li> -->
-                        <!-- <li class=" <?php echo (($menu_head == "kas" ? 'active'  : ''));  ?> ripple">
-                            <a class="tree-toggle nav-header">
-                                <span class="fa-calculator fa"></span> Kas
-                                <span class="fa-angle-right fa right-arrow text-right"></span>
-                            </a>
-                            <ul class="nav nav-list tree">
-                                <li><a href="frmkas.php">Input Kas</a></li>
-                            </ul>
-                        </li> -->
+
                         <?php
                         if ($_SESSION['status'] == "Admin") {
                         ?>
@@ -361,16 +279,9 @@ date_default_timezone_set("Asia/Jakarta");
                                 <ul class="nav nav-list tree">
                                     <li><a href="lappenjualan.php">Penjualan</a></li>
                                     <li><a href="lappenjualan_detil.php">Penjualan Detil</a></li>
-                                    <li><a href="lappenjualan_pertoko.php">Penjualan Konsumen</a></li>
-                                    <li><a href="lappenjualan_live.php">Penjualan Live</a></li>
                                     <li><a href="lappembelian.php">Pembelian</a></li>
                                     <li><a href="lappembelian_detil.php">Pembelian Detil</a></li>
-                                    <!-- <li><a href="laphutang.php">Hutang</a></li>
-                                <li><a href="lappiutang.php">Piutang</a></li> -->
                                     <li><a href="lapprofit.php">Profit Penjualan</a></li>
-                                    <!-- <li><a href="lapkas.php">Kas</a></li> -->
-                                    <!-- <li><a href="lappendapatan.php">Pendapatan</a></li> -->
-                                    <!-- <li><a href="laplogsproduk.php">Keluar Masuk Barang</a></li> -->
                                 </ul>
                             </li>
                             <li class="<?php echo (($menu_head == "data" ? 'active'  : ''));  ?> ripple"><a class="tree-toggle nav-header">
@@ -383,7 +294,6 @@ date_default_timezone_set("Asia/Jakarta");
                                     <li><a href="frmuser.php">User</a></li>
                                     <li><a href="frmkonsumen.php">Konsumen</a></li>
                                     <li><a href="frmkategoribarang.php"> Kategori Barang </a></li>
-                                    <!-- <li><a href="frmsales.php">Sales</a></li> -->
                                 </ul>
                             </li>
                             <li class="<?php echo (($menu_head == "sistem" ? 'active'  : ''));  ?> ripple"><a class="tree-toggle nav-header">
@@ -395,7 +305,44 @@ date_default_timezone_set("Asia/Jakarta");
                         <?php
                         }
                         ?>
-                    <?php } ?>
+
+<?php
+                        if ($_SESSION['status'] == "Owner") {
+                        ?>
+                            <li class=" <?php echo (($menu_head == "laporan" ? 'active'  : ''));  ?> ripple">
+                                <a class="tree-toggle nav-header">
+                                    <span class="fa-area-chart fa"></span> Laporan
+                                    <span class="fa-angle-right fa right-arrow text-right"></span>
+                                </a>
+                                <ul class="nav nav-list tree">
+                                    <li><a href="lappenjualan.php">Penjualan</a></li>
+                                    <li><a href="lappenjualan_detil.php">Penjualan Detil</a></li>
+                                    <li><a href="lappembelian.php">Pembelian</a></li>
+                                    <li><a href="lappembelian_detil.php">Pembelian Detil</a></li>
+                                    <li><a href="lapprofit.php">Profit Penjualan</a></li>
+                                </ul>
+                            </li>
+                            <li class="<?php echo (($menu_head == "data" ? 'active'  : ''));  ?> ripple"><a class="tree-toggle nav-header">
+                                    <span class="fa fa-pencil-square"></span> Master Data <span class="fa-angle-right fa right-arrow text-right"></span> </a>
+                                <ul class="nav nav-list tree">
+                                    <li><a href="frmproduk.php">Produk</a></li>
+                                    <li><a href="frmstokproduk.php">Stok Opname</a></li>
+                                    <li><a href="frmsatuan.php">Satuan</a></li>
+                                    <li><a href="frmsupplier.php">Supplier</a></li>
+                                    <li><a href="frmuser.php">User</a></li>
+                                    <li><a href="frmkonsumen.php">Konsumen</a></li>
+                                    <li><a href="frmkategoribarang.php"> Kategori Barang </a></li>
+                                </ul>
+                            </li>
+                            <li class="<?php echo (($menu_head == "sistem" ? 'active'  : ''));  ?> ripple"><a class="tree-toggle nav-header">
+                                    <span class="fa fa-cogs"></span> Sistem <span class="fa-angle-right fa right-arrow text-right"></span> </a>
+                                <ul class="nav nav-list tree">
+                                    <li><a href="frmlicense.php"><span class="fa fa-gear"></span> Konfigurasi</a></li>
+                                </ul>
+                            </li>
+                        <?php
+                        }
+                        ?>
 
                 </ul>
             </div>

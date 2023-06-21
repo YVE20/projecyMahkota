@@ -45,14 +45,14 @@ $body = "
         $mail = new PHPMailer;
         //$mail->isSMTP(); 
         $mail->SMTPDebug = 2; // 0 = off (for production use) - 1 = client messages - 2 = client and server messages
-        $mail->Host = "smtp.hostinger.com"; // use $mail->Host = gethostbyname('smtp.gmail.com'); // if your network does not support SMTP over IPv6
+        $mail->Host = "smtp.gmail.com"; // use $mail->Host = gethostbyname('smtp.gmail.com'); // if your network does not support SMTP over IPv6
         $mail->Port = 465; // TLS only
         //$mail->SMTPSecure = 'tls'; // ssl is depracated
-        //$mail->SMTPAuth = true;
+        $mail->SMTPAuth = true;
         $mail->Username = "joshuanatan199@gmail.com";
-        $mail->Password = "qcypgifhjblyniyx";
-        $mail->setFrom("joshuanatan199@gmail.com", "Mahkota Stationery");
-        $mail->addReplyTo('joshuanatal199@gmail.com', 'Mahkota Stationery');
+        $mail->Password = "joshuajoshua";
+        $mail->setFrom("babywinkle2020@gmail.com", "Mahkota Stationery");
+        //$mail->addReplyTo('joshuanatal199@gmail.com', 'Mahkota Stationery');
         $mail->addAddress($email, $nama);
         $mail->Subject = 'Verifikasi Email';
         $mail->IsHTML(true);

@@ -38,8 +38,17 @@ include "Header.php";
                                         <div class="form-group form-element">
                                             <label style="">Kategori</label>
                                             <select class="form-control col-md-7 col-xs-12 combobox" name="cmbkategori" id="cmbkategori" onchange="pilihkategori(this.value)">
-                                                <option value="Alat Tulis">Alat Tulis</option>
-                                                <option value="Lain-Lain">Lain-Lain</option>
+                                            <option value="-">-- Pilih Konsumen --</option>
+                                            <?php
+                                                $sqlmenu = "select * from tbkategori";
+                                                $querymenu = mysqli_query($con, $sqlmenu);
+                                                while ($res = mysqli_fetch_array($querymenu)) {
+                                                    $kategori = $res['kategori'];
+                                                ?>
+                                                    <option value="<?php echo $kategori; ?>"> <?php echo $kategori; ?> </option>
+                                                <?php
+                                                }
+                                                ?>
                                             </select>
                                         </div>
                                     </div>
@@ -47,6 +56,7 @@ include "Header.php";
                                         <div class="form-group form-element">
                                             <label style="">Satuan</label>
                                             <select class="form-control col-md-7 col-xs-12 combobox" name="cmbsatuan" id="cmbsatuan">
+                                            <option value="-">-- Pilih Konsumen --</option>
                                                 <?php
                                                 $sqlmenu = "select * from tbsatuan";
                                                 $querymenu = mysqli_query($con, $sqlmenu);

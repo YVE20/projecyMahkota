@@ -37,6 +37,7 @@ include "Header.php";
                                         <option value="-"> -- Role --</option>
                                         <option value="Karyawan"> Karyawan </option>
                                         <option value="Kasir"> Kasir </option>
+                                        <option value="Owner"> Owner </option>
                                     </select>
                                 </div>
                                 <div class="form-group form-element">

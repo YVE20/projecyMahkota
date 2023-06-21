@@ -26,37 +26,7 @@ if ($act=="new") {
 
     $waktusekarang = date("H:i");
 //        $waktusekarang = "08:21";
-    $shift1 = $_SESSION['shift1'];
-    $shift2 = $_SESSION['shift2'];
-    $shift3 = $_SESSION['shift3'];
-    $lembur = $_SESSION['lembur'];
-
-    $pecah1 = explode("-", $shift1);
-    $pecah2 = explode("-", $shift2);
-    $pecah3 = explode("-", $shift3);
-    $pecah_lembur = explode("-", $lembur);
-
-    $shift1_mulai = $pecah1[0];
-    $shift1_selesai = $pecah1[1];
-    $shift2_mulai = $pecah2[0];
-    $shift2_selesai = $pecah2[1];
-    $shift3_mulai = $pecah3[0];
-    $shift3_selesai = $pecah3[1];
-    $lembur_mulai = $pecah_lembur[0];
-    $lembur_selesai = $pecah_lembur[1];
-
-    $shiftkaryawan = "";
-    if ($waktusekarang >= $shift1_mulai && $waktusekarang <= $shift1_selesai) {
-        $shiftkaryawan = '1';
-    } elseif ($waktusekarang >= $shift2_mulai && $waktusekarang <= $shift2_selesai) {
-        $shiftkaryawan = '2';
-    } elseif ($waktusekarang >= $shift3_mulai && $waktusekarang <= $shift3_selesai) {
-        $shiftkaryawan = '3';
-    } elseif ($waktusekarang >= $lembur_mulai && $waktusekarang <= $lembur_selesai) {
-        $shiftkaryawan = 'Lembur';
-    } else {
-        $shiftkaryawan = "2";
-    }
+    
 } elseif ($act=="edit") {
     $idtransaksi = $idget;
 }
@@ -572,15 +542,15 @@ if ($act=="new") {
                 $id.val(pecah[1]);
                 $produk.val(pecah[2]);
                 $idkonsumen.val(pecah[3]);
-                $jumlah.val(pecah[5]);
-                $harga.val(accounting.formatNumber(pecah[6], 0, '.', ','));
-                $total.val(accounting.formatNumber(pecah[7], 0, '.', ','));
-                $diskon.val(pecah[8]);
-                $jlhdiskon.val(accounting.formatNumber(pecah[9], 0, '.', ','));
-                $pajak.val(pecah[10]);
-                $jlhpajak.val(accounting.formatNumber(pecah[11], 0, '.', ','));
-                $isisatuan.val(pecah[13]);
-                $satuan.text(pecah[14]);
+                $jumlah.val(pecah[4]);
+                $harga.val(accounting.formatNumber(pecah[5], 0, '.', ','));
+                $total.val(accounting.formatNumber(pecah[6], 0, '.', ','));
+                $diskon.val(pecah[7]);
+                $jlhdiskon.val(accounting.formatNumber(pecah[8], 0, '.', ','));
+                $pajak.val(pecah[9]);
+                $jlhpajak.val(accounting.formatNumber(pecah[10], 0, '.', ','));
+                $isisatuan.val(pecah[11]);
+                $satuan.text(pecah[12]);
                 $jlhretur.val(1 / parseInt(pecah[13]));
                 $jlhpersatuan.text(1 / parseInt(pecah[13]));
 
@@ -629,16 +599,6 @@ if ($act=="new") {
                 $('.selectpicker').selectpicker('refresh');
                 $produk = $("#cmbproduk");
             });
-
-        // if ($kodecanvas.val()) {
-        //     $.post("savepenjualan.php", {
-        //             tombol: "tampildatacanvas",
-        //         })
-        //         .done(function(data) {
-
-        //             $('.selectpicker').selectpicker('refresh');
-        //         });
-        // }
     }
     function hitungharga() {
         var jumlah = parseInt($jumlah.val());

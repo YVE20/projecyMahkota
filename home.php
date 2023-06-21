@@ -3,8 +3,6 @@ $menu_head = "home";
 include "Header.php";
 $user = $_SESSION['username'];
 $tahun = date("Y");
-// $tgl_lengkap = strftime("%Y-%m-%d %X");
-// $tgl_jak = strftime("%Y-%m-%d");
 ?>
 <!--Include Header End-->
 
@@ -25,7 +23,7 @@ $tahun = date("Y");
                             <div class="panel-body">
                                 <div class="col-md-9 col-xs-6">
                                     <h1 class="text-title-heading">Hello</h1>
-                                    <h4 class="text-title-ket">Welcome Back</h4>
+                                    <h4 class="text-title-ket">Mahkota Pontianak</h4>
                                 </div>
                                 <div class="col-md-3 col-xs-6 text-center">
                                     <img src="asset/img/index_icon.svg" class="img-responsive" alt="halo">
@@ -41,7 +39,7 @@ $tahun = date("Y");
                         <div class="panel">
                             <div class="panel-body">
                                 <?php
-                                $sqljual = "select sum(grandtotal) from tbjual where tanggal='$tgl_jak' AND statbayar='bayar'";
+                                $sqljual = "select sum(grandtotal) from tbjual where tanggal='$tgl_jak'";
                                 $queryjual = mysqli_query($con, $sqljual);
                                 $resjual = mysqli_fetch_array($queryjual);
                                 $totalpenjualan = $resjual[0];
@@ -95,65 +93,6 @@ $tahun = date("Y");
 
                 <!-- start col-4 -->
                 <div id="col-right" class="col-md-4">
-                    <!-- start last transaksi -->
-                    <div class="col-md-12 col-sm-6" hidden>
-                        <div class="panel panel-default">
-                            <h4 style="padding:15px;margin-top:0px;"><i class="fas fa-receipt"></i> Transaksi Terakhir
-                            </h4>
-                            <div class="list-group">
-                                <?php
-                                $tgl = date('Y-m-d');
-                                $sqllast = "select tbjual.*,tbuser.nama from tbjual join tbuser using(iduser) where tanggal='$tgl_jak' && statbayar = 'bayar' order by updated_at desc LIMIT 5";
-                                $querylast = mysqli_query($con, $sqllast);
-
-                                $rowcount = mysqli_num_rows($querylast);
-                                if ($rowcount <= 0) {
-                                ?>
-                                    <a href="#" class="list-group-item text-center">
-                                        <p class="list-group-item-text">Belum Ada Transaksi...</p>
-                                    </a>
-                                    <?php
-                                } else {
-
-                                    while ($res = mysqli_fetch_array($querylast)) {
-                                        // for ($i=1; $i <= 5; $i++) {         
-                                        $timestamp = strtotime($res['updated_at']);
-                                        $id_jual_ = $res['id'];
-                                    ?>
-                                        <a onclick="detailTransaksi('<?php echo $id_jual_; ?>')" class="list-group-item">
-                                            <div class="col-xs-6">
-                                                <p class="list-group-item-text" style="font-size:1.3rem">
-                                                    #<?php echo ($res['id']) ?></p>
-                                                <p class="list-group-item-text" style="color:#7f8c8d;font-size:1.4rem;padding-top:5px;">
-                                                    <?php echo ($res['nama']) ?></p>
-                                                <p class="list-group-item-text" style="color:#c4c4c4;padding-top:5px;padding-bottom:10px;"><span class="oi oi-clock"></span> <?php echo timeago($timestamp) ?></p>
-                                            </div>
-                                            <div class="col-xs-6 text-right">
-                                                <h4 class="list-group-item-heading" style="font-size:2rem;">Rp
-                                                    <?php echo (uang($res['grandtotal'])) ?></h4>
-                                                <p class="list-group-item-text" style="color:#7f8c8d;font-size:1.6rem;padding-top:5px;padding-bottom:10px;">
-                                                    Meja <?php echo ($res['meja']) ?></p>
-                                            </div>
-                                            <!-- clearfix CSS -->
-                                            <div class="clearfix"></div>
-
-                                        </a>
-                                <?php
-                                    }
-                                }
-                                ?>
-
-
-                                <a href="lappenjualan_detil.php" class="list-group-item">
-                                    <p class="list-group-item-text">Read More >></p>
-                                </a>
-                            </div>
-                            <!-- end list group -->
-                        </div>
-                        <!-- end panel -->
-                    </div>
-                    <!-- end last transaksi -->
-
                     <div class="col-md-12 col-sm-6">
                         <div class="panel">
                             <div class="panel-body" style="padding-bottom:30px;">

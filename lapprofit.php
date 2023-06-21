@@ -36,7 +36,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group form-element" style="margin-top:10px">
                                                 <label style="top:-10px;">Produk</label>
-                                                <select class="form-control col-md-7 col-xs-12 combobox selectpicker" data-live-search="true" data-size="5" name="cmbmenu" id="cmbmenu">
+                                                <select class="form-control col-md-7 col-xs-12 combobox selectpicker" data-live-search="true" data-size="5" name="cmbproduk" id="cmbproduk">
                                                     <option value="ALL" selected> Semua Produk </option>
                                                     <?php
                                                     $sqlmenu = "select * from tbproduk order by nama asc";
@@ -94,6 +94,8 @@
       if(tanggalselesai == ""){
           tanggalselesai = tanggalmulai;
       }
+
+    //   alert(produk);
 
       $.post("tampilprofit.php",{tombol:"tampilcari",produk:produk,tanggalmulai:tanggalmulai,tanggalselesai:tanggalselesai})
           .done(function(data){

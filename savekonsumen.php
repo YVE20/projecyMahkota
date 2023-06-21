@@ -8,15 +8,16 @@
     $nama = $_POST['nama'];
     $alamat = $_POST['alamat'];
     $nohp = $_POST['nohp'];
+    $email = $_POST['email'];
 
     if ($tombol == "simpan") {
-        $sql = "INSERT INTO tbkonsumen (nama,alamat,no_hp) VALUES ('$nama','$alamat','$nohp')";
+        $sql = "INSERT INTO tbkonsumen (nama,alamat,no_hp,email) VALUES ('$nama','$alamat','$nohp','$email')";
         $query = mysqli_query($con, $sql) or die($sql);
 
         echo $sql;
     }
     else if($tombol == "edit"){
-        $sql = "UPDATE tbkonsumen SET nama='$nama', alamat='$alamat', no_hp='$nohp' where id='$id'";
+        $sql = "UPDATE tbkonsumen SET nama='$nama', alamat='$alamat', no_hp='$nohp', email='$email' where id='$id'";
         $query = mysqli_query($con,$sql) or  die ($sql);
     }
     else if($tombol == "hapus"){
@@ -32,8 +33,9 @@
       $nama = $re['nama'];
       $alamat = $re['alamat'];
       $nohp = $re['nohp'];
+      $email = $re['email'];
 
-      echo "|".$id."|".$nama."|".$alamat."|".$nohp;
+      echo "|".$id."|".$nama."|".$alamat."|".$nohp."|".$email;
     }
     else if($tombol == "tampil"){
     ?>
@@ -44,6 +46,7 @@
               <th>Nama</th>
               <th>Alamat</th>
               <th>No HP</th>
+              <th>Email</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -58,6 +61,7 @@
               $nama = $res['nama'];
               $alamat = $res['alamat'];
               $nohp = $res['no_hp'];
+              $email = $res['email'];
               
               ?>
                 <tr>
@@ -65,6 +69,7 @@
                   <td><?php echo $nama;?></td>
                   <td><?php echo $alamat;?></td>
                   <td><?php echo $nohp;?></td>
+                  <td><?php echo $email;?></td>
                   <td>
                     <button class="btn btn-sm btn-warning" onclick="f_edit('<?php echo $id;?>')"><span class="fa fa-pencil"></span></button>
                     <button class="btn btn-sm btn-danger" onclick="f_hapus('<?php echo $id;?>')"><span class="fa fa-times"></span></button>

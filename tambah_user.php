@@ -1,10 +1,5 @@
 <?php
-/**
- * Created By :    
- * User: Welly
- * Date: 12/06/2018
- * Time: 09:54
- */
+
 $user = $_GET['user'];
 $limit_uptime = $_GET['limit'];
 $ip = $_GET['ip'];
