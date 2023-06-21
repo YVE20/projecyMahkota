@@ -26,7 +26,7 @@
     $meja = $_POST['meja'];
     $subtotal = $_POST['subtotal'];
     $diskon = $_POST['diskon'];
-    $pajak = $_POST['pajak'];
+    $pajak = $_POST['pajak'] == "" ? 0 : $_POST['pajak'];
     $jlhdiskon = $_POST['jlhdiskon'];
     $jlhpajak = $_POST['jlhpajak'];
     $grandtotal = $_POST['grandtotal'];
@@ -51,101 +51,83 @@
     $minus = "Y";
     $iduser = $_SESSION['iduser'];
     $role_ = $_SESSION['status'];
-
-    
-    
     
     if ($tombol == "simpan") {
-        $sql1 = "SELECT * FROM tempjualdetil WHERE idjual='$idjual' AND idproduk='$produk'";
-        $query1 = mysqli_query($con, $sql1);
-        $num1 = mysqli_num_rows($query1);
-        if ($num1 == 0) {
-            $sqlmenu = "SELECT * FROM tbproduk where id='$produk'";
-            $querymenu = mysqli_query($con, $sqlmenu);
-            $cekjumlah = mysqli_fetch_assoc($querymenu);
-            if ($minus == 'Y') {
-
-                    $sql = "INSERT INTO tempjualdetil (idjual,idkonsumen,idproduk,iduser,jumlah,harga,total,pajak,jlhpajak,diskon,jlhdiskon,subtotal,note) VALUES ('$idjual','$idkonsumen','$produk','$iduser','$jumlah','$harga','$subtotaldetil',0,0,'$diskon','$jlhdiskon','$subtotal_','note')";
+        if($idkonsumen == "-"){
+            echo "noKonsumen";
+        }else{
+            $sql1 = "SELECT * FROM tempjualdetil WHERE idjual='$idjual' AND idproduk='$produk'";
+            $query1 = mysqli_query($con, $sql1);
+            $num1 = mysqli_num_rows($query1);
+            if ($num1 == 0) {
+                $sqlmenu = "SELECT * FROM tbproduk where id='$produk'";
+                $querymenu = mysqli_query($con, $sqlmenu);
+                $cekjumlah = mysqli_fetch_assoc($querymenu);
+                
+                //Cek Jumlah Stock Barang
+                if($cekjumlah['jumlah'] >= $jumlah){
+                    $sql = "INSERT INTO tempjualdetil (idjual,idkonsumen,idproduk,iduser,jumlah,harga,total,pajak,jlhpajak,diskon,jlhdiskon,subtotal,note) 
+                    VALUES ('$idjual','$idkonsumen','$produk','$iduser','$jumlah','$harga','$subtotaldetil','$pajak','$jlhpajak','$diskon','$jlhdiskon','$subtotal_','$note')";
                     $query = mysqli_query($con, $sql) or die($sql);
 
                     echo "sukses";
-                } else {
-                    if ($cekjumlah['jumlah'] >= $jumlah) {
-                        $sql = "INSERT INTO tempjualdetil (idjual,idkonsumen,idproduk,iduser,jumlah,harga,total,pajak,jlhpajak,diskon,jlhdiskon,subtotal,note) 
-                                    VALUES ('$idjual','$idkonsumen','$produk','$iduser','$jumlah','$harga','$subtotaldetil','$pajak','$jlhpajak','$diskon','$jlhdiskon','$subtotal_','$note')";
-                        $query = mysqli_query($con, $sql) or die($sql);
-
-                        echo "sukses";
-                    } else {
-                        echo "kosong";
-                    }
+                }else{
+                    echo "kosong";
                 }
-          
-        } else { //else cek tempjual
-            echo "sudah ada";
+            } else { 
+                echo "sudah ada";
+            }
         }
+
     } elseif ($tombol == "edit") {
         if ($act=="edit") {
             $sqlmenu = "SELECT * FROM tbproduk where id='$produk'";
             $querymenu = mysqli_query($con, $sqlmenu);
             $cekjumlah = mysqli_fetch_assoc($querymenu);
 
-            if ($minus == 'Y') {
+            if ($cekjumlah['jumlah'] >= $jumlah) {
                 $sql = "UPDATE tbjualdetil SET idkonsumen='$idkonsumen',iduser='$iduser',jumlah='$jumlah',harga='$harga',total='$subtotaldetil',pajak='$pajak',jlhpajak='$jlhpajak',diskon='$diskon',jlhdiskon='$jlhdiskon',subtotal='$subtotal_',note='$note' WHERE id='$id'  AND idproduk='$produk'";
                 $query = mysqli_query($con, $sql) or die($sql);
 
                 echo "sukses";
             } else {
-                if ($cekjumlah['jumlah'] >= $jumlah) {
-                    // $jlhdiskon = $jlhdiskon * $jumlah;
-                    $sql = "UPDATE tbjualdetil SET idkonsumen='$idkonsumen',iduser='$iduser',jumlah='$jumlah',harga='$harga',total='$subtotaldetil',pajak='$pajak',jlhpajak='$jlhpajak',diskon='$diskon',jlhdiskon='$jlhdiskon',subtotal='$subtotal_',note='$note' WHERE id='$id'  AND idproduk='$produk'";
-                    $query = mysqli_query($con, $sql) or die($sql);
-
-                    echo "sukses";
-                } else {
-                    echo "kosong";
-                }
+                echo "kosong";
             }
         } else {
             $subtotaldetil = $total + $jlhpajak -$jlhdiskon;
             $sqlmenu = "SELECT * FROM tbproduk where id='$produk'";
             $querymenu = mysqli_query($con, $sqlmenu);
             $cekjumlah = mysqli_fetch_assoc($querymenu);
-            if ($minus == 'Y') {
+
+            if ($cekjumlah['jumlah'] >= $jumlah) {
                 $sql = "UPDATE tempjualdetil SET idkonsumen='$idkonsumen',iduser='$iduser',jumlah='$jumlah',harga='$harga',total='$subtotaldetil',pajak='$pajak',jlhpajak='$jlhpajak',diskon='$diskon',jlhdiskon='$jlhdiskon',subtotal='$subtotal_',note='$note' WHERE id='$id' AND idproduk='$produk'";
                 $query = mysqli_query($con, $sql) or die($sql);
 
                 echo "sukses";
             } else {
-                if ($cekjumlah['jumlah'] >= $jumlah) {
-                    // $jlhdiskon = $jlhdiskon * $jumlah;
-                    $sql = "UPDATE tempjualdetil SET idkonsumen='$idkonsumen',iduser='$iduser',jumlah='$jumlah',harga='$harga',total='$subtotaldetil',pajak='$pajak',jlhpajak='$jlhpajak',diskon='$diskon',jlhdiskon='$jlhdiskon',subtotal='$subtotal_',note='$note' WHERE id='$id' AND idproduk='$produk'";
-                    $query = mysqli_query($con, $sql) or die($sql);
-
-                    echo "sukses";
-                } else {
-                    echo "kosong";
-                }
-            }
+                echo "kosong";
+            }        
         }
-    } elseif ($tombol == "proses") {
-        $sqlcek = "SELECT *,SUM(subtotal) AS subtotal_,SUM(total) AS grandtotal_ FROM tempjualdetil WHERE idjual='$idjual'";
+    } else if ($tombol == "proses") {
+        
+        $sqlcek = "SELECT *FROM tempjualdetil WHERE idjual='$idjual'";
         $querycek = mysqli_query($con, $sqlcek);
         $rescek = mysqli_fetch_array($querycek);
         $numcek = mysqli_num_rows($querycek);
+
         if ($numcek > 0) {
             if ($act == "edit") {
                 $sql = "UPDATE tbjual SET subtotal='$rescek[subtotal_]',grandtotal='$rescek[grandtotal_]' WHERE id='$idjual'";
                 $query = mysqli_query($con, $sql);
             }
             if ($act == "new") {
-                    $sql = "INSERT INTO tbjual (id,iduser,idkonsumen,tanggal,subtotal,diskon,grandtotal,cash,status_antar) VALUES ('$idjual','$iduser','$rescek[idkonsumen]','$tgltransaksi','$subtotal','$rescek[jlhdiskon]','$grandtotal','1','disiapkan')";
+                    $sql = "INSERT INTO tbjual (id,iduser,idkonsumen,tanggal,subtotal,diskon,grandtotal,cash,status_antar) VALUES ('$idjual','$iduser','$rescek[idkonsumen]','$tgltransaksi','$subtotal','$rescek[jlhdiskon]','$grandtotal','1','selesai')";
                     $query = mysqli_query($con, $sql);
                     
 
             }
             if ($act == "bayar") {
-                $sql = "UPDATE tbjual SET iduser='$iduser',idkonsumen='$rescek[idkonsumen]',jatuh_tempo='$jatuhtempo',subtotal='$subtotal',diskon='$rescek[jlhdiskon]',grandtotal='$grandtotal', cash ='$cash',status_antar = 'disiapkan' WHERE id='$idjual'";
+                $sql = "UPDATE tbjual SET iduser='$iduser',idkonsumen='$rescek[idkonsumen]',jatuh_tempo='$jatuhtempo',subtotal='$subtotal',diskon='$rescek[jlhdiskon]',grandtotal='$grandtotal', cash ='$cash',status_antar = 'selesai' WHERE id='$idjual'";
                 $query = mysqli_query($con, $sql);
             }
             // end if act

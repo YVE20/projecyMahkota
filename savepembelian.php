@@ -250,7 +250,6 @@
                 <!-- <th>Referensi</th> -->
                 <!-- <th>Pembayaran</th> -->
                 <th>Grandtotal</th>
-                <th>Status</th>
                 <th>Action</th>
             </tr>
             </thead>
@@ -288,7 +287,6 @@
                     <!-- <td> <?php echo $referensi;?> </td> -->
                     <!-- <td> <?php echo (($metodepembayaran == "Cash" ? 'Cash'  : 'Kredit ('.date("d-m-Y", strtotime($jatuhtempo)).')'));?> </td> -->
                     <td> <?php echo "Rp. ".number_format($grandtotal,0,',','.');?> </td>
-                    <td> <span class="badge badge-pill <?php echo (($status == "PO Pembelian" ? 'badge-warning'  : 'badge-success')); ?>"><?php echo $status;?></span> </td>
                     <td>
                         <?php
                             if($status == "PO Pembelian"){

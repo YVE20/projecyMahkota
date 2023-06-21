@@ -32,7 +32,7 @@
       $id = $re['id'];
       $nama = $re['nama'];
       $alamat = $re['alamat'];
-      $nohp = $re['nohp'];
+      $nohp = $re['no_hp'];
       $email = $re['email'];
 
       echo "|".$id."|".$nama."|".$alamat."|".$nohp."|".$email;

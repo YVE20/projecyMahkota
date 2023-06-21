@@ -30,7 +30,7 @@ if ($act=="new") {
 } elseif ($act=="edit") {
     $idtransaksi = $idget;
 }
-?>
+?>a
 <!-- page content -->
 <div id="content">
     <div class="panel box-shadow-none content-header">
@@ -379,14 +379,10 @@ if ($act=="new") {
                     jlhpajak: accounting.unformat($jlhpajak.val(), ','),
                 })
                 .done(function(data) {
+                    console.log(data);
                     if (data == "sukses") {
-                        // Swal.hideLoading()
-
                         loaddata();
                         $("#reset").click();
-
-                        // $('#cmbproduk').selectpicker('toggle');
-
                     } else if (data == "kosong") {
                         Swal.fire({
                             type: 'error',
@@ -396,6 +392,11 @@ if ($act=="new") {
                         Swal.fire({
                             type: 'error',
                             title: 'Produk ini sudah diinput, silahkan diedit'
+                        })
+                    } else if(data == "noKonsumen"){
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Harap pilih konsumen terlebih dahulu'
                         })
                     }
                 });
@@ -434,7 +435,6 @@ if ($act=="new") {
                     }else {
                         f_print($idjual.val());
                     }
-                    //console.log(data);
                 });
         } else {
             Swal.fire({
@@ -536,8 +536,6 @@ if ($act=="new") {
                 id: id
             })
             .done(function(data) {
-                console.log(data);
-                // echo "|".$id."|".$produk."|".$idkonsumen."|".$idsales."|".$jumlah."|".$harga."|".$total."|".$diskon."|".$jlhdiskon."|".$pajak."|".$jlhpajak."|".$note."|".$isi_kemasan."|".$satuan."|";
                 var pecah = data.split("|");
                 $id.val(pecah[1]);
                 $produk.val(pecah[2]);
@@ -551,7 +549,6 @@ if ($act=="new") {
                 $jlhpajak.val(accounting.formatNumber(pecah[10], 0, '.', ','));
                 $isisatuan.val(pecah[11]);
                 $satuan.text(pecah[12]);
-                $jlhretur.val(1 / parseInt(pecah[13]));
                 $jlhpersatuan.text(1 / parseInt(pecah[13]));
 
                 $('.selectpicker').selectpicker('refresh');

@@ -35,7 +35,7 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group form-animate-text" style="">
-                                                <input type="text" class="form-text" id="txtnohp" name="txtnohp" required>
+                                                <input type="text" class="form-text"  id="txtnohp" name="txtnohp" required>
                                                 <span class="bar"></span>
                                                 <label>No HP</label>
                                             </div>
@@ -75,7 +75,11 @@
 <?php include "Footer.php";?>
 
 <script>
-
+    jQuery('#txtnohp').keypress(function(event){
+        if(event.which !=8 && isNaN(String.fromCharCode(event.which))){
+            event.preventDefault();
+        }
+    });
     $("#frm").on('submit', (function (e) {
         e.preventDefault();
         var tombol = $("#simpan").val();
@@ -137,8 +141,6 @@
                 id: id
             })
             .done(function (data) {
-                // echo "|".$id."|".$nama."|".$alamat."|".$wilayah."|".$kategori."|".$rute."|".$nofreezer."|".$pajak."|".$maxhutang."|";
-
                 var pecah = data.split("|");
                 $("#txtid").val(pecah[1]);
                 $("#txtnama").val(pecah[2]);
