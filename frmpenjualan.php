@@ -379,7 +379,6 @@ if ($act=="new") {
                     jlhpajak: accounting.unformat($jlhpajak.val(), ','),
                 })
                 .done(function(data) {
-                    console.log(data);
                     if (data == "sukses") {
                         loaddata();
                         $("#reset").click();
@@ -563,7 +562,6 @@ if ($act=="new") {
                 idkonsumen: $idkonsumen.val(),
             })
             .done(function(data) {
-                // echo "|".$nama."|".$wilayah."|".$kategori."|".$rate_pajak."|".$max_hutang;
                 var pecah = data.split("|");
                 let wilayah = pecah[2];
                 let kategori_konsumen = pecah[3];
@@ -576,11 +574,8 @@ if ($act=="new") {
                         produk: $produk.val()
                     })
                     .done(function(data) {
-                        //echo "|".$id."|".$produk."|".$wilayah."|".$jenis."|".$hargadk."|".$hargalk."|".$hargadepo."|".$hargamodern."|".$hargatradisional."|".$hargaagen."|".$hargauser."|".$diskon."|".$pajak."|".$satuan."|".$kategori."|".$jumlah."|".$isikemasan."|";
                         $jumlah.val(1)
                         var pecahProduk = data.split("|");
-                        console.log(pecahProduk);
-                        // $id.val(pecahProduk[0])
                         $harga.val(accounting.formatNumber(pecahProduk[2], 0, '.', ','));
                         hitungharga();
                     });

@@ -72,10 +72,10 @@ if ($_POST['page'] == "About" || $_POST['page'] == "Index" || $_POST['page'] == 
                         $sql3 = "update tbproduk set jumlah = '$hitung' where kode_barang = '$kode_barang'";
                         $query3 = mysqli_query($con, $sql3);
 
-                        //Isi tblogsmenu
+                        //Isi tblogsproduk
                         //Notes : 0 => Konsumen diluar
                         $idproduk = $res2['id'];
-                        $sql4 = "INSERT INTO tblogsmenu (idmenu,jumlah,kategori,iduser) VALUES ('$idproduk','$qty','keluar','0')";
+                        $sql4 = "INSERT INTO tblogsproduk (idproduk,jumlah,kategori,iduser) VALUES ('$idproduk','$qty','keluar','$iduser')";
                         $query4 =  mysqli_query($con, $sql4);
 
                         $metodepembayaran = "COD";
@@ -88,9 +88,9 @@ if ($_POST['page'] == "About" || $_POST['page'] == "Index" || $_POST['page'] == 
                         $harga = 0;
                         while ($re6 = mysqli_fetch_array($query6)) {
                             //Hitung Stock
-                            $subtotal = $re6['harga_dk'] * $qty;
+                            $subtotal = $re6['harga_jual'] * $qty;
                             $idproduk = $re6['id'];
-                            $harga = $re6['harga_dk'];
+                            $harga = $re6['harga_jual'];
                         }
 
                         $diskon = 0;
@@ -98,7 +98,7 @@ if ($_POST['page'] == "About" || $_POST['page'] == "Index" || $_POST['page'] == 
                         $grandtotal = $subtotal - ($diskon + $pajak);
 
                         //Isi Tbdetail Penjualan
-                        $sql7 = "INSERT INTO tbjualdetil (idjual,idmenu,jumlah,harga,total,diskon,jlhdiskon,subtotal,note) VALUES ('$idtransaksi','$idproduk','$qty','$harga','$subtotal','$diskon','0','$subtotal','-')";
+                        $sql7 = "INSERT INTO tbjualdetil (idjual,idproduk,jumlah,harga,total,diskon,jlhdiskon,subtotal,note) VALUES ('$idtransaksi','$idproduk','$qty','$harga','$subtotal','$diskon','0','$subtotal','-')";
                         $query7 = mysqli_query($con, $sql7);
 
                         //Hapus Table Keranjang
@@ -112,6 +112,8 @@ if ($_POST['page'] == "About" || $_POST['page'] == "Index" || $_POST['page'] == 
         $subTotalPenjualan += $re['subtotal'] * $re['jumlah'];
         $grandTotalPenjualan = $subTotalPenjualan - ($diskon + $pajak);
     }
-    $sql5 = "INSERT INTO tbjual (id,kodecanvas,iduser,idkonsumen,idsales,tanggal,subtotal,diskon,grandtotal,cash,status_antar) VALUES ('$idtransaksi','','0','$iduser','','$tgltransaksi','$subTotalPenjualan','$diskon','$grandTotalPenjualan','0','disiapkan')";
+    if($diskon == "") $diskon = 0;
+    $sql5 = "INSERT INTO tbjual (id,iduser,idkonsumen,tanggal,subtotal,diskon,grandtotal,cash,status_antar) VALUES ('$idtransaksi','0','$iduser','$tgltransaksi','$subTotalPenjualan','$diskon','$grandTotalPenjualan','0','disiapkan')";
     $query5 = mysqli_query($con, $sql5);
+
 }

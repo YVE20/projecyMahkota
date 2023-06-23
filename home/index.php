@@ -125,7 +125,7 @@ $icon = $res['icon'];
                         <?php } ?>
                         <div style="text-align: left;margin-left:10px">
                            <h5> <b> <?= strtoupper($re['nama']) ?> </b> <sub> (<?= $re['satuan'] ?>) </sub> </h5>
-                           <font> <?= "Rp. " . number_format($re['harga_dk'], 0, ',', '.'); ?> </font> <sub> Stock : <?= $re['jumlah'] ?> </sub>
+                           <font> <?= "Rp. " . number_format($re['harga_jual'], 0, ',', '.'); ?> </font> <sub> Stock : <?= $re['jumlah'] ?> </sub>
                         </div>
                      </div>
                      <div>

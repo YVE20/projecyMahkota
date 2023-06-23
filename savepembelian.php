@@ -103,68 +103,73 @@
         echo $totalharga."|".$totaldiskon."|".$totalpajak."|".$totalsubtotal;
     
     }else if($tombol == "proses"){
-        $sqlcek = "select * from temppembeliandetil where id_pembelian='$idpembelian'";
-        $querycek = mysqli_query($con,$sqlcek);
-        $numcek = mysqli_num_rows($querycek);
-    
-        if($numcek > 0) {
-            if ($act == "po") {
-                $sql = "insert into tbpembelian (id_pembelian,id_user,id_supplier,tanggal,status,subtotal,diskon,pajak,grandtotal) 
-                values ('$idpembelian','$iduser','$idsupplier','$tanggal','PO Pembelian','$subtotalakhir','$diskonakhir','$pajakakhir','$grandtotalakhir')";
-                $query = mysqli_query($con, $sql);
-            }else if ($act == "approve") {
-                $sql = "update tbpembelian set id_user_approve='$iduser',id_supplier='$idsupplier',status='Pembelian',tanggal='$tanggal',subtotal='$subtotalakhir', diskon ='$diskonakhir' ,pajak='$pajakakhir',grandtotal = '$grandtotalakhir', statusApproved ='Approved', alasan = 'Penambahan Stock' where  id_pembelian='$idpembelian'";
-                $query = mysqli_query($con, $sql);
-                
-                if($metodepembayaran == "Kredit"){
-                    $sqlhutang = "insert into tbhutang (id_pembelian,jumlah,sisa,jatuh_tempo) values ('$idpembelian','$grandtotalakhir','$grandtotalakhir','$jatuhtempo')";
-                    $queryhutang = mysqli_query($con,$sqlhutang);
-                }
-                
-                $sql4 = "delete from tbpembeliandetil where id_pembelian='$idpembelian'";
-                $query4 = mysqli_query($con, $sql4) or die ($sql4);
-            }
-            // end if act
-            
-        
-            // Select data dari temppembeliandetil
-            $sql2 = "select * from temppembeliandetil where id_pembelian='$idpembelian'";
-            $query2 = mysqli_query($con, $sql2) or die ($sql2);
-            while ($res2 = mysqli_fetch_array($query2)) {
-                $idproduk = $res2['id_produk'];
-                $jumlah = $res2['jumlah'];
-                $harga = $res2['harga'];
-                $diskon = $res2['diskon'];
-                $jlhdiskon = $res2['jlhdiskon'];
-                $pajak = $res2['pajak'];
-                $jlhpajak = $res2['jlhpajak'];
-                $subtotaldetil = $res2['subtotal'];
-            
-                $sql3 = "insert into tbpembeliandetil (id_pembelian,id_produk,jumlah,harga,pajak,jlhpajak,diskon,jlhdiskon,subtotal) values ('$idpembelian','$idproduk','$jumlah','$harga','$pajak','$jlhpajak','$diskon','$jlhdiskon','$subtotaldetil')";
-                $query3 = mysqli_query($con, $sql3);
-    
-                if($act == "approve"){
-                    $sqlmenu = "select * from tbproduk where id='$idproduk'";
-                    $querymenu = mysqli_query($con,$sqlmenu);
-                    $resmenu = mysqli_fetch_array($querymenu);
-                    $stoklama = $resmenu['jumlah'];
-                    
-                    $stokbaru = $jumlah + $stoklama;
-                    
-                    $sqlupdate = "update tbproduk set jumlah='$stokbaru', harga_beli='$harga' where id='$idproduk'";
-                    $queryupdate = mysqli_query($con,$sqlupdate);
-                }
-            }
-            // end While temppembeliandetil
-            
-            $sql4 = "delete from temppembeliandetil where id_pembelian='$idpembelian'";
-            $query4 = mysqli_query($con, $sql4) or die ($sql4);
-            echo "sukses";
+
+        //Jagaan jika id supplier kosong
+        if($_POST['idsupplier'] == ""){
+            echo "noSupplier";
         }else{
-            echo "kosong";
-        }
-        // end if numcek
-    
+            $sqlcek = "select * from temppembeliandetil where id_pembelian='$idpembelian'";
+            $querycek = mysqli_query($con,$sqlcek);
+            $numcek = mysqli_num_rows($querycek);
+        
+            if($numcek > 0) {
+                if ($act == "po") {
+                    $sql = "insert into tbpembelian (id_pembelian,id_user,id_supplier,tanggal,status,subtotal,diskon,pajak,grandtotal) 
+                    values ('$idpembelian','$iduser','$idsupplier','$tanggal','PO Pembelian','$subtotalakhir','$diskonakhir','$pajakakhir','$grandtotalakhir')";
+
+                    $query = mysqli_query($con, $sql);
+                }else if ($act == "approve") {
+                    $sql = "update tbpembelian set id_user_approve='$iduser',id_supplier='$idsupplier',status='Pembelian',tanggal='$tanggal',subtotal='$subtotalakhir', diskon ='$diskonakhir' ,pajak='$pajakakhir',grandtotal = '$grandtotalakhir', statusApproved ='Approved', alasan = 'Penambahan Stock' where  id_pembelian='$idpembelian'";
+                    $query = mysqli_query($con, $sql);
+                    
+                    if($metodepembayaran == "Kredit"){
+                        $sqlhutang = "insert into tbhutang (id_pembelian,jumlah,sisa,jatuh_tempo) values ('$idpembelian','$grandtotalakhir','$grandtotalakhir','$jatuhtempo')";
+                        $queryhutang = mysqli_query($con,$sqlhutang);
+                    }
+                    
+                    $sql4 = "delete from tbpembeliandetil where id_pembelian='$idpembelian'";
+                    $query4 = mysqli_query($con, $sql4) or die ($sql4);
+                }
+                // end if act
+                
+            
+                // Select data dari temppembeliandetil
+                $sql2 = "select * from temppembeliandetil where id_pembelian='$idpembelian'";
+                $query2 = mysqli_query($con, $sql2) or die ($sql2);
+                while ($res2 = mysqli_fetch_array($query2)) {
+                    $idproduk = $res2['id_produk'];
+                    $jumlah = $res2['jumlah'];
+                    $harga = $res2['harga'];
+                    $diskon = $res2['diskon'];
+                    $jlhdiskon = $res2['jlhdiskon'];
+                    $pajak = $res2['pajak'];
+                    $jlhpajak = $res2['jlhpajak'];
+                    $subtotaldetil = $res2['subtotal'];
+                
+                    $sql3 = "insert into tbpembeliandetil (id_pembelian,id_produk,jumlah,harga,pajak,jlhpajak,diskon,jlhdiskon,subtotal) values ('$idpembelian','$idproduk','$jumlah','$harga','$pajak','$jlhpajak','$diskon','$jlhdiskon','$subtotaldetil')";
+                    $query3 = mysqli_query($con, $sql3);
+        
+                    if($act == "approve"){
+                        $sqlmenu = "select * from tbproduk where id='$idproduk'";
+                        $querymenu = mysqli_query($con,$sqlmenu);
+                        $resmenu = mysqli_fetch_array($querymenu);
+                        $stoklama = $resmenu['jumlah'];
+                        
+                        $stokbaru = $jumlah + $stoklama;
+                        
+                        $sqlupdate = "update tbproduk set jumlah='$stokbaru', harga_beli='$harga' where id='$idproduk'";
+                        $queryupdate = mysqli_query($con,$sqlupdate);
+
+                        $sql4 = "delete from temppembeliandetil where id_pembelian='$idpembelian'";
+                        $query4 = mysqli_query($con, $sql4) or die ($sql4);
+                    }
+                }
+                
+                echo "sukses";
+            }else{
+                echo "kosong";
+            }
+        }  
     }else if($tombol == "tampil"){
         ?>
         <table id="datatable-fixed-header" class="table table-striped dt-responsive nowrap" cellspacing="0" width="100%">
@@ -189,6 +194,7 @@
             $no = 1;
             $sqlsel = "select temppembeliandetil.*,tbproduk.nama, tbproduk.kode_barang as kodebarang, tbproduk.satuan from temppembeliandetil left join tbproduk on temppembeliandetil.id_produk=tbproduk.id where id_pembelian='$idpembelian'";
             $querysel = mysqli_query($con,$sqlsel);
+
             while($res = mysqli_fetch_array($querysel)){
                 $id = $res['id'];
                 $idproduk_ = $res['idproduk'];

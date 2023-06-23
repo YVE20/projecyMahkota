@@ -35,10 +35,10 @@ if ($_POST['page'] == "About") {
                     $sql3 = "update tbproduk set jumlah = '$hitung' where kode_barang = '$kode_barang'";
                     $query3 = mysqli_query($con, $sql3);
 
-                    //Isi tblogsmenu
+                    //Isi tblogsproduk
                     //Notes : 0 => Konsumen diluar
                     $idproduk = $res2['id'];
-                    $sql4 = "INSERT INTO tblogsmenu (idproduk,jumlah,kategori,iduser) VALUES ('$idproduk','$qty','keluar','0')";
+                    $sql4 = "INSERT INTO tblogsproduk (idproduk,jumlah,kategori,iduser) VALUES ('$idproduk','$qty','keluar','0')";
                     $query4 =  mysqli_query($con, $sql4);
 
                     //ISI tb Penjualan
@@ -71,9 +71,9 @@ if ($_POST['page'] == "About") {
                     $harga = 0;
                     while ($re6 = mysqli_fetch_array($query6)) {
                         //Hitung Stock
-                        $subtotal = $re6['harga_dk'] * $qty;
+                        $subtotal = $re6['harga_jual'] * $qty;
                         $idproduk = $re6['id'];
-                        $harga = $re6['harga_dk'];
+                        $harga = $re6['harga_jual'];
                     }
 
                     $diskon = 0;
@@ -116,7 +116,7 @@ if ($_POST['page'] == "About") {
         while ($re5 = mysqli_fetch_array($query5)) {
             $hitung = $re5['jumlah'] - $re['jumlah'];
             $idproduk = $re5['id'];
-            $harga = $re5['harga_dk'];
+            $harga = $re5['harga_jual'];
         }
 
         try {
@@ -127,7 +127,7 @@ if ($_POST['page'] == "About") {
             //Insert tblogs
             $idproduk = $re['id'];
             $qtyKeranjang = $re['jumlah'];
-            $sql4 = "INSERT INTO tblogsmenu (idproduk,jumlah,kategori,iduser) VALUES ('$idproduk','$qtyKeranjang','keluar','0')";
+            $sql4 = "INSERT INTO tblogsproduk (idproduk,jumlah,kategori,iduser) VALUES ('$idproduk','$qtyKeranjang','keluar','0')";
             $query4 =  mysqli_query($con, $sql4);
 
             //ISI tb Penjualan

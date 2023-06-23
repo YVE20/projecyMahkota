@@ -44,7 +44,7 @@ if ($_POST['typeKeranjang'] == "count" || $_POST['typeKeranjang'] == "view") {
 
                 $subTotal = 0;
                 while ($re = mysqli_fetch_array($query3)) {
-                    $subTotal = $re['harga_dk'] * $jumlah;
+                    $subTotal = $re['harga_jual'] * $jumlah;
                 }
 
                 //Isi data baru
@@ -59,7 +59,7 @@ if ($_POST['typeKeranjang'] == "count" || $_POST['typeKeranjang'] == "view") {
 
                 $hargaSatuan = 0;
                 while ($re = mysqli_fetch_array($query3)) {
-                    $hargaSatuan = $re['harga_dk'];
+                    $hargaSatuan = $re['harga_jual'];
                 }
 
                 //Get jumlah dari tbkeranjang

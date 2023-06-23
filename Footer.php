@@ -79,8 +79,7 @@
                 value: value,
                 idjual: idjual
             })
-            .done(function(data) {
-                
+            .done(function(data) {         
                 var pecah_id = idjual.split("-");
 
                 var pecah = data.split("|");
@@ -102,14 +101,17 @@
 
                 for (var i = 0; i < (pecah_detil.length - 1); i++) {
                     var loopingdetil = pecah_detil[i].split("#");
-
+                    var totalHargaAsli = parseFloat(loopingdetil[2].replace(".", "")) * loopingdetil[1];
                     hasilloopingdetil += "" +
                         "<tr>" +
                         "<td colspan=3 style=\"max-width:160px !important;width:160px !important;\"> " + loopingdetil[0] + " </td>" +
                         "</tr>" +
                         "<tr>" +
                         "<td width=\"85px\"> " + loopingdetil[1] + "  x  Rp " + loopingdetil[2] + " </td>" +
-                        "<td colspan=\"2\" style=\"text-align: right;\"> Rp " + loopingdetil[3] + " </td>" +
+                        "<td colspan=\"2\" style=\"text-align: right;\"> Rp " + totalHargaAsli.toLocaleString()  + " </td>" +
+                        "</tr>"+
+                        "<tr>" +
+                        "<td width=\"85px\"> Diskon : Rp " + (totalHargaAsli - parseFloat(loopingdetil[3].replace(".", ""))).toLocaleString() + " </td>" + 
                         "</tr>";
                 }
 
@@ -157,15 +159,15 @@
                         </tr>
                         <tr>
                             <td width="85px" style="text-align: right;font-weight: bold;"> Total </td>
-                            <td colspan="2" style="text-align: right;font-weight: bold;"> Rp ` + pecah[14].toLocaleString() + ` </td>
+                            <td colspan="2" style="text-align: right;font-weight: bold;"> Rp ` +(pecah[14] / 1000).toLocaleString('en-US', { minimumFractionDigits: 3 }) + ` </td>
                         </tr>
                         <tr>
                             <td width="85px" style="text-align: right;font-weight: bold;"> Diskon </td>
-                            <td colspan="2" style="text-align: right;font-weight: bold;"> Rp ` + pecah[15].toLocaleString() + ` </td>
+                            <td colspan="2" style="text-align: right;font-weight: bold;"> Rp ` +(pecah[15] / 1000).toLocaleString('en-US', { minimumFractionDigits: 3 }) + ` </td>
                         </tr>
                         <tr>
                             <td width="85px" style="text-align: right;font-weight: bold;"> Sub Total </td>
-                            <td colspan="2" style="text-align: right;font-weight: bold;"> Rp ` + pecah[16].toLocaleString() + ` </td>
+                            <td colspan="2" style="text-align: right;font-weight: bold;"> Rp ` + (pecah[16] / 1000).toLocaleString('en-US', { minimumFractionDigits: 3 }) + ` </td>
                         </tr>
                         <tr>
                             <td colspan=3 style="max-width:160px !important;width:160px !important;text-align:center;padding-top:10px;font-weight:bold;"> "Terimakasih telah mengunjungi toko kami. Silahkan datang kembali."</td>

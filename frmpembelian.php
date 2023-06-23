@@ -264,10 +264,11 @@
           })
             .done(function (data) {
                 alertify.minimalDialog().destroy();
-                console.log(data);
                 if(data == "kosong"){
                     alertify.alert("Peringatan","Tambahkan produk terlebih dahulu");
-                }else {
+                } else if (data == "noSupplier"){
+                    alertify.alert("Peringatan","Mohon pilih supplier");
+                } else {
                     Swal.fire({
                         title: 'Informasi',
                         text: "Data berhasil tersimpan",
@@ -305,7 +306,6 @@
       var idpembelian = $("#txtidtransaksi").val();
       $.post("savepembelian.php",{tombol:"tampil",idpembelian:idpembelian})
           .done(function(data){
-            //console.log(data);
               $("#table").html(data);
               hitungtotal();
           });

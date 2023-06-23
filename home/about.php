@@ -131,7 +131,7 @@ $icon = $res['icon'];
                   <div class="col-md-5">
                      <div class="titlepage">
                         <h3> <b> <?= $re['nama'] ?> </b> </h3>
-                        <h5> <?= $re['kategori'] ?> (Rp.<?= number_format($re['harga_dk'], 0, ',', '.') ?>) </h5>
+                        <h5> <?= $re['kategori'] ?> (Rp.<?= number_format($re['harga_jual'], 0, ',', '.') ?>) </h5>
                         <p> <?= $re['deskripsi'] != null ? $re['deskripsi'] : "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat." ?> </p>
                         <button onclick="minusAbout('1')" class="btn"> - </button>
                         <input type="text" id="qty" value="1" style="width:30px;text-align: center;border:none;" readonly>
@@ -179,7 +179,7 @@ $icon = $res['icon'];
                         <?php } ?>
                         <div style="text-align: left;margin-left:10px">
                            <h5> <b> <?= strtoupper($re['nama']) ?> </b> <sub> (<?= $re['satuan'] ?>) </sub> </h5>
-                           <font> <?= "Rp. " . number_format($re['harga_dk'], 0, ',', '.'); ?> </font> <sub> Stock : <?= $re['jumlah'] ?> </sub>
+                           <font> <?= "Rp. " . number_format($re['harga_jual'], 0, ',', '.'); ?> </font> <sub> Stock : <?= $re['jumlah'] ?> </sub>
                         </div>
                         <button class="btn" onclick="beliSekarang('<?= $re['kode_barang'] ?>')"> Lihat Detail </button>
                         <button class="btn" onclick="keranjang('<?= $re['kode_barang'] ?>')"> <img src="images/keranjang.png" alt="#"> </button>

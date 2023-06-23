@@ -56,6 +56,12 @@
         if($idkonsumen == "-"){
             echo "noKonsumen";
         }else{
+            $harga = $_POST['harga'];
+            $total = $_POST['total'];
+            $diskon = $_POST['diskon'];
+            $jlhdiskon = $_POST['jlhdiskon'];
+            $total = $subtotal_ - $jlhdiskon;
+
             $sql1 = "SELECT * FROM tempjualdetil WHERE idjual='$idjual' AND idproduk='$produk'";
             $query1 = mysqli_query($con, $sql1);
             $num1 = mysqli_num_rows($query1);
@@ -66,8 +72,7 @@
                 
                 //Cek Jumlah Stock Barang
                 if($cekjumlah['jumlah'] >= $jumlah){
-                    $sql = "INSERT INTO tempjualdetil (idjual,idkonsumen,idproduk,iduser,jumlah,harga,total,pajak,jlhpajak,diskon,jlhdiskon,subtotal,note) 
-                    VALUES ('$idjual','$idkonsumen','$produk','$iduser','$jumlah','$harga','$subtotaldetil','$pajak','$jlhpajak','$diskon','$jlhdiskon','$subtotal_','$note')";
+                    $sql = "INSERT INTO tempjualdetil (idjual,idkonsumen,idproduk,iduser,jumlah,harga,total,pajak,jlhpajak,diskon,jlhdiskon,subtotal,note)  VALUES ('$idjual','$idkonsumen','$produk','$iduser','$jumlah','$harga','$total','$pajak','$jlhpajak','$diskon','$jlhdiskon','$subtotal_','$note')";
                     $query = mysqli_query($con, $sql) or die($sql);
 
                     echo "sukses";
@@ -112,22 +117,28 @@
         
         $sqlcek = "SELECT *FROM tempjualdetil WHERE idjual='$idjual'";
         $querycek = mysqli_query($con, $sqlcek);
-        $rescek = mysqli_fetch_array($querycek);
         $numcek = mysqli_num_rows($querycek);
+
+        $totalDiskon = 0; $subTotalAkhir = 0;  $idkonsumen = "";
+        while($res = mysqli_fetch_array($querycek)){
+            $totalDiskon += $res['jlhdiskon'];
+            $subTotalAkhir += $res['subtotal'];
+            $idkonsumen = $res['idkonsumen'];
+        }
+        
+        $grandTotalAkhir = $subTotalAkhir - $totalDiskon;
 
         if ($numcek > 0) {
             if ($act == "edit") {
-                $sql = "UPDATE tbjual SET subtotal='$rescek[subtotal_]',grandtotal='$rescek[grandtotal_]' WHERE id='$idjual'";
+                $sql = "UPDATE tbjual SET subtotal='$subTotalAkhir',grandtotal='$grandTotalAkhir' WHERE id='$idjual'";
                 $query = mysqli_query($con, $sql);
             }
             if ($act == "new") {
-                    $sql = "INSERT INTO tbjual (id,iduser,idkonsumen,tanggal,subtotal,diskon,grandtotal,cash,status_antar) VALUES ('$idjual','$iduser','$rescek[idkonsumen]','$tgltransaksi','$subtotal','$rescek[jlhdiskon]','$grandtotal','1','selesai')";
-                    $query = mysqli_query($con, $sql);
-                    
-
+                    $sql = "INSERT INTO tbjual (id,iduser,idkonsumen,tanggal,subtotal,diskon,grandtotal,cash,status_antar) VALUES ('$idjual','$iduser','$idkonsumen','$tgltransaksi','$subtotal','$totalDiskon','$grandTotalAkhir','1','selesai')";
+                    $query = mysqli_query($con, $sql);       
             }
             if ($act == "bayar") {
-                $sql = "UPDATE tbjual SET iduser='$iduser',idkonsumen='$rescek[idkonsumen]',jatuh_tempo='$jatuhtempo',subtotal='$subtotal',diskon='$rescek[jlhdiskon]',grandtotal='$grandtotal', cash ='$cash',status_antar = 'selesai' WHERE id='$idjual'";
+                $sql = "UPDATE tbjual SET iduser='$iduser',idkonsumen='$idkonsumen',jatuh_tempo='$jatuhtempo',subtotal='$subtotal',diskon='$totalDiskon',grandtotal='$grandTotalAkhir', cash ='$cash',status_antar = 'selesai' WHERE id='$idjual'";
                 $query = mysqli_query($con, $sql);
             }
             // end if act
@@ -492,7 +503,7 @@
         $produk = $re['nama'];
         $wilayah = $re['wilayah'];
         $jenis = $re['jenis_market'];
-        $hargadk = $re['harga_dk'];
+        $hargajual = $re['harga_jual'];
         $hargalk = $re['harga_lk'];
         $hargadepo = $re['harga_depo'];
         $hargamodern = $re['harga_modern'];
@@ -505,7 +516,7 @@
         $kategori = $re['kategori'];
         $jumlah = $re['jumlah'];
         
-        echo $id."|".$produk."|".$hargadk."|".$satuan."|".$kategori."|".$jumlah;
+        echo $id."|".$produk."|".$hargajual."|".$satuan."|".$kategori."|".$jumlah;
     } elseif ($tombol == "tampidetailcanvas") {
     } elseif ($tombol == "tampiljoinview") {
         ?>
@@ -1177,6 +1188,8 @@
         $queryjual = mysqli_query($con, $sqljual);
         $resjual = mysqli_fetch_array($queryjual);
 
+        echo $sqljual;
+
         $subtotal = $resjual['subtotal'];
         $diskon = $resjual['diskon'];
         $pajak = $resjual['pajak'];
@@ -1202,7 +1215,7 @@
         $namaCustomer = $resKonsumen['nama'];
         $totalHargaJual = $resjual['subtotal'];
         $diskonHargaJual = $resjual['diskon'];
-        $totalSemuaJual = $totalHargaJual - $diskonHargaJual;
+        $totalSemuaJual = $resjual['grandtotal'];
         
         $sqlsel = "select tbjualdetil.*,tbproduk.nama from tbjualdetil left join tbproduk on tbjualdetil.idproduk=tbproduk.id where idjual = '$idjual'";
         $querysel = mysqli_query($con,$sqlsel);
@@ -1262,8 +1275,8 @@
             $id = $res['id'];
             $idjual = $res['id'];
             $supplier = $res['nama_sales'];
-            $user = $res['nama_user'];
-            $referensi = $res['nama_konsumen'];
+            $user = $res['nama_user'] == null ? "Processed by FO" : $res['nama_user'];
+            $referensi = $res['nama_konsumen'] == null ? "Processed by BO" : $res['nama_konsumen'];
             $metodepembayaran = $res['metode_pembayaran'];
             $jatuhtempo = $res['jatuh_tempo'];
             $grandtotal = $res['grandtotal'];
@@ -1271,16 +1284,11 @@
             $tanggal = $res['tanggal']; ?>
         <tr>
             <td> <?php echo $no; ?>. </td>
-            <td> <?php echo $idjual; ?>
-            </td>
-            <td> <?php echo date("d-m-Y", strtotime($tanggal)); ?>
-            </td>
-            <td> <?php echo $user; ?>
-            </td>
-            <!-- <td> <?php echo $supplier; ?> -->
-            </td>
-            <td> <?php echo $referensi; ?>
-            </td>
+            <td> <?php echo $idjual; ?> </td>
+            <td> <?php echo date("d-m-Y", strtotime($tanggal)); ?> </td>
+            <td> <?php echo $user; ?> </td>
+            <!-- <td> <?php echo $supplier; ?> </td>--> 
+            <td> <?php echo $referensi; ?></td>
             <td> <?php echo "Rp. ".number_format($grandtotal, 0, ',', '.'); ?>
             </td>
             <td>
