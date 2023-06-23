@@ -434,7 +434,7 @@ $icon = $res['icon'];
       </div>
    </div>
    <input type="hidden" id="checkVerified" value="<?= $_SESSION['verified']?>"> 
-   <input type="text" id="listIdKeranjang"> 
+   <input type="hidden" id="listIdKeranjang"> 
    <!-- End of modal -->
    <!-- end footer -->
    <!-- Javascript files-->
