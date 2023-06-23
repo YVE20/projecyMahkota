@@ -314,12 +314,13 @@
             $totaldetil = $resseldetil['total'];
             $diskon = $resseldetil['diskon'];
             $jlhdiskon = $resseldetil['jlhdiskon'];
-            $pajak = $resseldetil['pajak'];
-            $jlhpajak = $resseldetil['jlhpajak'];
+            $pajak = $resseldetil['pajak'] == "" ? 0 : $resseldetil['pajak'];
+            $jlhpajak = $resseldetil['jlhpajak'] == "" ? 0 : $resseldetil['jlhpajak'];
             $subtotal = $resseldetil['subtotal'];
 
             $sqltrashdetil = "insert into trashjualdetil (idjual,idproduk,iduser,jumlah,harga,total,diskon,jlhdiskon,pajak,jlhpajak,subtotal) values ('$idjualdetil','$idprodukdetil','$iduser','$jumlahprodukdetil','$hargadetil','$totaldetil','$diskon','$jlhdiskon','$pajak','$jlhpajak','$subtotal')";
             $querytrashdetil = mysqli_query($con, $sqltrashdetil);
+
         }
 
         // Masukkan ke trashjual
@@ -332,12 +333,12 @@
             $mejajual = $resseljual['meja'];
             $subtotaljual = $resseljual['subtotal'];
             $diskonjual = $resseljual['diskon'];
-            $pajakjual = $resseljual['pajak'];
+            $pajakjual = $resseljual['pajak'] == "" ? 0 : $resseljual['pajak'];
             $grandtotaljual = $resseljual['grandtotal'];
             $cashjual = $resseljual['cash'];
-            $kembalianjual = $resseljual['kembalian'];
+            $kembalianjual = $resseljual['kembalian'] == "" ? 0 : $resseljual['kembalian'];
 
-            $sqltrashjual = "insert into trashjual (id,iduser,idkaryawan,tanggal,shift,meja,subtotal,diskon,pajak,grandtotal,cash,kembalian,alasan) values ('$idjual','$iduser','$idkaryawanjual','$tanggaljual','$shiftjual','$mejajual','$subtotaljual','$diskonjual','$pajakjual','$grandtotaljual','$cashjual','$kembalianjual','$alasan')";
+            $sqltrashjual = "insert into trashjual (id,iduser,tanggal,subtotal,diskon,pajak,grandtotal,cash,kembalian,alasan) values ('$idjual','$iduser','$tanggaljual','$subtotaljual','$diskonjual','$pajakjual','$grandtotaljual','$cashjual','$kembalianjual','$alasan')";
             $querytrashjual = mysqli_query($con, $sqltrashjual);
         }
 
