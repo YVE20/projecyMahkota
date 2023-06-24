@@ -101,7 +101,7 @@ include "Header.php";
     }
     function editKategori(idKategori){
         $.post("savekategoribarang.php", {
-            action : "edit",
+            action : "save",
             kategoriBarang : $('#kategoriBarang').val(),
             idKategori : idKategori
         })

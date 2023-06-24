@@ -55,7 +55,7 @@
                                     <div class="col-md-6" style="padding-right:0px;padding-left:0px;">
                                         <div class="form-group form-element">
                                             <label style="top:-10px;">Nama Supplier</label>
-                                            <select class="form-control col-md-7 col-xs-12 combobox selectpicker" data-live-search="true" data-size="5" name="cmbsupplier" id="cmbsupplier">
+                                            <select class="form-control col-md-7 col-xs-12 combobox selectpicker" data-live-search="true" data-size="5" name="cmbsupplier" id="cmbsupplier" require>
                                                 <option value="-">-- Pilih Supplier --</option>
                                                 <?php
                                                 $sqlmenu = "select * from tbsupplier order by nama asc";
@@ -111,7 +111,7 @@
                                         <div class="col-md-2" style="padding-right:0px;">
                                             <div class="form-group form-animate-text">
                                                 <label style="top:-10px;color:#918C8C;font-size:13px !important;font-weight:400;">Jumlah</label>
-                                                <input type="text" class="form-text" id="txtjumlah" name="txtjumlah" value="0" onfocus="f_tonumber(this.id)" onblur="f_tocurrency(this.id);hitungharga()">
+                                                <input type="text" class="form-text" id="txtjumlah" name="txtjumlah" value="0" onfocus="f_tonumber(this.id)" onblur="f_tocurrency(this.id);hitungharga()" requ>
                                                 <span class="bar"></span>
                                             </div>
                                         </div>

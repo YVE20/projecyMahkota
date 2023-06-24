@@ -35,7 +35,7 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group form-animate-text" style="">
-                                                <input type="text" class="form-text"  id="txtnohp" name="txtnohp" required>
+                                                <input type="text" class="form-text" id="txtnohp" name="txtnohp" required>
                                                 <span class="bar"></span>
                                                 <label>No HP</label>
                                             </div>
