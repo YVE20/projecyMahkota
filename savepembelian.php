@@ -432,7 +432,7 @@
         $row = 1;
         $hitung = 0; $statusApproved = "";
         while($re = mysqli_fetch_array($queryDetailPembelian)){
-            $hitung += $re['subtotal'];
+            $hitung += $re[9];
             $statusApproved = $re['statusApproved'];
             $isi .="
                 <tr>
@@ -442,7 +442,7 @@
                     <td> Rp. ".number_format($re['harga'],0,',','.')." </td>
                     <td> Rp. ".number_format($re['jlhdiskon'],0,',','.')." </td>
                     <td> Rp. ".number_format($re['jlhpajak'],0,',','.')." </td>
-                    <td> Rp. ".number_format($re['subtotal'],0,',','.')." </td>
+                    <td> Rp. ".number_format($re[9],0,',','.')." </td>
                 </tr>
             ";
         }
