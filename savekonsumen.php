@@ -7,7 +7,7 @@
     $id = $_POST['id'];
     $nama = $_POST['nama'];
     $alamat = $_POST['alamat'];
-    $nohp = $_POST['nohp'];
+    $nohp = $_POST['no_hp'];
     $email = $_POST['email'];
 
     if ($tombol == "simpan") {

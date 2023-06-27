@@ -119,6 +119,7 @@ include "Header.php";
             }
             cleanData();
             loaddata();
+            $('#action').html("Save");
         });
     }
     function deleteKategori(idKategori){

@@ -22,8 +22,44 @@
             </div>
         </div>
     </div>
-        <!-- page content -->
 <?php include "Footer.php";?>
+
+
+<!-- Detail Pembelian -->
+<div class="modal fade" id="detailPembelianModal" tabindex="-1" role="dialog" aria-labelledby="detailPembelianModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailPembelianModalLabel"> Detail Pembelian </h5>
+                <p> Status : <span id="statusApproved" style="font-weight: bold;"> </span> </p>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -30px;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped dt-responsive nowrap">
+                    <thead>
+                        <tr>
+                            <th> # </th>
+                            <th> Produk </th>
+                            <th> Qty </th>
+                            <th> Harga </th>
+                            <th> Diskon </th>
+                            <th> Pajak </th>
+                            <th> Sub Total </th>
+                        </tr>
+                    </thead>
+                    <tbody id="isiDetailPembelian">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"> Tutup </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
@@ -101,4 +137,22 @@
     $(document).ready(function(){
         f_load();
     });
+
+    function detailPembelian(idPembelian){
+        $.post("savepembelian.php",
+        {
+            tombol : "detailPembelian",
+            idPembelian : idPembelian,
+        }).done(function(data){
+            var split = data.split('###');
+            $('#isiDetailPembelian').html(split[0]);
+            $('#detailPembelianModal').modal('show');
+
+            if(split[1] == "Approved"){
+                $('#statusApproved').html("Approved");
+            }else{
+                $('#statusApproved').html("Rejected");
+            }
+        });
+    }
 </script>

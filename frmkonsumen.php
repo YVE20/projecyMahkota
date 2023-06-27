@@ -107,9 +107,14 @@
                 cache: false,
                 processData: false,
                 success: function (data) {
-                    console.log(data);
                     loaddata();
                     $("#reset").click();
+                    $('#simpan').html("Save");
+
+                    Swal.fire({
+                        type: 'success',
+                        title: 'Data berhasil di ' + tombol
+                    })
                 }
             });
 
@@ -136,6 +141,7 @@
 
     function f_edit(id) {
         $("#reset").click();
+        $('#simpan').html("Edit");
         $.post("savekonsumen.php", {
                 tombol: "tampiledit",
                 id: id

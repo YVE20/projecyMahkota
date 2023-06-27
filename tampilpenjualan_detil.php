@@ -192,12 +192,12 @@ if ($tombol == "tampilcari") {
                     extend: 'print',
                     footer: true
                 },
-                {
-                    text: 'PDF',
-                    action: function() {
-                        window.location.href = "cetak_lappenjualan_detail.php?ts=" + tanggalselesai + "&tm=" + tanggalmulai + "&user=" + user + "&sales=" + sales + "&konsumen=" + konsumen + "&produk=" + produk;
-                    }
-                }
+                // {
+                //     text: 'PDF',
+                //     action: function() {
+                //         window.location.href = "cetak_lappenjualan_detail.php?ts=" + tanggalselesai + "&tm=" + tanggalmulai + "&user=" + user + "&sales=" + sales + "&konsumen=" + konsumen + "&produk=" + produk;
+                //     }
+                // }
             ],
             lengthMenu: [
                 [10, 25, 50, -1],

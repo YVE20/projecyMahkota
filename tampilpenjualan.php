@@ -67,7 +67,7 @@
                     <td><?php echo $idtransaksi; ?></td>
                     <td><?php echo $tanggal; ?></td>
                     <td><?php echo $created_at; ?></td>
-                    <td><?php echo $user; ?></td>
+                    <td> <?= $user == "" ? "Processed by FO" : $user ?> </td>
                     <td><?php echo $konsumen; ?></td>
                     <!-- <td><?php echo $sales; ?></td> -->
                     <!-- <td><?php echo "Rp ".uang($subtotal); ?></td>

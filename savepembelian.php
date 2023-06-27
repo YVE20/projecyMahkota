@@ -286,7 +286,17 @@
                 ?>
                 <tr>
                     <td> <?php echo $no;?>. </td>
-                    <td> <?php echo $idpembelian;?> <?= $id_user_approve ?> </td>
+                    <?php 
+                        if($_SESSION['status'] != "Admin"){
+                    ?>
+                        <td> <?= $idpembelian ?> </td>
+                    <?php
+                        }else{
+                    ?>
+                        <td> <a href="javascript:void(0)" onclick="detailPembelian('<?= $idpembelian ?>')" style="text-decoration: none;color:#0581f5;"> <?= $idpembelian ?> </a> </td>
+                    <?php
+                        }
+                    ?>
                     <td> <?php echo date("d-m-Y", strtotime($tanggal));?> </td>
                     <td> <?php echo $user;?> </td>
                     <td> <?php echo $supplier;?> </td>
@@ -412,6 +422,38 @@
         $queryDeleteTempPembelian = mysqli_query($con, $sqlDeleteTempPembelian) or die ($sqlDeleteTempPembelian);
 
         echo "success";
+    }else if($tombol == "detailPembelian"){
+        $idPembelian = $_POST['idPembelian'];
+
+        $sqlDetailPembelian = "SELECT *FROM tbpembeliandetil tbdt INNER JOIN tbproduk tp ON tbdt.id_produk = tp.id INNER JOIN tbpembelian tbp ON tbdt.id_pembelian = tbp.id_pembelian WHERE tbdt.id_pembelian = '$idPembelian' ";
+        $queryDetailPembelian = mysqli_query($con,$sqlDetailPembelian);
+
+        $isi = "";
+        $row = 1;
+        $hitung = 0; $statusApproved = "";
+        while($re = mysqli_fetch_array($queryDetailPembelian)){
+            $hitung += $re['subtotal'];
+            $statusApproved = $re['statusApproved'];
+            $isi .="
+                <tr>
+                    <td> ".$row++." </td>
+                    <td> ".$re['nama']." </td>
+                    <td> ".$re[3]." </td>
+                    <td> Rp. ".number_format($re['harga'],0,',','.')." </td>
+                    <td> Rp. ".number_format($re['jlhdiskon'],0,',','.')." </td>
+                    <td> Rp. ".number_format($re['jlhpajak'],0,',','.')." </td>
+                    <td> Rp. ".number_format($re['subtotal'],0,',','.')." </td>
+                </tr>
+            ";
+        }
+        $isi .="
+            <tr>
+                <th colspan='6'> <center> Total </center> </th>
+                <th> Rp ".number_format($hitung,0,',','.')." </th>
+            </tr>
+        ";
+        $isi .="###".$statusApproved;
+        echo $isi;
     }
     
 ?>
