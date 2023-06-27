@@ -8,7 +8,6 @@ $tanggalmulai = $_POST['tanggalmulai'];
 $tanggalselesai = $_POST['tanggalselesai'];
 $produk = $_POST['produk'];
 $user = $_POST['user'];
-$sales = $_POST['sales'];
 $konsumen = $_POST['konsumen'];
 
 
@@ -24,9 +23,6 @@ if ($tombol == "tampilcari") {
     if ($konsumen != "ALL") {
         $syarat .= " AND tj.idkonsumen='$konsumen'";
     }
-    if ($sales != "ALL") {
-        $syarat .= " AND tj.idsales='$sales'";
-    }
     if ($produk != "ALL") {
         $syarat .= " AND tjd.idproduk='$produk'";
         $syaratdetil .= " AND tjd.idproduk='$produk'";
@@ -41,13 +37,11 @@ if ($tombol == "tampilcari") {
                 <th>Tanggal</th>
                 <th>Waktu</th>
                 <th>User</th>
-                <!-- <th>Sales</th> -->
                 <th>Konsumen</th>
                 <th>Produk</th>
                 <th>Harga</th>
                 <th>Jumlah</th>
                 <th>Diskon</th>
-                <!-- <th>Pajak</th> -->
                 <th>Subtotal</th>
                 <th>Total</th>
             </tr>
@@ -69,10 +63,8 @@ if ($tombol == "tampilcari") {
                 $created_at = $res['created_at'];
                 $user = $res['namauser'];
                 $karyawan = $res['namakaryawan'];
-                $sales = $res['namasales'];
                 $konsumen = $res['namakonsumen'];
-                $shift = $res['shift'];
-                $meja = $res['meja'];
+
             ?>
                 <tr>
                     <td><?php echo $x; ?></td>
@@ -80,7 +72,6 @@ if ($tombol == "tampilcari") {
                     <td><?php echo $tanggal; ?></td>
                     <td><?php echo $created_at; ?></td>
                     <td><?php echo $user; ?></td>
-                    <!-- <td><?php echo $sales; ?></td> -->
                     <td><?php echo $konsumen; ?></td>
                     <td></td>
                     <td></td>
@@ -106,7 +97,6 @@ if ($tombol == "tampilcari") {
                     <tr>
                         <td></td>
                         <td></td>
-                        <!-- <td></td> -->
                         <td></td>
                         <td></td>
                         <td></td>

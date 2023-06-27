@@ -37,8 +37,8 @@ include "Header.php";
                                     <div class="col-md-6">
                                         <div class="form-group form-element">
                                             <label style="">Kategori</label>
-                                            <select class="form-control col-md-7 col-xs-12 combobox" name="cmbkategori" id="cmbkategori" onchange="pilihkategori(this.value)">
-                                            <option value="-">-- Pilih Konsumen --</option>
+                                            <select class="form-control col-md-7 col-xs-12 combobox" name="cmbkategori" id="cmbkategori">
+                                            <option value="-">-- Pilih Kategori --</option>
                                             <?php
                                                 $sqlmenu = "select * from tbkategori";
                                                 $querymenu = mysqli_query($con, $sqlmenu);
@@ -56,7 +56,7 @@ include "Header.php";
                                         <div class="form-group form-element">
                                             <label style="">Satuan</label>
                                             <select class="form-control col-md-7 col-xs-12 combobox" name="cmbsatuan" id="cmbsatuan">
-                                            <option value="-">-- Pilih Konsumen --</option>
+                                            <option value="-">-- Pilih Satuan --</option>
                                                 <?php
                                                 $sqlmenu = "select * from tbsatuan";
                                                 $querymenu = mysqli_query($con, $sqlmenu);
