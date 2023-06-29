@@ -48,7 +48,7 @@ $icon = $res['icon'];
                   </div>
                </div>
                <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
-                  <div class="col-lg-4 col-12 float-right" onclick="location.href='profile.php'" style="z-index: 999;background-color: #c2c7cf;border-radius: 0px 0px 10px 10px;color:black;cursor:pointer"> Alamat : <span id="isiAlamat"> Indonesia </span> </div>
+                  <div class="col-lg-4 col-12 float-right" id="goToProfile" onclick="location.href='profile.php'" style="z-index: 999;background-color: #c2c7cf;border-radius: 0px 0px 10px 10px;color:black;cursor:pointer"> Alamat : <span id="isiAlamat"> Indonesia </span> </div>
                   <div class="float-right col-lg-12" style="margin-top:-35px;"> 
                      <nav class="navigation navbar navbar-expand-md" style="color:black">
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
@@ -739,6 +739,11 @@ $icon = $res['icon'];
          }).done(function(data) {
             if(data != ""){
                $('#isiAlamat').html(data);
+            }else{
+               $('#isiAlamat').click(function(){
+                  $('#goToProfile').attr('onclick','#');
+                  $('#loginModal').modal('show');
+               });
             }
          })
       }
