@@ -109,8 +109,8 @@ $icon = $res['icon'];
    <div class="three_box">
       <div class="container">
          <div class="row mt-5">
-            <div class="col-lg-4">
-               <div class="card" style="width: 18rem;">
+            <div class="col-lg-5">
+               <div class="card">
                   <center>
                      <img class="card-img-top p-3" src="../pictures/profile.jpg" alt="Card image cap " style="width:50%">
                   </center>
@@ -123,7 +123,7 @@ $icon = $res['icon'];
                         while ($re1 = mysqli_fetch_array($query1)) {
                         ?> <font> <b> <?= strtoupper($re1['nama']) ?> </b> </font> <br>
                      <div class="row" id="editNoHP">
-                        <div class="col-lg-9">
+                        <div class="col-lg-8">
                            <div class="row">
                               <div class="col-lg-1">
                                  <i class="fa fa-phone" aria-hidden="true" id="noHP"></i>
@@ -141,7 +141,7 @@ $icon = $res['icon'];
                         </div>
                      </div>
                      <div class="row" id="editNoHP">
-                        <div class="col-lg-9">
+                        <div class="col-lg-8">
                            <div class="row">
                               <div class="col-lg-1">
                                  <i class="fa fa-map-marker" aria-hidden="true"></i>
@@ -160,6 +160,9 @@ $icon = $res['icon'];
                         <div class="col-lg-1 pencilAltAlamat" onclick="detailListAlamat()" style="text-align: right;cursor: pointer;">
                            <i class="fa fa-eye" aria-hidden="true"></i>
                         </div>
+                        <div class="col-lg-1 pencilAltAlamat" onclick="tambahAlamat()" style="text-align: right;cursor: pointer;">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                        </div>
                      </div>
                   <?php
                         }
@@ -168,7 +171,7 @@ $icon = $res['icon'];
                   </div>
                </div>
             </div>
-            <div class="col-lg-8">
+            <div class="col-lg-7">
                <h3> <i class="fa fa-bars" aria-hidden="true"></i> Pesanan </h3>
                <?php
                $iduser = $_SESSION['iduser'];
@@ -308,6 +311,35 @@ $icon = $res['icon'];
                   </div>
                   <div class="mt-4">
                      <button type="submit" class="btn btn-secondary"> <i class="fa fa-pencil" aria-hidden="true"></i> Edit </button>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- Alamat Tambah Modal -->
+   <div class="modal fade" style="margin-top: 100px;" id="alamatTambahModal" tabindex="-1" role="dialog" aria-labelledby="alamatTambahModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h3 class="modal-title" id="exampleModalLabel"> <i class="fa fa-bars" aria-hidden="true"></i> Data Alamat </h3>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <form action="cekprofile.php" method="POST">
+                  <input type="hidden" name="type" value="confirmTambahAlamat">
+                  <input type="hidden" name="iduser" value="<?= $_SESSION['iduser'] ?>">
+                  <div class="row">
+                     <div class="container">
+                        <div class="row" id="isiAlamatTambah">
+                           
+                        </div>
+                     </div>
+                  </div>
+                  <div class="mt-4">
+                     <button type="submit" class="btn btn-secondary"> <i class="fa fa-pencil" aria-hidden="true"></i> Tambah </button>
                   </div>
                </form>
             </div>
@@ -1043,6 +1075,16 @@ $icon = $res['icon'];
          }).done(function(data) {
             $('#isiListAlamat').html(data);
          })
+      }
+      function tambahAlamat(){
+         $('#alamatTambahModal').modal('show');
+         var iduser = '<?= $_SESSION['iduser'] ?>';
+         $.post("cekprofile.php",{
+            iduser : iduser,
+            type : "tambahAlamat",
+         }).done(function(data){
+               $('#isiAlamatTambah').html(data);  
+         });
       }
       function changeAlamat(alamat,action){
          var iduser = '<?= $_SESSION['iduser'] ?>';

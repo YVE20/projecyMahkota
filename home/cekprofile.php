@@ -163,7 +163,41 @@ if($_POST['type'] == "checkAlamat"){
     $queryUpdateAlamat = mysqli_query($con,$sqlUpdateAlamat);
 
     header("location:profile.php");
-}
+}else if($_POST['type'] == "tambahAlamat"){
+    
+    //Cek user
+    $sqlKonsumen = "SELECT *FROM tbkonsumen WHERE id='$idUser'";
+    $queryKonsumen = mysqli_query($con,$sqlKonsumen);
+    $numRows = mysqli_num_rows($queryKonsumen);
 
+    if($numRows > 0){
+        echo "
+            <div class='col-lg-12'>
+                <input type='text' class='form-control' name='alamatAdded' id='alamatAdded' placeholder='Tuliskan alamat anda'>
+            </div>
+        ";
+    }
+} else if($_POST['type'] == "confirmTambahAlamat"){
+
+    $alamat = $_POST['alamatAdded'];
+    
+    $sqlCheckAlamat = "SELECT *FROM tbkonsumen WHERE id='$idUser' ";
+    $queryCheckAlamat = mysqli_query($con,$sqlCheckAlamat);
+    $result = mysqli_fetch_array($queryCheckAlamat);
+
+    $split = explode("|",substr($result['alamat'],0,-1));
+
+    $kumpulanAlamat = ""; 
+    foreach($split as $listAlamat){
+        $pisah = explode("_",$listAlamat);
+        $kumpulanAlamat .= $pisah[0]."_".$pisah[1]."|";
+    }
+    $kumpulanAlamat .= $alamat."_0|";
+    
+    $sqlUpdateAlamat = "UPDATE tbkonsumen set alamat ='$kumpulanAlamat' WHERE id='$idUser' ";
+    $queryUpdateAlamat = mysqli_query($con,$sqlUpdateAlamat);
+
+    header("location:profile.php");
+}
 
 ?>
