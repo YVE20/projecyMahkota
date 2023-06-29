@@ -31,13 +31,12 @@
 
         ?>
         <table id="datatable-fixed-header" class="table table-striped nowrap" cellspacing="0" style="width:100%">
-            <thead>
+            <thead style="text-align: left !important;">
             <tr>
-                <th>No.</th>
+                <th >No.</th>
                 <th>ID Transaksi</th>
                 <th>Tanggal</th>
                 <th>Supplier</th>
-                <th>User</th>
                 <th>Produk</th>
                 <th>Harga</th>
                 <th>Jumlah</th>
@@ -69,7 +68,6 @@
                     <td><?php echo $idtransaksi; ?></td>
                     <td><?php echo $tanggal; ?></td>
                     <td><?php echo $supplier; ?></td>
-                    <td><?php echo $user; ?></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -95,7 +93,6 @@
                     $subtotal = $resdet['subtotal'];
                 ?>
                 <tr>
-                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -136,7 +133,6 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>

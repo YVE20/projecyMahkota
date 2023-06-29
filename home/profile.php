@@ -52,51 +52,54 @@ $icon = $res['icon'];
                   </div>
                </div>
                <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
-                  <nav class="navigation navbar navbar-expand-md" style="color:black">
-                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                     </button>
-                     <div class="collapse navbar-collapse" id="navbarsExample04">
-                        <ul class="navbar-nav mr-auto">
-                           <li class="nav-item active">
-                              <a class="nav-link" href="index.php">Home</a>
-                           </li>
-                           <li class="nav-item">
-                              <a class="nav-link" href="about.php">About</a>
-                           </li>
-                           <li class="nav-item">
-                              <a class="nav-link" href="contact.php">Contact Us</a>
-                           </li>
-                           <li class="nav-item d_none" onclick="viewKeranjang()">
-                              <a class="nav-link" href="#">
-                                 <i class="fa fa-shopping-basket" aria-hidden="true"></i>
-                                 <div id="qtyKeranjang" style="margin-top: -30px;margin-left:20px;"> 0 </div>
-                              </a>
-                           </li>
-                           <?php
-                           if ($_SESSION['iduser'] == "") {
-                           ?>
-                              <li class="nav-item d_none" id="loginText">
-                                 <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
+                  <div class="col-lg-4 col-12 float-right" onclick="location.href='profile.php'" style="z-index: 999;background-color: #c2c7cf;border-radius: 0px 0px 10px 10px;color:black;cursor:pointer"> Alamat : <span id="isiAlamat"></span> </div>
+                  <div class="float-right col-lg-12" style="margin-top:-35px;"> 
+                     <nav class="navigation navbar navbar-expand-md" style="color:black">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+                           <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarsExample04" >
+                           <ul class="navbar-nav mr-auto">
+                              <li class="nav-item active">
+                                 <a class="nav-link" href="index.php">Home</a>
                               </li>
-                           <?php
-                           } else {
-                           ?>
                               <li class="nav-item">
-                                 <div class="btn-group">
-                                    <a href="javascript:void(0)" class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"> <i class="fa fa-user" aria-hidden="true"></i> </a>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                       <a class="dropdown-item" href="profile.php"> <i class="fa fa-cog" aria-hidden="true"></i> Profile </a>
-                                       <a class="dropdown-item" href="logout.php"> <i class="fa fa-sign-out" aria-hidden="true"></i> Log Out </a>
-                                    </div>
-                                 </div>
+                                 <a class="nav-link" href="about.php">About</a>
                               </li>
-                           <?php
-                           }
-                           ?>
-                        </ul>
-                     </div>
-                  </nav>
+                              <li class="nav-item">
+                                 <a class="nav-link" href="contact.php">Contact Us</a>
+                              </li>
+                              <li class="nav-item d_none" onclick="viewKeranjang()">
+                                 <a class="nav-link" href="#">
+                                    <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                                    <div id="qtyKeranjang" style="margin-top: -30px;margin-left:20px;"> 0 </div>
+                                 </a>
+                              </li>
+                              <?php
+                              if ($_SESSION['iduser'] == "") {
+                              ?>
+                                 <li class="nav-item d_none" id="loginText">
+                                    <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
+                                 </li>
+                              <?php
+                              } else {
+                              ?>
+                                 <li class="nav-item">
+                                    <div class="btn-group">
+                                       <a href="javascript:void(0)" class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"> <i class="fa fa-user" aria-hidden="true"></i> </a>
+                                       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                          <a class="dropdown-item" href="profile.php"> <i class="fa fa-cog" aria-hidden="true"></i> Profile </a>
+                                          <a class="dropdown-item" href="logout.php"> <i class="fa fa-sign-out" aria-hidden="true"></i> Log Out </a>
+                                       </div>
+                                    </div>
+                                 </li>
+                              <?php
+                              }
+                              ?>
+                           </ul>
+                        </div>
+                     </nav>
+                  </div>
                </div>
             </div>
          </div>
@@ -144,7 +147,7 @@ $icon = $res['icon'];
                                  <i class="fa fa-map-marker" aria-hidden="true"></i>
                               </div>
                               <div class="col-lg-8">
-                                 <input type="text" value="<?= $re1['alamat'] ?>" id="alamatALT" style="border:none;text-decoration: none;" readonly>
+                                 <input type="text" id="alamatALT" style="border:none;text-decoration: none;" readonly>
                               </div>
                            </div>
                         </div>
@@ -153,6 +156,9 @@ $icon = $res['icon'];
                         </div>
                         <div class="col-lg-1 pencilAltAlamat" style="text-align: right;">
                            <i class="fa fa-pencil" onclick="editAlamatALT()" aria-hidden="true"></i>
+                        </div>
+                        <div class="col-lg-1 pencilAltAlamat" onclick="detailListAlamat()" style="text-align: right;cursor: pointer;">
+                           <i class="fa fa-eye" aria-hidden="true"></i>
                         </div>
                      </div>
                   <?php
@@ -257,6 +263,57 @@ $icon = $res['icon'];
          </div>
       </div>
    </footer>
+   <!-- Alamat Modal -->
+   <div class="modal fade" style="margin-top: 100px;" id="alamatModal" tabindex="-1" role="dialog" aria-labelledby="alamatModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h3 class="modal-title" id="exampleModalLabel"> <i class="fa fa-bars" aria-hidden="true"></i> List Alamat </h3>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <div class="row">
+                  <div class="container">
+                     <div class="row" id="isiListAlamat">
+                        
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- Alamat Edit Modal -->
+   <div class="modal fade" style="margin-top: 100px;" id="alamatEditModal" tabindex="-1" role="dialog" aria-labelledby="alamatEditModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h3 class="modal-title" id="exampleModalLabel"> <i class="fa fa-bars" aria-hidden="true"></i> Data Alamat </h3>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <form action="cekprofile.php" method="POST">
+                  <input type="hidden" name="type" value="confirmEditAlamat">
+                  <input type="hidden" name="iduser" value="<?= $_SESSION['iduser'] ?>">
+                  <div class="row">
+                     <div class="container">
+                        <div class="row" id="isiAlamatEdit">
+                           
+                        </div>
+                     </div>
+                  </div>
+                  <div class="mt-4">
+                     <button type="submit" class="btn btn-secondary"> <i class="fa fa-pencil" aria-hidden="true"></i> Edit </button>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
    <!-- Login Modal -->
    <div class="modal fade" style="margin-top: 100px;" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -474,6 +531,7 @@ $icon = $res['icon'];
          viewDataKeranjang();
          checkEmailVerified();
          deleteSession();
+         checkAlamat();
       });
 
       function deleteSession(){
@@ -507,10 +565,19 @@ $icon = $res['icon'];
       }
 
       function editAlamatALT() {
-         $('#alamatALT').attr('readonly', false);
-         $('#alamatALT').css('border', '1px solid black');
-         $('#alamatALT').focus();
-         $('#checkAlamatALT').css('display', 'block');
+         // $('#alamatALT').attr('readonly', false);
+         // $('#alamatALT').css('border', '1px solid black');
+         // $('#alamatALT').focus();
+         // $('#checkAlamatALT').css('display', 'block');
+         $('#alamatModal').modal('show');
+         var iduser = '<?= $_SESSION['iduser'] ?>';
+         $.post("cekprofile.php", {
+            iduser: iduser,
+            type: "checkListAlamat",
+            action : "edit"
+         }).done(function(data) {
+            $('#isiListAlamat').html(data);
+         })
       }
 
       function simpanNoHpALT() {
@@ -954,6 +1021,58 @@ $icon = $res['icon'];
             }
             viewDataKeranjang();
             countKeranjang();
+         })
+      }
+      function checkAlamat(){
+         var iduser = '<?= $_SESSION['iduser'] ?>';
+         $.post("cekprofile.php", {
+            iduser: iduser,
+            type: "checkAlamat"
+         }).done(function(data) {
+            $('#isiAlamat').html(data);
+            $('#alamatALT').val(data);
+         })
+      }
+      function detailListAlamat(){
+         $('#alamatModal').modal('show');
+         var iduser = '<?= $_SESSION['iduser'] ?>';
+         $.post("cekprofile.php", {
+            iduser: iduser,
+            type: "checkListAlamat",
+            action : "choose"
+         }).done(function(data) {
+            $('#isiListAlamat').html(data);
+         })
+      }
+      function changeAlamat(alamat,action){
+         var iduser = '<?= $_SESSION['iduser'] ?>';
+
+         $.post("cekprofile.php", {
+            iduser: iduser,
+            type: "changeAlamat",
+            alamat : alamat,
+            action : action
+         }).done(function(data) {
+            if(data == "success"){
+               Swal.fire({
+                  icon: 'success',
+                  title: 'Berhasil',
+                  text: 'Alamat berhasil diganti',
+                  showConfirmButton: false,
+                  timer: 1500
+               });
+               setTimeout(autoLoad, 1500);
+            }else{
+               $('#alamatModal').modal('hide');
+               $('#alamatEditModal').modal('show');
+               $.post("cekprofile.php",{
+                  iduser : iduser,
+                  type : "editAlamat",
+                  alamat : data
+               }).done(function(data){
+                  $('#isiAlamatEdit').html(data);  
+               });
+            }  
          })
       }
    </script>

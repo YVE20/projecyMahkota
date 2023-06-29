@@ -49,51 +49,54 @@ $icon = $res['icon'];
                   </div>
                </div>
                <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
-                  <nav class="navigation navbar navbar-expand-md" style="color:black">
-                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                     </button>
-                     <div class="collapse navbar-collapse" id="navbarsExample04">
-                        <ul class="navbar-nav mr-auto">
-                           <li class="nav-item active">
-                              <a class="nav-link" href="index.php">Home</a>
-                           </li>
-                           <li class="nav-item">
-                              <a class="nav-link" href="about.php">About</a>
-                           </li>
-                           <li class="nav-item">
-                              <a class="nav-link" href="contact.php">Contact Us</a>
-                           </li>
-                           <li class="nav-item d_none" onclick="viewKeranjang()">
-                              <a class="nav-link" href="#">
-                                 <i class="fa fa-shopping-basket" aria-hidden="true"></i>
-                                 <div id="qtyKeranjang" style="margin-top: -30px;margin-left:20px;"> 0 </div>
-                              </a>
-                           </li>
-                           <?php
-                           if ($_SESSION['iduser'] == "") {
-                           ?>
-                              <li class="nav-item d_none" id="loginText">
-                                 <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
+                  <div class="col-lg-4 col-12 float-right" onclick="location.href='profile.php'" style="z-index: 999;background-color: #c2c7cf;border-radius: 0px 0px 10px 10px;color:black;cursor:pointer"> Alamat : <span id="isiAlamat"></span> </div>
+                  <div class="float-right col-lg-12" style="margin-top:-35px;"> 
+                     <nav class="navigation navbar navbar-expand-md" style="color:black">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+                           <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarsExample04" >
+                           <ul class="navbar-nav mr-auto">
+                              <li class="nav-item active">
+                                 <a class="nav-link" href="index.php">Home</a>
                               </li>
-                           <?php
-                           } else {
-                           ?>
                               <li class="nav-item">
-                                 <div class="btn-group">
-                                    <a href="javascript:void(0)" class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"> <i class="fa fa-user" aria-hidden="true"></i> </a>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                       <a class="dropdown-item" href="profile.php"> <i class="fa fa-cog" aria-hidden="true"></i> Profile </a>
-                                       <a class="dropdown-item" href="logout.php"> <i class="fa fa-sign-out" aria-hidden="true"></i> Log Out </a>
-                                    </div>
-                                 </div>
+                                 <a class="nav-link" href="about.php">About</a>
                               </li>
-                           <?php
-                           }
-                           ?>
-                        </ul>
-                     </div>
-                  </nav>
+                              <li class="nav-item">
+                                 <a class="nav-link" href="contact.php">Contact Us</a>
+                              </li>
+                              <li class="nav-item d_none" onclick="viewKeranjang()">
+                                 <a class="nav-link" href="#">
+                                    <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                                    <div id="qtyKeranjang" style="margin-top: -30px;margin-left:20px;"> 0 </div>
+                                 </a>
+                              </li>
+                              <?php
+                              if ($_SESSION['iduser'] == "") {
+                              ?>
+                                 <li class="nav-item d_none" id="loginText">
+                                    <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
+                                 </li>
+                              <?php
+                              } else {
+                              ?>
+                                 <li class="nav-item">
+                                    <div class="btn-group">
+                                       <a href="javascript:void(0)" class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"> <i class="fa fa-user" aria-hidden="true"></i> </a>
+                                       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                          <a class="dropdown-item" href="profile.php"> <i class="fa fa-cog" aria-hidden="true"></i> Profile </a>
+                                          <a class="dropdown-item" href="logout.php"> <i class="fa fa-sign-out" aria-hidden="true"></i> Log Out </a>
+                                       </div>
+                                    </div>
+                                 </li>
+                              <?php
+                              }
+                              ?>
+                           </ul>
+                        </div>
+                     </nav>
+                  </div>
                </div>
             </div>
          </div>
@@ -440,6 +443,7 @@ $icon = $res['icon'];
          viewDataKeranjang();
          checkEmailVerified();
          deleteSession();
+         checkAlamat();
       });
 
       function deleteSession(){
@@ -892,6 +896,15 @@ $icon = $res['icon'];
             }
             viewDataKeranjang();
             countKeranjang();
+         })
+      }
+      function checkAlamat(){
+         var iduser = '<?= $_SESSION['iduser'] ?>';
+         $.post("cekprofile.php", {
+            iduser: iduser,
+            type: "checkAlamat"
+         }).done(function(data) {
+            $('#isiAlamat').html(data);
          })
       }
    </script>

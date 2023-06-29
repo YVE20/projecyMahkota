@@ -277,11 +277,13 @@ date_default_timezone_set("Asia/Jakarta");
                                     <span class="fa-angle-right fa right-arrow text-right"></span>
                                 </a>
                                 <ul class="nav nav-list tree">
-                                    <li><a href="lappenjualan.php">Penjualan</a></li>
-                                    <li><a href="lappenjualan_detil.php">Penjualan Detil</a></li>
-                                    <li><a href="lappembelian.php">Pembelian</a></li>
-                                    <li><a href="lappembelian_detil.php">Pembelian Detil</a></li>
-                                    <li><a href="lapprofit.php">Profit Penjualan</a></li>
+                                <li><a href="lappenjualan_detil.php">Penjualan</a></li>
+                                    <!-- <li><a href="lappenjualan.php">Penjualan</a></li> -->
+                                    <!-- <li><a href="lappenjualan_detil.php">Penjualan Detil</a></li> -->
+                                    <!-- <li><a href="lappembelian.php">Pembelian</a></li> -->
+                                    <li><a href="lappembelian_detil.php">Pembelian</a></li>
+                                    <!-- <li><a href="lappembelian_detil.php">Pembelian Detil</a></li> -->
+                                    <!-- <li><a href="lapprofit.php">Profit Penjualan</a></li> -->
                                 </ul>
                             </li>
                             <li class="<?php echo (($menu_head == "data" ? 'active'  : ''));  ?> ripple"><a class="tree-toggle nav-header">
@@ -315,11 +317,13 @@ date_default_timezone_set("Asia/Jakarta");
                                     <span class="fa-angle-right fa right-arrow text-right"></span>
                                 </a>
                                 <ul class="nav nav-list tree">
-                                    <li><a href="lappenjualan.php">Penjualan</a></li>
-                                    <li><a href="lappenjualan_detil.php">Penjualan Detil</a></li>
-                                    <li><a href="lappembelian.php">Pembelian</a></li>
-                                    <li><a href="lappembelian_detil.php">Pembelian Detil</a></li>
-                                    <li><a href="lapprofit.php">Profit Penjualan</a></li>
+                                    <li><a href="lappenjualan_detil.php">Penjualan</a></li>
+                                    <!-- <li><a href="lappenjualan.php">Penjualan</a></li> -->
+                                    <!-- <li><a href="lappenjualan_detil.php">Penjualan Detil</a></li> -->
+                                    <!-- <li><a href="lappembelian.php">Pembelian</a></li> -->
+                                    <li><a href="lappembelian_detil.php">Pembelian</a></li>
+                                    <!-- <li><a href="lappembelian_detil.php">Pembelian Detil</a></li> -->
+                                    <!-- <li><a href="lapprofit.php">Profit Penjualan</a></li> -->
                                 </ul>
                             </li>
                             <li class="<?php echo (($menu_head == "data" ? 'active'  : ''));  ?> ripple"><a class="tree-toggle nav-header">

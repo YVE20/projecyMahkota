@@ -89,8 +89,9 @@ if ($_POST['typeKeranjang'] == "count" || $_POST['typeKeranjang'] == "view") {
 
     $isi = '';
     if($num_rows4 != 0){
-        $row = 1; $dataIdKeranjang = "";
+        $row = 1; $dataIdKeranjang = ""; $harga = 0;
         while ($re4 = mysqli_fetch_array($query4)) {
+            $harga += $re4['subTotal'];
             $isi .= '
                 <tr>
                     <td>' . $row++ . '</td>
@@ -113,6 +114,12 @@ if ($_POST['typeKeranjang'] == "count" || $_POST['typeKeranjang'] == "view") {
             ';
             $dataIdKeranjang .= $re4['idKeranjang']."|";
         }
+        $isi .='
+                <tr>
+                    <td colspan="4"> <center> <b> Total  </b> </center> </td> 
+                    <td colspan="2"> <b> Rp. '.number_format($harga,0,',','.').' </b> </td>
+                </tr>    
+            ';
         $isi .='###';
         $isi .=$dataIdKeranjang;
     }else{
