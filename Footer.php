@@ -97,6 +97,20 @@
                 var pecah_detil = detil.split('*');
 
 
+                var diskon = 0;
+                if(pecah[15].length == 3){
+                    diskon = pecah[15];
+                }else if(pecah[15].length == 4){
+                    diskon = pecah[15] / 1000;
+                }else if(pecha[15].length == 5){
+                    diskon = pecah[15] / 10000;
+                }else if(pecha[15].length == 6){
+                    diskon = pecah[15] / 100000;
+                }else if(pecha[15].length == 7){
+                    diskon = pecah[15] / 1000000;
+                }else if(pecha[15].length == 8){
+                    diskon = pecah[15] / 10000000;
+                }
                 var hasilloopingdetil = "";
 
                 for (var i = 0; i < (pecah_detil.length - 1); i++) {
@@ -163,7 +177,7 @@
                         </tr>
                         <tr>
                             <td width="85px" style="text-align: right;font-weight: bold;"> Diskon </td>
-                            <td colspan="2" style="text-align: right;font-weight: bold;"> Rp ` +(pecah[15] / 1000).toLocaleString('en-US', { minimumFractionDigits: 3 }) + ` </td>
+                            <td colspan="2" style="text-align: right;font-weight: bold;"> Rp ` +(diskon).toLocaleString('en-US', { minimumFractionDigits: 3 }) + ` </td>
                         </tr>
                         <tr>
                             <td width="85px" style="text-align: right;font-weight: bold;"> Sub Total </td>
