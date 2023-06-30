@@ -40,7 +40,7 @@ if ($act=="new") {
             <div class="col-md-12">
                 <div class="col-md-12 panel">
                     <div class="col-md-12 panel-heading">
-                        <input type="text" name="idKonsumenCheckAlamat" id="idKonsumenCheckAlamat">
+                        <input type="hidden" name="idKonsumenCheckAlamat" id="idKonsumenCheckAlamat">
                         <h4>Form Penjualan
                         </h4>
                         <span> ID Transaksi : <?php echo $idtransaksi;?></span>
