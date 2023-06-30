@@ -208,7 +208,8 @@ $icon = $res['icon'];
                   <div class="col-lg-12 mt-3">
                      <center>
                         <button class="btn btn-primary w-50" onclick="ceklogin()"> <i class="fa fa-sign-in" aria-hidden="true"></i> Login </button> <br>
-                        Belum punya akun ? <a href="javascript:void(0)" onclick="registerModal()"> Klik disini </a>
+                        Belum punya akun ? <a href="javascript:void(0)" onclick="registerModal()"> Klik disini </a> <br>
+                        <a href="javascript:void(0)" style="color:#4f83d6" onclick="lupaPassword()"> Lupa password </a>
                      </center>
                   </div>
                </div>
@@ -551,7 +552,8 @@ $icon = $res['icon'];
                $.post("sendEmail.php",{
                   auth : split[1],
                   email : split[2],
-                  nama : split[3]
+                  nama : split[3],
+                  type : "Register"
                }).done(function(data){
                   console.log(data);
                      Swal.fire({
@@ -803,6 +805,30 @@ $icon = $res['icon'];
                   $('#goToProfile').attr('onclick','#');
                   $('#loginModal').modal('show');
                });
+            }
+         })
+      }
+      function lupaPassword(){
+         $('#loginModal').modal('hide');
+         Swal.fire({
+            title: 'Perhatian',
+            text : "Tuliskan emailmu yang terdaftar pada sistem",
+            input: 'email',
+            inputAttributes: {
+               autocapitalize: 'off'
+            },
+            showCancelButton: true,
+            confirmButtonText: '<i class="fa fa-paper-plane" aria-hidden="true"></i> Kirim',
+            cancelButtonText : 'Batal',
+            showLoaderOnConfirm: true,
+            preConfirm: (email) => {
+               //Proses kirim email
+               $.post("sendEmail.php", {
+                  email : email,
+                  type: "ForgetPassword"
+               }).done(function(data) {
+                  console.log(data);
+               })
             }
          })
       }
