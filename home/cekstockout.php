@@ -113,7 +113,29 @@ if ($_POST['page'] == "About" || $_POST['page'] == "Index" || $_POST['page'] == 
         $grandTotalPenjualan = $subTotalPenjualan - ($diskon + $pajak);
     }
     if($diskon == "") $diskon = 0;
-    $sql5 = "INSERT INTO tbjual (id,iduser,idkonsumen,tanggal,subtotal,diskon,grandtotal,cash,status_antar) VALUES ('$idtransaksi','0','$iduser','$tgltransaksi','$subTotalPenjualan','$diskon','$grandTotalPenjualan','0','disiapkan')";
+
+    //Cek Alamat
+    $sqlCheckAlamat = "SELECT *FROM tbkonsumen WHERE id='$iduser' ";
+    $queryCheckAlamat = mysqli_query($con,$sqlCheckAlamat);
+    $result = mysqli_fetch_array($queryCheckAlamat);
+
+    $alamat = "";
+    //Check Alamat lebih dari 1 atau tidak
+    if(strpos($result['alamat'], '|')){
+        //Ada
+        $split = explode("|",substr($result['alamat'],0,-1));
+        foreach($split as $listAlamat){
+            $pisah = explode("_",$listAlamat);
+            if($pisah[1] == "1"){
+                $alamat = $pisah[0];
+            }
+        }
+    }else{
+        //Tidak ada
+        $alamat = $result['alamat'];
+    }
+
+    $sql5 = "INSERT INTO tbjual (id,iduser,idkonsumen,alamat,tanggal,subtotal,diskon,grandtotal,cash,status_antar) VALUES ('$idtransaksi','0','$iduser','$alamat','$tgltransaksi','$subTotalPenjualan','$diskon','$grandTotalPenjualan','0','disiapkan')";
     $query5 = mysqli_query($con, $sql5);
 
 }

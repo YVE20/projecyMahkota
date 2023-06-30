@@ -128,13 +128,35 @@
         
         $grandTotalAkhir = $subTotalAkhir - $totalDiskon;
 
+        $idKonsumen = $_POST['idKonsumen'];
+        //Check Alamat
+        $sqlCheckAlamat = "SELECT *FROM tbkonsumen WHERE id='$idKonsumen' ";
+        $queryCheckAlamat = mysqli_query($con,$sqlCheckAlamat);
+        $result = mysqli_fetch_array($queryCheckAlamat);
+
+        $alamat = "";
+        //Check Alamat lebih dari 1 atau tidak
+        if(strpos($result['alamat'], '|')){
+            //Ada
+            $split = explode("|",substr($result['alamat'],0,-1));
+            foreach($split as $listAlamat){
+                $pisah = explode("_",$listAlamat);
+                if($pisah[1] == "1"){
+                    $alamat = $pisah[0];
+                }
+            }
+        }else{
+            //Tidak ada
+            $alamat = $result['alamat'];
+        }
+
         if ($numcek > 0) {
             if ($act == "edit") {
                 $sql = "UPDATE tbjual SET subtotal='$subTotalAkhir',grandtotal='$grandTotalAkhir' WHERE id='$idjual'";
                 $query = mysqli_query($con, $sql);
             }
             if ($act == "new") {
-                    $sql = "INSERT INTO tbjual (id,iduser,idkonsumen,tanggal,subtotal,diskon,grandtotal,cash,status_antar) VALUES ('$idjual','$iduser','$idkonsumen','$tgltransaksi','$subtotal','$totalDiskon','$grandTotalAkhir','1','selesai')";
+                    $sql = "INSERT INTO tbjual (id,iduser,idkonsumen,alamat,tanggal,subtotal,diskon,grandtotal,cash,status_antar) VALUES ('$idjual','$iduser','$idkonsumen','$alamat','$tgltransaksi','$subtotal','$totalDiskon','$grandTotalAkhir','1','selesai')";
                     $query = mysqli_query($con, $sql);       
             }
             if ($act == "bayar") {
@@ -1284,8 +1306,18 @@
             $status = $res['status_antar'];
             $tanggal = $res['tanggal']; ?>
         <tr>
-            <td> <?php echo $no; ?>. </td>
-            <td> <?php echo $idjual; ?> </td>
+            <td> <?php echo $no;?>. </td>
+                <?php 
+                    if($_SESSION['status'] != "Admin"){
+                ?>
+                    <td> <?= $idjual ?> </td>
+                <?php
+                    }else{
+                ?>
+                    <td> <a href="javascript:void(0)" onclick="detailPenjualan('<?= $idjual ?>')" style="text-decoration: none;color:#0581f5;"> <?= $idjual ?> </a> </td>
+                <?php
+                    }
+                ?>    
             <td> <?php echo date("d-m-Y", strtotime($tanggal)); ?> </td>
             <td> <?php echo $user; ?> </td>
             <!-- <td> <?php echo $supplier; ?> </td>--> 
@@ -1444,5 +1476,117 @@
             echo "success";
         }catch(Exception $ex){
             echo "error";
+        }
+    }else if($tombol == "detailPenjualan"){
+        $idPenjualan = $_POST['idPenjualan'];
+
+        $sqlDetailpenjualan = "SELECT *FROM tbjualdetil tbdt INNER JOIN tbproduk tp ON tbdt.idproduk = tp.id 
+        INNER JOIN tbjual tbp ON tbdt.idjual = tbp.id WHERE tbdt.idjual = '$idPenjualan' ";
+        $queryDetailpenjualan = mysqli_query($con,$sqlDetailpenjualan);
+
+        $isi = "";
+        $row = 1;
+        $hitung = 0; $alamat = "";
+        while($re = mysqli_fetch_array($queryDetailpenjualan)){
+            $hitung += $re['total'];
+            $alamat = $re['alamat'];
+            $isi .="
+                <tr>
+                    <td> ".$row++." </td>
+                    <td> ".$re['nama']." </td>
+                    <td> ".$re[3]." </td>
+                    <td> Rp. ".number_format($re['harga'],0,',','.')." </td>
+                    <td> Rp. ".number_format($re['jlhdiskon'],0,',','.')." </td>
+                    <td> Rp. ".number_format($re[7],0,',','.')." </td>
+                    <td> Rp. ".number_format($re['total'],0,',','.')." </td>
+                </tr>
+            ";
+        }
+        $isi .="
+            <tr>
+                <th colspan='6'> <center> Total </center> </th>
+                <th> Rp ".number_format($hitung,0,',','.')." </th>
+            </tr>
+        ";
+        $isi .='###'.$alamat;
+        echo $isi;
+    }else if($tombol == "checkListAlamat"){
+        $idKonsumen = $_POST['idKonsumen']; 
+        $sqlCheckAlamat = "SELECT *FROM tbkonsumen WHERE id='$idKonsumen' ";
+        $queryCheckAlamat = mysqli_query($con,$sqlCheckAlamat);
+        $result = mysqli_fetch_array($queryCheckAlamat);
+        $action = $_POST['action'];
+
+        $isi = "";
+        //Check Alamat lebih dari 1 atau tidak
+        if(strpos($result['alamat'], '|')){
+            //Ada
+            $split = explode("|",substr($result['alamat'],0,-1));
+            foreach($split as $listAlamat){
+                $pisah = explode("_",$listAlamat);
+                if($pisah[1] == "1"){
+                    echo "
+                        <div class='col-md-6' onclick='changeAlamat(`".$pisah[0]."`,`".$action."`)'>
+                            <div style='border:1px solid black;padding: 20px 0px 10px 20px;margin-top:20px;cursor:pointer'>
+                                <b> ".strtoupper($result['nama'])."</b> <button class='w-25 btn-success'> AKTIF </button> <br>
+                                ".$result['no_hp']." <br>
+                                ".$pisah[0]."
+                            </div>
+                        </div>";
+                }else{
+                    echo "
+                    <div class='col-md-6' onclick='changeAlamat(`".$pisah[0]."`,`".$action."`)'>
+                        <div style='border:1px solid black;padding: 20px 0px 10px 20px;margin-top:20px;cursor:pointer'>
+                            <b> ".strtoupper($result['nama'])." </b> <br>
+                            ".$result['no_hp']." <br>
+                            ".$pisah[0]."
+                        </div>
+                    </div>";
+                }
+            }
+        }else{
+            //Tidak ada
+            $isi .="
+            <div class='col-md-6' onclick='changeAlamat(`".$result['alamat']."`,`".$action."`)'>
+                <div style='border:1px solid black;padding: 20px 0px 10px 20px;margin-top:20px;cursor:pointer'>
+                    <b> ".strtoupper($result['nama'])." </b> <br>
+                    ".$result['no_hp']." <br>
+                    ".$result['alamat']."
+                </div>
+            </div>";
+        }
+        echo $isi;
+    }
+    else if($tombol == "changeAlamat"){
+    
+        $action = $_POST['action'];
+        $alamat = $_POST['alamat'];
+        $idKonsumen = $_POST['iduser']; 
+
+        $sqlCheckAlamat = "SELECT *FROM tbkonsumen WHERE id='$idKonsumen' ";
+        $queryCheckAlamat = mysqli_query($con,$sqlCheckAlamat);
+        $result = mysqli_fetch_array($queryCheckAlamat);
+    
+        //Check Alamat
+        $split = explode("|",substr($result['alamat'],0,-1));
+    
+        if($action == "choose"){
+            $kumpulanAlamat = ""; 
+            foreach($split as $listAlamat){
+                $pisah = explode("_",$listAlamat);
+                if($pisah[0] == $alamat){
+                    $pisah[1] = 1;
+                    $kumpulanAlamat .= $pisah[0]."_".$pisah[1]."|";
+                }else{
+                    if($pisah[0]){
+                        $pisah[1] = 0;
+                        $kumpulanAlamat .= $pisah[0]."_".$pisah[1]."|";
+                    }
+                }
+            }
+            $sqlUpdateAlamat = "UPDATE tbkonsumen set alamat ='$kumpulanAlamat' WHERE id='$idKonsumen' ";
+            $queryUpdateAlamat = mysqli_query($con,$sqlUpdateAlamat);
+        
+            echo "success";
         }
     }

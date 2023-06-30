@@ -30,7 +30,7 @@ if ($act=="new") {
 } elseif ($act=="edit") {
     $idtransaksi = $idget;
 }
-?>a
+?>
 <!-- page content -->
 <div id="content">
     <div class="panel box-shadow-none content-header">
@@ -40,6 +40,7 @@ if ($act=="new") {
             <div class="col-md-12">
                 <div class="col-md-12 panel">
                     <div class="col-md-12 panel-heading">
+                        <input type="text" name="idKonsumenCheckAlamat" id="idKonsumenCheckAlamat">
                         <h4>Form Penjualan
                         </h4>
                         <span> ID Transaksi : <?php echo $idtransaksi;?></span>
@@ -54,24 +55,21 @@ if ($act=="new") {
                     <div class="col-md-3">
                         <div class="form-group form-element">
                             <label style="top:-10px;">Konsumen</label>
-                            <select class="form-control col-md-7 col-xs-12 combobox selectpicker"
-                                data-live-search="true" data-size="5" name="cmbkonsumen" id="cmbkonsumen" <?php if ($act == 'edit') {
-                                            echo 'disabled';
-                                        } ?> >
-                                        <option value="-">-- Pilih Konsumen --</option>
+                            <select class="form-control col-md-7 col-xs-12 combobox selectpicker" onchange="pilihAlamat(this.value)" data-live-search="true" data-size="5" name="cmbkonsumen" id="cmbkonsumen" 
+                                <?php if ($act == 'edit') {
+                                    echo 'disabled';
+                                } ?> >
+                                <option value="-">-- Pilih Konsumen --</option>
                                 <?php
-                                        $sqlmenu = "SELECT * FROM tbkonsumen where id!='0' ORDER BY nama ASC";
-                                        $querymenu = mysqli_query($con, $sqlmenu);
-                                        while ($res = mysqli_fetch_array($querymenu)) {
-                                            $id = $res['id'];
-                                            $nama = $res['nama'];
-                                            $alamat = $res['alamat']; ?>
-                                <option value="<?php echo $id; ?>"
-                                    data-subtext="<?php echo $alamat; ?>">
-                                    <?php echo $nama; ?>
-                                </option>
+                                    $sqlmenu = "SELECT * FROM tbkonsumen where id!='0' ORDER BY nama ASC";
+                                    $querymenu = mysqli_query($con, $sqlmenu);
+                                    while ($res = mysqli_fetch_array($querymenu)) {
+                                        $id = $res['id'];
+                                        $nama = $res['nama'];
+                                        $alamat = $res['alamat']; ?>
+                                    <option value="<?php echo $id; ?>"> <?php echo $nama; ?> </option>
                                 <?php
-                                        }
+                                    }
                                 ?>
                             </select>
                         </div>
@@ -86,10 +84,6 @@ if ($act=="new") {
                             <label style="top:-10px">Tanggal Penjualan</label>
                         </div>
                     </div>
-        
-
-                    
-
                     <div class="col-md-12 panel" style="margin-top:20px;">
                         <form class="cmxform" id="frm" method="get" action="">
                             <input type="hidden" name="txtid" id="txtid" />
@@ -311,6 +305,24 @@ if ($act=="new") {
 <!-- page content -->
 <?php include "Footer.php";?>
 
+<!-- Alamat Modal -->
+<div class="modal fade" style="margin-top: 100px;" id="alamatModal" tabindex="-1" role="dialog" aria-labelledby="alamatModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalLabel"> <i class="fa fa-bars" aria-hidden="true"></i> List Alamat </h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="isiListAlamat">  
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     var act = "<?php echo $act;?>";
     var idget = "<?php echo $idget;?>";
@@ -418,6 +430,7 @@ if ($act=="new") {
                     diskon: $diskon.val(),
                     pajak: $pajak.val(),
                     grandtotal: accounting.unformat($grandtotal.val(), ','),
+                    idKonsumen : $('#idKonsumenCheckAlamat').val()
                 })
                 .done(function(data) {
                     if (data == "kosong") {
@@ -828,4 +841,41 @@ if ($act=="new") {
             // $('#txttotal').focus();
         }
     });
+
+    function autoLoad() {
+        location.href = "frmpenjualan.php?act=new&id=";
+    }
+
+    function pilihAlamat(idKonsumen){
+        $('#alamatModal').modal('show');
+        $.post("savepenjualan.php",{
+            idKonsumen : idKonsumen,
+            tombol : "checkListAlamat",
+            action : "choose"
+        }).done(function(data){
+            $('#idKonsumenCheckAlamat').val(idKonsumen);
+            $('#isiListAlamat').html(data);
+        });
+    }
+    function changeAlamat(alamat,action){
+        var iduser = $('#idKonsumenCheckAlamat').val();
+
+        $.post("savepenjualan.php", {
+            iduser: iduser,
+            tombol: "changeAlamat",
+            alamat : alamat,
+            action : action
+        }).done(function(data) {
+            if(data == "success"){
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: 'Alamat berhasil diganti',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                $('#alamatModal').modal('hide');
+            }
+        })
+    }
 </script>
