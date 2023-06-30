@@ -22,6 +22,7 @@ if($_POST['page'] == "Index" || $_POST['page'] == "About" || $_POST['page'] == "
     if($row == 0){
 
         $token = bin2hex(random_bytes(64));
+        $alamat .= "|";
         $auth = "http://".$_SERVER['SERVER_NAME']."/mahkota/Home/verifyemail.php?email=$email&token=$token&retry=false";
 
         $sqlInsert = "insert into tbkonsumen (nama,alamat,no_hp,password,email,token,auth) values ('$nama','$alamat','$no_hp','$passEncrypt','$email','$token','$auth')";

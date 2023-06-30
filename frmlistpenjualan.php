@@ -38,6 +38,43 @@ include "Header.php";
 </div>
 <?php include "Footer.php"; ?>
 
+<!-- Detail Penjualan -->
+<div class="modal fade" id="detailPenjualanModal" tabindex="-1" role="dialog" aria-labelledby="detailPenjualanModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailPenjualanModalLabel"> Detail Penjualan </h5>
+                <p> Alamat : <span id="alamatPenjualan" style="font-weight: bold;"> </span> </p>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -30px;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped dt-responsive nowrap">
+                    <thead>
+                        <tr>
+                            <th> # </th>
+                            <th> Produk </th>
+                            <th> Qty </th>
+                            <th> Harga </th>
+                            <th> Diskon </th>
+                            <th> Total </th>
+                            <th> Sub Total </th>
+                        </tr>
+                    </thead>
+                    <tbody id="isiDetailPenjualan">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"> Tutup </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
     function f_load() {
         let tanggal = $('#txttanggal').val();
@@ -107,4 +144,17 @@ include "Header.php";
         document.getElementById('txttanggal').valueAsDate = new Date();
         f_load();
     });
+
+    function detailPenjualan(idPenjualan){
+        $.post("savepenjualan.php",
+        {
+            tombol : "detailPenjualan",
+            idPenjualan : idPenjualan,
+        }).done(function(data){
+            var split = data.split("###");
+            $('#isiDetailPenjualan').html(split[0]);
+            $('#detailPenjualanModal').modal('show');
+            $('#alamatPenjualan').html(split[1] == "" ? "-" : split[1]);
+        });
+    }
 </script>
