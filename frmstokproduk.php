@@ -11,7 +11,7 @@
                 <div class="col-md-12">
                     <div class="col-md-12 panel">
                         <div class="col-md-12 panel-heading">
-                            <h4>Form Tambah & Kurang Barang</h4>
+                            <h4>Stok Opname</h4>
                         </div>
                         <div class="col-md-12 panel-body" style="padding-bottom:30px;">
                             <div class="col-md-12">

@@ -205,7 +205,7 @@ date_default_timezone_set("Asia/Jakarta");
                             <ul class="nav nav-list tree">
                                 <li><a href="frmpenjualan.php?act=new&id="><span class="fa fa-cart-plus"></span> Penjualan</a></li>
                                 <?php
-                                if ($_SESSION['status'] == "Admin" || $_SESSION['status'] == "Karyawan") {
+                                if ($_SESSION['status'] == "Admin" || $_SESSION['status'] == "Karyawan" || $_SESSION['status'] == "Owner") {
                                 ?>
                                     <li><a href="frmlistpenjualan.php"><span class="fa fa-list"></span> List Penjualan</a></li>
                                 <?php } ?>

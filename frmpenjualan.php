@@ -224,11 +224,11 @@ if ($act=="new") {
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-3" style="padding-top:10px;padding-left:10px;">
+                            <div class="col-md-3" style="padding-top:10px;padding-left:10px;" hidden>
                                 <label style="color:#918C8C;font-weight:bold;font-size:17px;">Pajak</label>
                             </div>
                             <div class="col-md-9 form-group form-animate-text"
-                                style="margin-top:0px !important;margin-bottom:0px !important;">
+                                style="margin-top:0px !important;margin-bottom:0px !important;" hidden>
                                 <input type="text" class="form-text text-right" id="txttotalpajak" name="txttotalpajak"
                                     value="0" onblur="hitungtotal()">
                                 <span class="bar"></span>
