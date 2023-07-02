@@ -114,22 +114,26 @@
         
             if($numcek > 0) {
                 if ($act == "po") {
-                    $sql = "insert into tbpembelian (id_pembelian,id_user,id_supplier,tanggal,status,subtotal,diskon,pajak,grandtotal) 
-                    values ('$idpembelian','$iduser','$idsupplier','$tanggal','PO Pembelian','$subtotalakhir','$diskonakhir','$pajakakhir','$grandtotalakhir')";
+                    $sql = "insert into tbpembelian (id_pembelian,id_user,id_supplier,id_user_approve,tanggal,status,subtotal,diskon,pajak,grandtotal,statusApproved,alasan) 
+                    values ('$idpembelian','$iduser','$idsupplier','$iduser','$tanggal','Pembelian','$subtotalakhir','$diskonakhir','$pajakakhir','$grandtotalakhir','Approved','Penambahan Stock')";
 
                     $query = mysqli_query($con, $sql);
-                }else if ($act == "approve") {
-                    $sql = "update tbpembelian set id_user_approve='$iduser',id_supplier='$idsupplier',status='Pembelian',tanggal='$tanggal',subtotal='$subtotalakhir', diskon ='$diskonakhir' ,pajak='$pajakakhir',grandtotal = '$grandtotalakhir', statusApproved ='Approved', alasan = 'Penambahan Stock' where  id_pembelian='$idpembelian'";
-                    $query = mysqli_query($con, $sql);
-                    
-                    if($metodepembayaran == "Kredit"){
-                        $sqlhutang = "insert into tbhutang (id_pembelian,jumlah,sisa,jatuh_tempo) values ('$idpembelian','$grandtotalakhir','$grandtotalakhir','$jatuhtempo')";
-                        $queryhutang = mysqli_query($con,$sqlhutang);
-                    }
-                    
+
                     $sql4 = "delete from tbpembeliandetil where id_pembelian='$idpembelian'";
                     $query4 = mysqli_query($con, $sql4) or die ($sql4);
                 }
+                //else if ($act == "approve") {
+                //     $sql = "update tbpembelian set id_user_approve='$iduser',id_supplier='$idsupplier',status='Pembelian',tanggal='$tanggal',subtotal='$subtotalakhir', diskon ='$diskonakhir' ,pajak='$pajakakhir',grandtotal = '$grandtotalakhir', statusApproved ='Approved', alasan = 'Penambahan Stock' where  id_pembelian='$idpembelian'";
+                //     $query = mysqli_query($con, $sql);
+                    
+                //     if($metodepembayaran == "Kredit"){
+                //         $sqlhutang = "insert into tbhutang (id_pembelian,jumlah,sisa,jatuh_tempo) values ('$idpembelian','$grandtotalakhir','$grandtotalakhir','$jatuhtempo')";
+                //         $queryhutang = mysqli_query($con,$sqlhutang);
+                //     }
+                    
+                //     $sql4 = "delete from tbpembeliandetil where id_pembelian='$idpembelian'";
+                //     $query4 = mysqli_query($con, $sql4) or die ($sql4);
+                // }
                 // end if act
                 
             
@@ -149,7 +153,7 @@
                     $sql3 = "insert into tbpembeliandetil (id_pembelian,id_produk,jumlah,harga,pajak,jlhpajak,diskon,jlhdiskon,subtotal) values ('$idpembelian','$idproduk','$jumlah','$harga','$pajak','$jlhpajak','$diskon','$jlhdiskon','$subtotaldetil')";
                     $query3 = mysqli_query($con, $sql3);
         
-                    if($act == "approve"){
+                    if($act == "po"){
                         $sqlmenu = "select * from tbproduk where id='$idproduk'";
                         $querymenu = mysqli_query($con,$sqlmenu);
                         $resmenu = mysqli_fetch_array($querymenu);
@@ -304,34 +308,8 @@
                     <!-- <td> <?php echo (($metodepembayaran == "Cash" ? 'Cash'  : 'Kredit ('.date("d-m-Y", strtotime($jatuhtempo)).')'));?> </td> -->
                     <td> <?php echo "Rp. ".number_format($grandtotal,0,',','.');?> </td>
                     <td>
-                        <?php
-                            if($status == "PO Pembelian"){
-                                if($res['statusApproved'] == null){
-                        ?>
-                                <button class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Approve PO" onclick="f_approvepo('<?php echo $id;?>','<?= $resultUser['status'] ?>')">
-                                    <span class="fa fa-check"></span>
-                                </button>
-                                <button class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Rejct PO" onclick="f_rejectpo('<?php echo $id;?>','<?= $resultUser['status'] ?>')">
-                                    <span class="fa fa-times"></span>
-                                </button>
-                        <?php
-                                }
-                            }else{
-                                if($res['statusApproved'] == "Approved"){
-                        ?>
-                                <button class="btn btn-sm btn-secondary" style="width: 75%;pointer-events: none;" data-toggle="tooltip" data-placement="top" title="<?= $res['statusApproved'] ? "Approved" : "Rejected" ?>">
-                                    <span class="fa fa-check"></span> <?= $res['statusApproved'] == "Approved" ? "Approved" : "Rejected" ?>
-                                </button>
-                        <?php
-                                }else{
-                        ?>
-                                <button class="btn btn-sm btn-danger" style="width: 75%;pointer-events: none;" data-toggle="tooltip" data-placement="top" title="<?= $res['statusApproved'] ? "Approved" : "Rejected" ?>">
-                                    <span class="fa fa-check"></span> <?= $res['statusApproved'] == "Approved" ? "Approved" : "Rejected" ?>
-                                </button>
-                        <?php
-                                }
-                            }
-                        ?>
+                        <button class="btn btn-sm btn-warning" onclick="editPembelian('<?= $idpembelian ?>')"> <span class="fa fa-pencil"></span> Edit </button>
+                        <button class="btn btn-sm btn-danger" onclick="deletePembelian('<?= $idpembelian ?>')"> <span class="fa fa-times"></span> Delete </button>
                     </td>
                 </tr>
                 <?php
@@ -454,6 +432,35 @@
         ";
         $isi .="###".$statusApproved;
         echo $isi;
+    }else if($tombol == "hapusPembelian"){
+
+        $idPembelian = $_POST['idPembelian'];
+        //Delete Pembelian
+        $sqlDeletePembelian = "DELETE FROM tbpembelian WHERE id_pembelian='$idPembelian'";
+        $queryDeletePembelian = mysqli_query($con,$sqlDeletePembelian);
+
+        //Delete Detail Pembelian
+        $sqlDeleteDetailPembelian = "DELETE FROM tbpembeliandetil WHERE id_pembelian ='$idPembelian'";
+        $queryDeleteDetailPembelian = mysqli_query($con,$sqlDeleteDetailPembelian);
+        
+        echo "success";
+    }else if($tombol == "tampilEditPembelian"){
+        $idPembelian = $_POST['idPembelian'];
+
+        //Show Data Pembelian
+        $sqlDataPembelian = "SELECT *FROM tbpembelian where id_pembelian='$idPembelian'";
+        $queryDataPembelian = mysqli_query($con,$sqlDataPembelian);
+        $resultDataPembelian = mysqli_fetch_array($queryDataPembelian);
+
+        echo $resultDataPembelian['id_pembelian']."|".$resultDataPembelian['subtotal']."|".$resultDataPembelian['grandtotal']."|".$resultDataPembelian['diskon']."|".$resultDataPembelian['pajak'];
+    }else if($tombol == "tampilDetailPembelian"){
+        $idPembelian = $_POST['idPembelian'];
+
+        $sql = "SELECT *FROm tbpembeliandetil where id_pembelian='$idPembelian'";
+        $query = mysqli_query($con,$sql);
+        $result = mysqli_fetch_array($query);
+
+        echo json_encode($result);
     }
     
 ?>

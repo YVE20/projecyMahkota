@@ -107,7 +107,7 @@ if(decryptIt($getAction) == "register"){
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Peringatan',
-                                text: 'Password sudah pernah digunakan',
+                                text: 'Penggunaan password yang sama dengan saat ini tidak diijinkan',
                                 showConfirmButton: false,
                                 timer: 1500
                             });

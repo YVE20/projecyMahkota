@@ -225,14 +225,14 @@ date_default_timezone_set("Asia/Jakarta");
                                     <?php
                                     if ($_SESSION['status'] == "Karyawan" || $_SESSION['status'] == "Admin" || $_SESSION['status'] == "Owner") {
                                     ?>
-                                        <li><a href="frmpembelian.php?act=po&id="><span class="fa fa-credit-card"></span>PO Pembelian</a></li>
+                                        <li><a href="frmpembelian.php?act=po&id="><span class="fa fa-credit-card"></span>Input Pembelian</a></li>
                                     <?php
                                     } ?>
 
                                     <?php
                                     if ($_SESSION['status'] == "Admin"|| $_SESSION['status'] == "Owner") {
                                     ?>
-                                        <li><a href="frmlistpembelian.php"><span class="fa fa-list"></span>Daftar Pembelian</a></li>
+                                        <li><a href="frmlistpembelian.php"><span class="fa fa-list"></span>Pembelian</a></li>
                                     <?php } ?>
                                 </ul>
                             </li>
@@ -253,14 +253,14 @@ date_default_timezone_set("Asia/Jakarta");
                                     <?php
                                     if ($_SESSION['status'] == "Karyawan" || $_SESSION['status'] == "Admin") {
                                     ?>
-                                        <li><a href="frmpembelian.php?act=po&id="><span class="fa fa-credit-card"></span>PO Pembelian</a></li>
+                                        <li><a href="frmpembelian.php?act=po&id="><span class="fa fa-credit-card"></span>Input Pembelian</a></li>
                                     <?php
                                     } ?>
 
                                     <?php
                                     if ($_SESSION['status'] == "Admin") {
                                     ?>
-                                        <li><a href="frmlistpembelian.php"><span class="fa fa-list"></span>Daftar Pembelian</a></li>
+                                        <li><a href="frmlistpembelian.php"><span class="fa fa-list"></span>Pembelian</a></li>
                                     <?php } ?>
                                 </ul>
                             </li>

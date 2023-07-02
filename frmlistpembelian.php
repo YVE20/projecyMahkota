@@ -155,4 +155,39 @@
             }
         });
     }
+    function deletePembelian(idPembelian){
+        Swal.fire({
+            title: 'Peringatan',
+            text: "Anda yakin ingin menghapus data ini ?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '<i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Ya, hapus',
+            cancelButtonText : 'Batal',
+            }).then((result) => {
+            if (result.isConfirmed) {
+                $.post("savepembelian.php",
+                {
+                    idPembelian : idPembelian,
+                    tombol : "hapusPembelian",
+                }).done(function(data){
+                    if(data == "success"){
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: 'Data berhasil dihapus',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        f_load();
+                    }
+                });
+            }
+        })
+    }
+
+    function editPembelian(idPembelian){
+        location.href="frmpembelian.php?act=edit&idPembelian="+idPembelian;
+    }
 </script>
