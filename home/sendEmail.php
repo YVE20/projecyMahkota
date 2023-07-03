@@ -123,15 +123,11 @@ function sendEmail($email = null,$auth = null,$nama = null,$body,$subject ){
     $mail->Body = $body;	
 
     if (!$mail->send()) {
-        echo 'Mailer Error: ' . $mail->ErrorInfo;
-        echo "../vendor/phpmailer/phpmailer/src/PHPMailer.php'";
-        //echo "errorEmail";
+        echo "errorEmail";
     } else {
         echo "sukses";
     }
 }
-//EH tak ade ye :vlogin kan la
-// Ape maok cobe pakai email asli kau dak ? bebas yo coba jak 
 
 
 ?>
