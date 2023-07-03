@@ -117,7 +117,7 @@ if ($_POST['typeKeranjang'] == "count" || $_POST['typeKeranjang'] == "view") {
         $isi .='
                 <tr>
                     <td colspan="4"> <center> <b> Total  </b> </center> </td> 
-                    <td colspan="2"> <b> Rp. '.number_format($harga,0,',','.').' </b> </td>
+                    <td colspan="2"> <b> Rp. <span id="totalHarga">'.number_format($harga,0,',','.').' </span> </b> </td>
                 </tr>    
             ';
         $isi .='###';
@@ -148,4 +148,4 @@ if ($_POST['typeKeranjang'] == "count" || $_POST['typeKeranjang'] == "view") {
     }else{
         echo "kosong";
     }
-}
+} 

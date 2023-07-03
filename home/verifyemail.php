@@ -11,7 +11,7 @@ $getAction = $_GET['action'];
 
 $urlEcomm = "http://".$_SERVER['SERVER_NAME']."/mahkota/Home/index.php";
 
-if(decryptIt($getAction) == "register"){
+if($getAction == "register"){
     if($getRetry == 'true'){
         //Check Email di DB
         $sqlCheck = "SELECT *FROM tbkonsumen WHERE email='$getEmail'";
@@ -103,6 +103,15 @@ if(decryptIt($getAction) == "register"){
                                 timer: 1500
                             });
                             setTimeout(autoLoad, 1500);
+                        }else if(data == "expired"){
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Peringatan',
+                                text: 'Token sudah expired, silahkan request ulang',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            setTimeout(autoLoad, 1500);
                         }else{
                             Swal.fire({
                                 icon: 'error',
@@ -135,16 +144,22 @@ if(decryptIt($getAction) == "register"){
     if($rows == 0){
         echo "notFound";
     }else{
-        //Check password lama dan baru
-        if($password == $result['password']){
-            echo "same";
+        //Check Token dan Auth masih valid atau engga
+        $today = date("Y-m-d H:i:s");
+        if(date('Y-m-d H:i:s', strtotime($result['updated_at']. ' + 1 days')) >= $today){
+            echo "expired";
         }else{
-            //Update Status
-            $idKonsumen = $result['id'];
-            $sqlUpdateVerified = "Update tbkonsumen set password ='$password', auth='', token='' WHERE id='$idKonsumen'";
-            $queryUpdateVerified = mysqli_query($con,$sqlUpdateVerified);
+            //Check password lama dan baru
+            if($password == $result['password']){
+                echo "same";
+            }else{
+                //Update Status
+                $idKonsumen = $result['id'];
+                $sqlUpdateVerified = "Update tbkonsumen set password ='$password', auth='', token='' WHERE id='$idKonsumen'";
+                $queryUpdateVerified = mysqli_query($con,$sqlUpdateVerified);
 
-            echo "success";
+                echo "success";
+            }
         }
     }
 }

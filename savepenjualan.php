@@ -65,6 +65,7 @@
             $sql1 = "SELECT * FROM tempjualdetil WHERE idjual='$idjual' AND idproduk='$produk'";
             $query1 = mysqli_query($con, $sql1);
             $num1 = mysqli_num_rows($query1);
+
             if ($num1 == 0) {
                 $sqlmenu = "SELECT * FROM tbproduk where id='$produk'";
                 $querymenu = mysqli_query($con, $sqlmenu);
@@ -118,6 +119,7 @@
         $sqlcek = "SELECT *FROM tempjualdetil WHERE idjual='$idjual'";
         $querycek = mysqli_query($con, $sqlcek);
         $numcek = mysqli_num_rows($querycek);
+        echo $sqlcek;
 
         $totalDiskon = 0; $subTotalAkhir = 0;  $idkonsumen = "";
         while($res = mysqli_fetch_array($querycek)){

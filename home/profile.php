@@ -686,6 +686,7 @@ $icon = $res['icon'];
          
          $('#qtyJumlahKeranjang_'+idKeranjang).val(hasil);
          $('#subTotal_'+idKeranjang).val(hitungSubTotal.toLocaleString());
+         countTotalHargaKeranjang();
       }
 
       function minus(satu,idKeranjang) {
@@ -708,6 +709,7 @@ $icon = $res['icon'];
             $('#qtyJumlahKeranjang_'+idKeranjang).val(hasil);
             $('#subTotal_'+idKeranjang).val(hitungSubTotal.toLocaleString());
          }
+         countTotalHargaKeranjang();
       }
 
       function viewDataKeranjang() {
@@ -719,7 +721,28 @@ $icon = $res['icon'];
             var split = data.split('###');
             $('.isiDataKeranjang').html(split[0]);
             $('#listIdKeranjang').val(split[1]);
+            countTotalHargaKeranjang();
          })
+      }
+
+      function countTotalHargaKeranjang(){
+         var iduser = '<?= $_SESSION['iduser'] ?>';
+         var idKeranjang = $('#listIdKeranjang').val();
+         var slice = idKeranjang.slice(0,-1);
+         var splitIDKeranjang = slice.split("|");
+
+         var totalHarga = 0;
+         splitIDKeranjang.forEach(function(item){
+            var harga = $('#subTotal_'+item).val();
+            if(harga.indexOf(".") !== -1){
+               var formatedHarga = harga.replace(/\./g, "");
+            }else{
+               var formatedHarga = harga.replace(",", "");
+            }          
+            
+            totalHarga = parseInt(totalHarga) + parseInt(formatedHarga);    
+         });
+         $('#totalHarga').html(totalHarga.toLocaleString());         
       }
 
       function countKeranjang() {

@@ -316,7 +316,7 @@
     }
     function f_edit(id){
         $("#reset").click();
-        $.post("savepembelian.php",{tombol:"tampiledit",id:id,action : "edit"})
+        $.post("savepembelian.php",{tombol:"tampiledit",id:id,action : act})
             .done(function(data){
                 var pecah = data.split("|");
                 $("#txtid").val(pecah[1]);
@@ -330,16 +330,21 @@
                 $("#txtjlhpajak").val(pecah[9]);
                 $('.selectpicker').selectpicker('refresh');
                 $("#cmbproduk").prop("disabled",true);
+
                 $('#simpan').html("Edit");
-                $("#simpan").val("editDetailPembelian");
+                if(act == "edit"){
+                    $("#simpan").val("editDetailPembelian");
 
-                $('#simpan').removeClass('btn-secondary');
-                $('#simpan').addClass('btn-info');
-                $('#simpan').prop('disabled',false);
+                    $('#simpan').removeClass('btn-secondary');
+                    $('#simpan').addClass('btn-info');
+                    $('#simpan').prop('disabled',false);
 
-                $('#reset').removeClass("btn-secondary");
-                $('#reset').addClass("btn-warning");
-                $('#reset').prop("disabled",false);
+                    $('#reset').removeClass("btn-secondary");
+                    $('#reset').addClass("btn-warning");
+                    $('#reset').prop("disabled",false);
+                }else{
+                    $("#simpan").val("edit");
+                }
             });
     }
 
@@ -385,7 +390,7 @@
 
     function hitungtotal(){
         var idpembelian = $("#txtidtransaksi").val();
-        $.post("savepembelian.php",{tombol:"hitungtotal",idpembelian:idpembelian, action : "edit"})
+        $.post("savepembelian.php",{tombol:"hitungtotal",idpembelian:idpembelian, action : act})
             .done(function(data){
                 var pecah = data.split("|");
 
@@ -430,6 +435,7 @@
     $(document).ready(function(){
         f_bersih();
         loaddata();
+        $('#proses').val("proses");
         $('.selectpicker').selectpicker('refresh');
         if(act == "approve"){
             if(idget == ""){

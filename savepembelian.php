@@ -102,7 +102,7 @@
             $sql = "select sum(jumlah*harga), sum(jlhdiskon), sum(jlhpajak), sum(subtotal) from tbpembeliandetil where id_pembelian='$idpembelian'";
         }else{
             $sql = "select sum(jumlah*harga), sum(jlhdiskon), sum(jlhpajak), sum(subtotal) from temppembeliandetil where id_pembelian='$idpembelian'";
-        }
+        }   
         
         $query = mysqli_query($con,$sql);
         $res = mysqli_fetch_array($query);
@@ -116,7 +116,7 @@
     }else if($tombol == "proses"){
 
         //Jagaan jika id supplier kosong
-        if($_POST['idsupplier'] == ""){
+        if($_POST['idsupplier'] == "-" || $_POST['idsupplier'] == ""){
             echo "noSupplier";
         }else{
             $sqlcek = "select * from temppembeliandetil where id_pembelian='$idpembelian'";

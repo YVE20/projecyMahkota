@@ -534,7 +534,6 @@ if ($act=="new") {
                 idjual: $idjual.val(),
             })
             .done(function(data) {
-
                 $("#table").html(data);
                 hitungtotal();
                 loadcanvas();
@@ -639,7 +638,6 @@ if ($act=="new") {
     }
 
     function hitungtotal() {
-        ;
         $.post("savepenjualan.php", {
                 tombol: "hitungtotal",
                 idjual: $idjual.val(),

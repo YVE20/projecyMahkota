@@ -202,7 +202,8 @@ $icon = $res['icon'];
                   <div class="col-lg-12 mt-3">
                      <center>
                         <button class="btn btn-primary w-50" onclick="ceklogin()"> <i class="fa fa-sign-in" aria-hidden="true"></i> Login </button> <br>
-                        Belum punya akun ? <a href="javascript:void(0)" onclick="registerModal()"> Klik disini </a>
+                           Belum punya akun ? <a href="javascript:void(0)" onclick="registerModal()"> Klik disini </a> <br>
+                        <a href="javascript:void(0)" style="color:#4f83d6" onclick="lupaPassword()"> Lupa password </a>
                      </center>
                   </div>
                </div>
@@ -420,6 +421,7 @@ $icon = $res['icon'];
          
          $('#qtyJumlahKeranjang_'+idKeranjang).val(hasil);
          $('#subTotal_'+idKeranjang).val(hitungSubTotal.toLocaleString());
+         countTotalHargaKeranjang();
       }
 
       function minus(satu,idKeranjang) {
@@ -442,6 +444,7 @@ $icon = $res['icon'];
             $('#qtyJumlahKeranjang_'+idKeranjang).val(hasil);
             $('#subTotal_'+idKeranjang).val(hitungSubTotal.toLocaleString());
          }
+         countTotalHargaKeranjang();
       }
 
 
@@ -454,7 +457,28 @@ $icon = $res['icon'];
             var split = data.split('###');
             $('.isiDataKeranjang').html(split[0]);
             $('#listIdKeranjang').val(split[1]);
+            countTotalHargaKeranjang();
          })
+      }
+
+      function countTotalHargaKeranjang(){
+         var iduser = '<?= $_SESSION['iduser'] ?>';
+         var idKeranjang = $('#listIdKeranjang').val();
+         var slice = idKeranjang.slice(0,-1);
+         var splitIDKeranjang = slice.split("|");
+
+         var totalHarga = 0;
+         splitIDKeranjang.forEach(function(item){
+            var harga = $('#subTotal_'+item).val();
+            if(harga.indexOf(".") !== -1){
+               var formatedHarga = harga.replace(/\./g, "");
+            }else{
+               var formatedHarga = harga.replace(",", "");
+            }          
+            
+            totalHarga = parseInt(totalHarga) + parseInt(formatedHarga);    
+         });
+         $('#totalHarga').html(totalHarga.toLocaleString());         
       }
 
       function countKeranjang() {
@@ -634,7 +658,7 @@ $icon = $res['icon'];
             confirmButtonText: 'Kirim',
             showLoaderOnConfirm: true,
             preConfirm: (login) => {
-               location.href="verifyemail.php?email="+login+"&retry=true";
+               location.href="verifyemail.php?email="+login+"&retry=true&action=register";
             }
          })
       }
@@ -744,6 +768,30 @@ $icon = $res['icon'];
                   $('#goToProfile').attr('onclick','#');
                   $('#loginModal').modal('show');
                });
+            }
+         })
+      }
+      function lupaPassword(){
+         $('#loginModal').modal('hide');
+         Swal.fire({
+            title: 'Perhatian',
+            text : "Tuliskan emailmu yang terdaftar pada sistem",
+            input: 'email',
+            inputAttributes: {
+               autocapitalize: 'off'
+            },
+            showCancelButton: true,
+            confirmButtonText: '<i class="fa fa-paper-plane" aria-hidden="true"></i> Kirim',
+            cancelButtonText : 'Batal',
+            showLoaderOnConfirm: true,
+            preConfirm: (email) => {
+               //Proses kirim email
+               $.post("sendEmail.php", {
+                  email : email,
+                  type: "ForgetPassword"
+               }).done(function(data) {
+                  console.log(data);
+               })
             }
          })
       }

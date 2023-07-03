@@ -19,36 +19,38 @@ if($_POST['type'] == "Register"){
     $nama = $_POST['nama'];
     $subject = "Verifikasi Email";
 
-    $body = "
-        <!DOCTYPE html>
-        <html lang='en'>
+    $body = " 
+        <html>
             <head>
                 <meta charset='UTF-8'>
                 <meta http-equiv='X-UA-Compatible' content='IE=edge'>
                 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
                 <title> Verifikasi Email </title>
             </head>
-            <body style='width:50%'>
-                <div>
-                    <h2> Hello </h2>
-                    <p> Mohon tekan tombol dibawah ini untuk memverifikasi emailmu </p>
-                    <div>
-                        <center> <button style='width:250px;height:50px;background-color:#3489eb;border:none;'> <a href='".$auth."' style='text-decoration:none;color:white;'> Verify Email Anda </a> </button> </center>
+            <body style='background-color:#f7f7f7;'>
+                <br>
+                <center>
+                    <div style='width:80%;'>
+                        <div style='text-align:justify;background-color:#e3e3e3;padding:30px'>
+                            <h2> Hello </h2>
+                            <p> Tekan link dibawah ini untuk melakukan proses verifikasi email.  </p> <br>
+                            <div>
+                                <center> <button style='width:250px;height:50px;background-color:#6e6e6e;border:none;'> <a href='".$auth."' style='text-decoration:none;color:white;'>  Verifikasi Email  </a> </button> </center>
+                            </div>
+                            <br><br>
+
+                            <p> Hormat kami, </p>
+                            <font> Mahkota Stationery </font>
+                        </div>
                     </div>
-                </div>
-                <br>
-                <div>
-                    <p> Apabila anda merasa tidak membuat akun , silahkan abaikan proses ini </p>
-                </div>
-                <br><br>
-                <p> Hormat kami, </p>
-                <br>
-                <font> Mahkota Stationery </font>
+                </center>
             </body>
         </html>
         ";
 
         sendEmail($email,$auth,$nama,$body,$subject);
+
+        echo "sukses";
 }else if($_POST['type'] == "ForgetPassword"){
 
     $email = $_POST['email'];
@@ -76,27 +78,40 @@ if($_POST['type'] == "Register"){
                 <meta charset='UTF-8'>
                 <meta http-equiv='X-UA-Compatible' content='IE=edge'>
                 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-                <title> Email </title>
+                <title> Password Change Request </title>
             </head>
-            <body style='width:50%'>
-                <div>
-                    <h2> Hello </h2>
-                    <p> Mohon tekan tombol dibawah ini untuk mereset passwordmu </p>
-                    <div>
-                        <center> <button style='width:250px;height:50px;background-color:#3489eb;border:none;'> <a href='".$auth."' style='text-decoration:none;color:white;'> Verify Email Anda </a> </button> </center>
+            <body style='background-color:#f7f7f7;'>
+                <br>
+                <center>
+                    <div style='width:80%'>
+                        <div style='text-align:justify'>
+                            <center>
+                                <h2> Permintaan Perubahan Password </h2>
+                            </center>
+                            <p> Kami mendapatkan request untuk perubahan <b> password </b> pada akun mu. </p>
+                            <p>
+                                Link ini akan expired dalam kurun waktu 24 jam. Jika kamu tidak membuat request ini, mohon abaikan email ini dan tidak akan ada perubahan pada akun mu.
+                            </p><br><br>
+                        </div>
+                        <center>
+                            <div style='width:90%;height:380px;background-color:#e3e3e3;'>
+                                <br><font> <b> ".strtoupper($nama)." </b> </font><br><br>
+                                <p>
+                                    Untuk melakukan perubahan email, tekan link dibawah : <br> ".$auth." <br><br>
+                                    
+                                    atau menekan tombol dibawah ini. <br> <br>
+                                    <button style='width:250px;height:50px;background-color:#6e6e6e;border:none;'> <a href='".$auth."' style='text-decoration:none;color:white;'>  Klik disini untuk </a> </button> <br><br>
+                                    
+                                    Hormat Kami, <br>
+                                    
+                                    Mahkota Stationery 
+                                </p>
+                            </div>
+                        </center>
                     </div>
-                </div>
-                <br>
-                <div>
-                    <p> Apabila anda merasa tidak melakukan proses request lupa password , silahkan abaikan proses ini </p>
-                </div>
-                <br><br>
-                <p> Hormat kami, </p>
-                <br>
-                <font> Mahkota Stationery </font>
+                </center>
             </body>
-        </html>
-        ";
+        </html>";
         sendEmail($email,$auth,$nama,$body,$subject);
     }else{
         echo "notFound";
