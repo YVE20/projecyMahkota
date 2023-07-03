@@ -1290,7 +1290,7 @@
             //$sqlsel = "SELECT tbjual.*, tbkonsumen.nama AS nama_konsumen, tbuser.nama AS nama_user FROM tbjual LEFT JOIN tbuser ON tbjual.iduser=tbuser.iduser LEFT JOIN tbkonsumen ON tbjual.idkonsumen=tbkonsumen.id WHERE DATE(tbjual.tanggal) = '2023-02-08' ORDER BY tbjual.created_at DESC;";
             $month = date('m');
             $sqlsel = "SELECT tbjual.*, tbkonsumen.nama AS nama_konsumen, tbuser.nama AS nama_user FROM tbjual LEFT JOIN tbuser ON tbjual.iduser=tbuser.iduser LEFT JOIN tbkonsumen ON tbjual.idkonsumen=tbkonsumen.id WHERE month(tbjual.tanggal) = '$month' ORDER BY tbjual.created_at DESC;";
-
+ 
         $querysel = mysqli_query($con, $sqlsel);
 
         while ($res = mysqli_fetch_array($querysel)) {
@@ -1308,7 +1308,7 @@
         <tr>
             <td> <?php echo $no;?>. </td>
                 <?php 
-                    if($_SESSION['status'] != "Admin"){
+                    if($_SESSION['status'] != "Admin" && $_SESSION['status'] !="Owner"){
                 ?>
                     <td> <?= $idjual ?> </td>
                 <?php

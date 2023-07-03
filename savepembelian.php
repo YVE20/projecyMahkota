@@ -302,7 +302,7 @@
                 <tr>
                     <td> <?php echo $no;?>. </td>
                     <?php 
-                        if($_SESSION['status'] != "Admin"){
+                        if($_SESSION['status'] != "Admin" && $_SESSION['status'] !="Owner"){
                     ?>
                         <td> <?= $idpembelian ?> </td>
                     <?php

@@ -106,29 +106,32 @@ if($_POST['type'] == "Register"){
 function sendEmail($email = null,$auth = null,$nama = null,$body,$subject ){
     //PHP Mailer
     $mail = new PHPMailer;
-    //$mail->isSMTP(); 
+    $mail->isSMTP(); 
     $mail->SMTPDebug = 2; // 0 = off (for production use) - 1 = client messages - 2 = client and server messages
-    $mail->Host = "smtp.gmail.com"; // use $mail->Host = gethostbyname('smtp.gmail.com'); // if your network does not support SMTP over IPv6
+    $mail->Host = "smtp.hostinger.com"; // use $mail->Host = gethostbyname('smtp.gmail.com'); // if your network does not support SMTP over IPv6
     $mail->Port = 465; // TLS only
     $mail->SMTPSecure = 'ssl'; // ssl is depracated
     $mail->SMTPAuth = true;
-    $mail->Username = "euaggeliony28@gmail.com";
-    $mail->Password = "gifqtcucqpzuxbyd";
-    $mail->setFrom("euaggeliony28@gmail.com", "Mahkota Stationery");
+    $mail->Username = "joshuamahkota@grhadigital.id";
+    $mail->Password = "Joshua1928!";
+    $mail->setFrom("joshuamahkota@grhadigital.id", "Mahkota Stationery");
     //$mail->addReplyTo('joshuanatal199@gmail.com', 'Mahkota Stationery');
+    //$mail->IsMAIL();
     $mail->addAddress($email, $nama);
     $mail->isHTML(true);
     $mail->Subject = $subject;
     $mail->Body = $body;	
 
     if (!$mail->send()) {
-        //echo 'Mailer Error: ' . $mail->ErrorInfo;
-        echo "errorEmail";
+        echo 'Mailer Error: ' . $mail->ErrorInfo;
+        echo "../vendor/phpmailer/phpmailer/src/PHPMailer.php'";
+        //echo "errorEmail";
     } else {
         echo "sukses";
     }
 }
-
+//EH tak ade ye :vlogin kan la
+// Ape maok cobe pakai email asli kau dak ? bebas yo coba jak 
 
 
 ?>
