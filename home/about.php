@@ -658,7 +658,7 @@ $icon = $res['icon'];
                         showConfirmButton: false,
                         timer: 5500
                      });
-                  if(data == "sukses"){
+                  if(data != ""){
                      Swal.fire({
                         icon: 'success',
                         title: 'Berhasil',

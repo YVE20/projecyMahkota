@@ -11,7 +11,12 @@ $getAction = $_GET['action'];
 
 $urlEcomm = "http://".$_SERVER['SERVER_NAME']."/mahkota/Home/index.php";
 
+
 if($getAction == "register"){
+    $getAction = encryptIt("register");
+}
+
+if(decryptIt($getAction) == "register"){
     if($getRetry == 'true'){
         //Check Email di DB
         $sqlCheck = "SELECT *FROM tbkonsumen WHERE email='$getEmail'";
