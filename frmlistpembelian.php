@@ -31,7 +31,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="detailPembelianModalLabel"> Detail Pembelian </h5>
-                <p> Status : <span id="statusApproved" style="font-weight: bold;"> </span> </p>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -30px;">
                     <span aria-hidden="true">&times;</span>
                 </button>

@@ -31,6 +31,8 @@
         $idtransaksi = $ressum['id_pembelian'];
     
         $judul = "Approve PO Pembelian";
+    }else if($act == "edit"){
+        $idtransaksi = $_GET['idPembelian'];
     }
 ?>
         <!-- page content -->
@@ -250,7 +252,7 @@
         }else{ */
             alertify.minimalDialog('');
             $.post("savepembelian.php", {
-                tombol: "proses",
+                tombol: $('#proses').val(),
                 act: act,
                 idpembelian: idpembelian,
                 idsupplier: idsupplier,
@@ -261,7 +263,6 @@
                 grandtotalakhir: grandtotal,
             })
                 .done(function (data) {
-                    console.log(data);
                     alertify.minimalDialog().destroy();
                     if(data == "kosong"){
                         alertify.alert("Peringatan","Tambahkan produk terlebih dahulu");
@@ -276,7 +277,7 @@
                             confirmButtonClass: 'btn btn-primary',
                             buttonsStyling: false,
                         }).then(function (result) {
-                            if(act == "approve"){
+                            if(act == "approve" || act == "edit"){
                                 location.href = "frmlistpembelian.php";
                             }else{
                                 location.reload();
@@ -303,7 +304,11 @@
 
     function loaddata(){
         var idpembelian = $("#txtidtransaksi").val();
-        $.post("savepembelian.php",{tombol:"tampil",idpembelian:idpembelian})
+        var tombol = "tampil";
+        if(act == "edit"){
+            tombol = "tampilDetailPembelian"
+        }
+        $.post("savepembelian.php",{tombol:tombol,idpembelian:idpembelian})
             .done(function(data){
                 $("#table").html(data);
                 hitungtotal();
@@ -311,7 +316,7 @@
     }
     function f_edit(id){
         $("#reset").click();
-        $.post("savepembelian.php",{tombol:"tampiledit",id:id})
+        $.post("savepembelian.php",{tombol:"tampiledit",id:id,action : "edit"})
             .done(function(data){
                 var pecah = data.split("|");
                 $("#txtid").val(pecah[1]);
@@ -325,7 +330,16 @@
                 $("#txtjlhpajak").val(pecah[9]);
                 $('.selectpicker').selectpicker('refresh');
                 $("#cmbproduk").prop("disabled",true);
-                $("#simpan").val("edit");
+                $('#simpan').html("Edit");
+                $("#simpan").val("editDetailPembelian");
+
+                $('#simpan').removeClass('btn-secondary');
+                $('#simpan').addClass('btn-info');
+                $('#simpan').prop('disabled',false);
+
+                $('#reset').removeClass("btn-secondary");
+                $('#reset').addClass("btn-warning");
+                $('#reset').prop("disabled",false);
             });
     }
 
@@ -371,7 +385,7 @@
 
     function hitungtotal(){
         var idpembelian = $("#txtidtransaksi").val();
-        $.post("savepembelian.php",{tombol:"hitungtotal",idpembelian:idpembelian})
+        $.post("savepembelian.php",{tombol:"hitungtotal",idpembelian:idpembelian, action : "edit"})
             .done(function(data){
                 var pecah = data.split("|");
 
@@ -447,14 +461,20 @@
                 $('#statusTransaksi').html('Status : Edit Pembelian');
                 $.post('savepembelian.php',{
                     tombol : 'tampilDetailPembelian',
-                    idPembelian : '<?= $_GET['idPembelian'] ?>',
+                    idpembelian : '<?= $_GET['idPembelian'] ?>',
                 }).done(function(data){
-                    console.log(JSON.parse(data));
+                    $("#table").html(data);
                 });
-                var split = data.split("|");
-                $('#txttotaldiskon').val(split[3]);
-                $('#txtgrandtotal').val(split[2]);
-                $('#txtsubtotal').val(split[1]);         
+                $('#proses').html("Edit");
+                $('#proses').val("EditSemuaPembelian");
+                $('#cmbproduk').attr('disabled','disabled');
+                $('#simpan').removeClass('btn-info');
+                $('#simpan').addClass('btn-secondary');
+                $('#simpan').prop('disabled',true);
+
+                $('#reset').removeClass("btn-warning");
+                $('#reset').addClass("btn-secondary");
+                $('#reset').prop("disabled",true);
             });
         }
     });

@@ -42,7 +42,12 @@
     
         echo "sukses";
     }else if($tombol == "tampiledit"){
-        $sql = "select * from temppembeliandetil where id='$id'";
+
+        if($_POST['action'] == "edit"){
+            $sql = "select * from tbpembeliandetil where id='$id'";
+        }else{
+            $sql = "select * from temppembeliandetil where id='$id'"; 
+        }
         $query = mysqli_query($con,$sql) or die ($sql);
     
         $re = mysqli_fetch_array($query);
@@ -92,7 +97,13 @@
         echo "|".$supplier."|".$tanggal."|".$referensi."|".$metodepembayaran."|".$jatuhtempo."|".$subtotal."|".$diskon."|".$pajak."|".$grandtotal."|";
     }else if($tombol == "hitungtotal"){
         // load temppembeliandetil
-        $sql = "select sum(jumlah*harga), sum(jlhdiskon), sum(jlhpajak), sum(subtotal) from temppembeliandetil where id_pembelian='$idpembelian'";
+
+        if($_POST['action'] == "edit"){
+            $sql = "select sum(jumlah*harga), sum(jlhdiskon), sum(jlhpajak), sum(subtotal) from tbpembeliandetil where id_pembelian='$idpembelian'";
+        }else{
+            $sql = "select sum(jumlah*harga), sum(jlhdiskon), sum(jlhpajak), sum(subtotal) from temppembeliandetil where id_pembelian='$idpembelian'";
+        }
+        
         $query = mysqli_query($con,$sql);
         $res = mysqli_fetch_array($query);
     
@@ -454,13 +465,103 @@
 
         echo $resultDataPembelian['id_pembelian']."|".$resultDataPembelian['subtotal']."|".$resultDataPembelian['grandtotal']."|".$resultDataPembelian['diskon']."|".$resultDataPembelian['pajak'];
     }else if($tombol == "tampilDetailPembelian"){
-        $idPembelian = $_POST['idPembelian'];
+        $idPembelian = $_POST['idpembelian'];
+?>
+    <table id="datatable-fixed-header" class="table table-striped dt-responsive nowrap" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Barang</th>
+                <th>Kode</th>
+                <th>Jumlah</th>
+                <th>Satuan</th>
+                <th>Harga</th>
+                <th>Diskon</th>
+                <th>Subtotal</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php  
+                $no = 1;
+                $sqlsel = "select tbpembeliandetil.*,tbproduk.nama, tbproduk.kode_barang as kodebarang, tbproduk.satuan from tbpembeliandetil left join tbproduk on tbpembeliandetil.id_produk=tbproduk.id where id_pembelian='$idPembelian'";
+                $querysel = mysqli_query($con,$sqlsel);
 
-        $sql = "SELECT *FROm tbpembeliandetil where id_pembelian='$idPembelian'";
-        $query = mysqli_query($con,$sql);
-        $result = mysqli_fetch_array($query);
+                while($res = mysqli_fetch_array($querysel)){
+                    $id = $res['id'];
+                    $idproduk_ = $res['idproduk'];
+                    $produk = $res['nama'];
+                    $jumlah = $res['jumlah'];
+                    $satuan = $res['satuan'];
+                    $harga = $res['harga'];
+                    $diskon = $res['diskon'];
+                    $jlhdiskon = $res['jlhdiskon'];
+                    $pajak = $res['pajak'];
+                    $jlhpajak = $res['jlhpajak'];
+                    $subtotal = $res['subtotal'];
+                    $kodebarang = $res['kodebarang'];
+            ?>
 
-        echo json_encode($result);
+                <tr>
+                    <td> <?php echo $no;?>. </td>
+                    <td> <?php echo $produk;?> </td>
+                    <td> <?php echo $kodebarang;?> </td>
+                    <td> <?php echo number_format($jumlah,0,',','.');?> </td>
+                    <td> <?php echo $satuan;?> </td>
+                    <td> <?php echo number_format($harga,0,',','.');?> </td>
+                    <td> <?php echo $diskon."% (".number_format($jlhdiskon,0,',','.').")";?> </td>
+                    <td> <?php echo number_format($subtotal,0,',','.');?> </td>
+                    <td>
+                        <button class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Edit Data" onclick="f_edit('<?php echo $id;?>')"><span class="fa fa-pencil"></span></button>
+                        <button class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Hapus Data" onclick="f_hapus('<?php echo $id;?>')"><span class="fa fa-trash"></span></button>
+                    </td>
+                </tr>
+            <?php
+                    $no++;
+                }
+            ?>
+        </tbody>
+    </table>
+    <script>
+        $('#datatable-fixed-header').DataTable({
+            fixedHeader: true,
+                "searching": false,   // Search Box will Be Disabled
+                 //"ordering": false,    // Ordering (Sorting on Each Column)will Be Disabled
+                "info": true,         // Will show "1 to n of n entries" Text at bottom
+                "paging": false,
+                "lengthChange": false // Will Disabled Record number per page
+            });
+    </script>
+<?php
+    }else if($tombol == "EditSemuaPembelian"){
+
+        $id = $_POST['idpembelian'];
+        //Get Data Detail
+        $sqlDetailPembelian = "select *from tbpembeliandetil where id_pembelian='$id'";
+        $queryDetailPembelian = mysqli_query($con,$sqlDetailPembelian);
+
+        $subTotal = 0; $diskon = 0; $pajak = 0; 
+        while($re = mysqli_fetch_array($queryDetailPembelian)){
+            $subTotal += $re['subtotal'];
+            $diskon += $re['diskon'];
+            $pajak += $re['pajak'];
+        }
+        $grandTotal = $subTotal - ($diskon + $pajak);
+
+        $idSupplier = $_POST['idsupplier'];
+        if($idSupplier == "-"){
+            echo "noSupplier";
+        }else{
+            $sql = "update tbpembelian set id_supplier='$idSupplier', subtotal='$subTotal', diskon='$diskon', pajak='$pajak', grandtotal='$grandTotal' where id_pembelian='$id'";
+            $query = mysqli_query($con,$sql) or die ($sql);
+        
+            echo "sukses";
+        }
+    }else if($tombol == "editDetailPembelian"){
+        $sql = "update tbpembeliandetil set id_produk='$produk',jumlah='$jumlah',harga='$harga',pajak='$pajak',jlhpajak='$jlhpajak',diskon='$diskon',jlhdiskon='$jlhdiskon',subtotal='$subtotal' where id='$id'";
+        $query = mysqli_query($con,$sql) or die ($sql);
+    
+        echo "sukses";
     }
     
 ?>
