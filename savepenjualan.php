@@ -119,7 +119,6 @@
         $sqlcek = "SELECT *FROM tempjualdetil WHERE idjual='$idjual'";
         $querycek = mysqli_query($con, $sqlcek);
         $numcek = mysqli_num_rows($querycek);
-        echo $sqlcek;
 
         $totalDiskon = 0; $subTotalAkhir = 0;  $idkonsumen = "";
         while($res = mysqli_fetch_array($querycek)){
