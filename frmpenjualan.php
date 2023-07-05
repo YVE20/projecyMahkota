@@ -433,6 +433,7 @@ if ($act=="new") {
                     idKonsumen : $('#idKonsumenCheckAlamat').val()
                 })
                 .done(function(data) {
+                    console.log(data);
                     if (data == "kosong") {
                         Swal.fire({
                             type: 'error',

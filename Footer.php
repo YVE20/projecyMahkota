@@ -102,13 +102,13 @@
                     diskon = pecah[15];
                 }else if(pecah[15].length == 4){
                     diskon = pecah[15] / 1000;
-                }else if(pecha[15].length == 5){
+                }else if(pecah[15].length == 5){
                     diskon = pecah[15] / 10000;
-                }else if(pecha[15].length == 6){
+                }else if(pecah[15].length == 6){
                     diskon = pecah[15] / 100000;
-                }else if(pecha[15].length == 7){
+                }else if(pecah[15].length == 7){
                     diskon = pecah[15] / 1000000;
-                }else if(pecha[15].length == 8){
+                }else if(pecah[15].length == 8){
                     diskon = pecah[15] / 10000000;
                 }
                 var hasilloopingdetil = "";
