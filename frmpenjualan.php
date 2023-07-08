@@ -374,6 +374,7 @@ if ($act=="new") {
     function f_simpan() {
         // Swal.showLoading();
         var tombol = $("#simpan").val();
+        var action = '<?= $_GET['act'] ?>';
 
         if ($produk.val() != "" && $jumlah.val() != "") {
             $.post("savepenjualan.php", {
@@ -389,6 +390,7 @@ if ($act=="new") {
                     jlhdiskon: accounting.unformat($jlhdiskon.val(), ','),
                     pajak: $pajak.val(),
                     jlhpajak: accounting.unformat($jlhpajak.val(), ','),
+                    action : action
                 })
                 .done(function(data) {
                     if (data == "sukses") {
@@ -430,7 +432,8 @@ if ($act=="new") {
                     diskon: $diskon.val(),
                     pajak: $pajak.val(),
                     grandtotal: accounting.unformat($grandtotal.val(), ','),
-                    idKonsumen : $('#idKonsumenCheckAlamat').val()
+                    idKonsumen : $('#idKonsumenCheckAlamat').val(),
+                    action : '<?= $_GET['act'] ?>'
                 })
                 .done(function(data) {
                     if (data == "kosong") {
@@ -529,28 +532,36 @@ if ($act=="new") {
     }
 
     function loaddata() {
+        var action = '<?= $_GET['act'] ?>';
         $.post("savepenjualan.php", {
                 tombol: "tampil",
                 idjual: $idjual.val(),
+                action : action
             })
             .done(function(data) {
                 $("#table").html(data);
                 hitungtotal();
                 loadcanvas();
+
+                if(action == "edit"){
+                    $('#proses').html("Proses Edit");
+                }
+
             });
     }
 
     function f_edit(id) {
+        var action = '<?= $_GET['act'] ?>';
         $("#reset").click();
         $.post("savepenjualan.php", {
                 tombol: "tampiledit",
-                id: id
+                id: id,
+                action : action
             })
             .done(function(data) {
                 var pecah = data.split("|");
                 $id.val(pecah[1]);
                 $produk.val(pecah[2]);
-                $idkonsumen.val(pecah[3]);
                 $jumlah.val(pecah[4]);
                 $harga.val(accounting.formatNumber(pecah[5], 0, '.', ','));
                 $total.val(accounting.formatNumber(pecah[6], 0, '.', ','));
@@ -565,6 +576,7 @@ if ($act=="new") {
                 $('.selectpicker').selectpicker('refresh');
                 $produk.prop("disabled", true);
                 $simpan.val("edit");
+                $simpan.html("Edit");
             });
     }
 
@@ -641,6 +653,7 @@ if ($act=="new") {
         $.post("savepenjualan.php", {
                 tombol: "hitungtotal",
                 idjual: $idjual.val(),
+                action : '<?= $_GET['act'] ?>'
             })
             .done(function(data) {
                 var pecah = data.split("|");
@@ -649,24 +662,12 @@ if ($act=="new") {
                         pecah[i] = 0;
                     }
                 }
-                var subtotal = parseInt(pecah[3]);
+                var subtotal = parseInt(pecah[2]);
                 var diskon = parseInt(pecah[1]);
-                var pajak = parseInt(pecah[2]);
                 var grandtotal = parseInt(pecah[0]);
-                let newpajak;
-                let newsubtotal;
 
-                if (pajak_global == 0) {
-                    newpajak = pajak;
-                    newsubtotal = subtotal;
-                } else {
-                    newpajak = grandtotal - ((grandtotal / 110) * 100);
-                    newsubtotal = (grandtotal - newpajak);
-                }
-
-                $subtotal.val(accounting.formatNumber(newsubtotal, 0, '.', ','));
+                $subtotal.val(accounting.formatNumber(subtotal, 0, '.', ','));
                 $totaldiskon.val(accounting.formatNumber(diskon, 0, '.', ','));
-                $totalpajak.val(accounting.formatNumber(newpajak, 0, '.', ','));
                 $grandtotal.val(accounting.formatNumber(grandtotal, 0, '.', ','));
             });
     }
@@ -686,7 +687,8 @@ if ($act=="new") {
 
                 $.post("savepenjualan.php", {
                         tombol: "hapus",
-                        id: id
+                        id: id,
+                        action : '<?= $_GET['act'] ?>'
                     })
                     .done(function(data) {
                         loaddata();

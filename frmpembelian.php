@@ -312,6 +312,7 @@
             .done(function(data){
                 $("#table").html(data);
                 hitungtotal();
+                loadSupplier();
             });
     }
     function f_edit(id){
@@ -418,7 +419,7 @@
         }).then((result) => {
             if (result.value) {
 
-                $.post("savepembelian.php",{tombol:"hapus",id:id})
+                $.post("savepembelian.php",{tombol:"hapus",id:id, action : '<?= $_GET['act'] ?>'})
                     .done(function(data){
                         loaddata();
                     });
@@ -484,5 +485,17 @@
             });
         }
     });
-
+    function loadSupplier(){
+        var idPembelian = '<?= $_GET['idPembelian'] ?>'
+        $.post("savepembelian.php", {
+            tombol: "tampilSupplier",
+            idPembelian : idPembelian
+        })
+        .done(function(data) {
+            var datas = JSON.parse(data);
+            $('#cmbsupplier').val(datas['id_supplier']);
+            $('.selectpicker').selectpicker('refresh');
+            $("#cmbsupplier").prop("disabled",true);
+        });
+    }
 </script>

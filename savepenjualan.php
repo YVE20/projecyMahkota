@@ -86,13 +86,13 @@
         }
 
     } elseif ($tombol == "edit") {
-        if ($act=="edit") {
+        if ($_POST['action'] =="edit") {
             $sqlmenu = "SELECT * FROM tbproduk where id='$produk'";
             $querymenu = mysqli_query($con, $sqlmenu);
             $cekjumlah = mysqli_fetch_assoc($querymenu);
 
             if ($cekjumlah['jumlah'] >= $jumlah) {
-                $sql = "UPDATE tbjualdetil SET idkonsumen='$idkonsumen',iduser='$iduser',jumlah='$jumlah',harga='$harga',total='$subtotaldetil',pajak='$pajak',jlhpajak='$jlhpajak',diskon='$diskon',jlhdiskon='$jlhdiskon',subtotal='$subtotal_',note='$note' WHERE id='$id'  AND idproduk='$produk'";
+                $sql = "UPDATE tbjualdetil SET jumlah='$jumlah',harga='$harga',total='$subtotaldetil',diskon='$diskon',jlhdiskon='$jlhdiskon',subtotal='$subtotal_',note='$note' WHERE id='$id'  AND idproduk='$produk'";
                 $query = mysqli_query($con, $sql) or die($sql);
 
                 echo "sukses";
@@ -116,7 +116,12 @@
         }
     } else if ($tombol == "proses") {
         
-        $sqlcek = "SELECT *FROM tempjualdetil WHERE idjual='$idjual'";
+        if($_POST['action'] == "edit"){
+            $sqlcek = "SELECT *FROM tbjualdetil WHERE idjual='$idjual'";
+        }else{
+            $sqlcek = "SELECT *FROM tempjualdetil WHERE idjual='$idjual'";
+        }
+
         $querycek = mysqli_query($con, $sqlcek);
         $numcek = mysqli_num_rows($querycek);
 
@@ -166,8 +171,14 @@
             }
             // end if act
 
-            // Select data dari tempjualdetil
-            $sql2 = "SELECT * FROM tempjualdetil WHERE idjual='$idjual'";
+            if($_POST['action'] == "edit"){
+                // Select data dari tbjualdetil
+                $sql2 = "SELECT * FROM tbjualdetil WHERE idjual='$idjual'";
+            }else{
+                // Select data dari tempjualdetil
+                $sql2 = "SELECT * FROM tempjualdetil WHERE idjual='$idjual'";
+            }
+
             $query2 = mysqli_query($con, $sql2) or die($sql2);
             while ($res2 = mysqli_fetch_array($query2)) {
                 $id = $res2['id'];
@@ -178,8 +189,6 @@
                 $harga = $res2['harga'];
                 $diskon = $res2['diskon'];
                 $jlhdiskon = $res2['jlhdiskon'];
-                $pajak = $res2['pajak'];
-                $jlhpajak = $res2['jlhpajak'];
                 $total = $res2['total'];
                 $subtotaldetil = $res2['subtotal'];
                 $note = $res2['note'];
@@ -246,7 +255,7 @@
                 }
             }
 
-            $sql4 = "DELETE FROM tempjualdetil WHERE idjual='$idjual'";
+            $sql4 = "DELETE FROM tempjualdetil WHERE idjual='$idjual'";    
             $query4 = mysqli_query($con, $sql4) or die($sql4);
             echo "sukses";
         } else {
@@ -278,10 +287,15 @@
 
             $sql = "delete from tbjualdetil where id='$id'";
             $query = mysqli_query($con, $sql) or die($sql);
-        } else {
-            $sql = "delete from tempjualdetil where id='$id'";
-            $query = mysqli_query($con, $sql) or die($sql);
         }
+        
+        if($_POST['action'] == "edit"){
+            $sql = "delete from tbjualdetil where id='$id'";
+        }else{
+            $sql = "delete from tempjualdetil where id='$id'";
+        }
+
+        $query = mysqli_query($con, $sql) or die($sql);
     } elseif ($tombol == "edittransaksi") {
         $sqlhapus = "DELETE FROM tempjualdetil WHERE idjual='$idjual'";
         $queryhapus = mysqli_query($con, $sqlhapus);
@@ -466,7 +480,13 @@
 </table>
 <?php
     } elseif ($tombol == "tampiledit") {
-        $sql = "SELECT tempjualdetil.*,tbproduk.satuan FROM tempjualdetil LEFT JOIN tbproduk ON tempjualdetil.idproduk = tbproduk.id WHERE tempjualdetil.id='$id'";
+
+        if($_POST['action'] == "edit"){
+            $sql = "SELECT tbjualdetil.*,tbproduk.satuan FROM tbjualdetil LEFT JOIN tbproduk ON tbjualdetil.idproduk = tbproduk.id WHERE tbjualdetil.id='$id'";
+        }else{
+            $sql = "SELECT tempjualdetil.*,tbproduk.satuan FROM tempjualdetil LEFT JOIN tbproduk ON tempjualdetil.idproduk = tbproduk.id WHERE tempjualdetil.id='$id'";
+        }
+        
         $query = mysqli_query($con, $sql) or die($sql);
 
         $re = mysqli_fetch_array($query);
@@ -484,15 +504,20 @@
 
         echo "|".$id."|".$produk."|".$idkonsumen."|".$jumlah."|".$harga."|".$total."|".$diskon."|".$jlhdiskon."|".$pajak."|".$jlhpajak."|".$note."|".$satuan."|";
     } elseif ($tombol == "hitungtotal") {
-        $sql = "select sum(total), sum(jlhdiskon), sum(jlhpajak), sum(subtotal) from tempjualdetil where idjual='$idjual'";
+
+        if($_POST['action'] == "edit"){
+            $sql = "select sum(total), sum(jlhdiskon), sum(subtotal) from tbjualdetil where idjual='$idjual'";
+        }else{
+            $sql = "select sum(total), sum(jlhdiskon), sum(subtotal) from tempjualdetil where idjual='$idjual'";
+        }
+        
         $query = mysqli_query($con, $sql);
         $res = mysqli_fetch_array($query);
         $totalharga = $res[0];
         $totaldiskon = $res[1];
-        $totalpajak = $res[2];
-        $totalsubtotal = $res[3];
-        $totalSementara = $res[3];
-        echo $totalharga."|".$totaldiskon."|".$totalpajak."|".$totalsubtotal;
+        $totalsubtotal = $res[2];
+        $totalSementara = $res[2];
+        echo $totalharga."|".$totaldiskon."|".$totalsubtotal;
     } elseif ($tombol == "hitungtotaltbjual") {
         $sql = "select sum(total), sum(jlhdiskon), sum(jlhpajak), sum(subtotal) from tbjualdetil where idjual='$idjual'";
         $query = mysqli_query($con, $sql);
@@ -666,33 +691,42 @@
 
     <tbody>
         <?php
-                    $sqlsel = "SELECT tempjualdetil.*,tbproduk.nama,tbproduk.kode_barang FROM tempjualdetil LEFT JOIN tbproduk ON tempjualdetil.idproduk=tbproduk.id WHERE idjual='$idjual'";
-        $querysel = mysqli_query($con, $sqlsel);
-        while ($res = mysqli_fetch_array($querysel)) {
-            $id = $res['id'];
-            $produk = $res['nama'];
-            $kodebarang = $res['kode_barang'];
-            $jumlah = $res['jumlah'];
-            $harga = $res['harga'];
-            $total = $res['total']; ?>
-        <tr>
-            <td><?php echo $kodebarang." - ".$produk; ?>
-            </td>
-            <td><?php echo $jumlah; ?>
-            </td>
-            <td><?php echo "Rp ".uang($harga); ?>
-            </td>
-            <td><?php echo "Rp ".uang($total); ?>
-            </td>
-            <td>
-                <button class="btn btn-xs btn-warning"
-                    onclick="f_edit('<?php echo $id; ?>')">Edit</button>
-                <button class="btn btn-xs btn-danger"
-                    onclick="f_hapus('<?php echo $id; ?>')">Hapus</button>
-            </td>
-        </tr>
+            
+            if($_POST['action'] == "edit"){
+                $sqlsel = "SELECT tbjualdetil.*,tbproduk.nama,tbproduk.kode_barang FROM tbjualdetil LEFT JOIN tbproduk ON tbjualdetil.idproduk=tbproduk.id WHERE idjual='$idjual'";
+            }else{
+                $sqlsel = "SELECT tempjualdetil.*,tbproduk.nama,tbproduk.kode_barang FROM tempjualdetil LEFT JOIN tbproduk ON tempjualdetil.idproduk=tbproduk.id WHERE idjual='$idjual'";
+            }
+
+            $querysel = mysqli_query($con, $sqlsel);
+
+            while ($res = mysqli_fetch_array($querysel)) {
+                $id = $res['id'];
+                $produk = $res['nama'];
+                $kodebarang = $res['kode_barang'];
+                $jumlah = $res['jumlah'];
+                $harga = $res['harga'];
+                $total = $res['total']; 
+        ?>
+            <tr>
+                <td><?php echo $kodebarang." - ".$produk; ?>
+                </td>
+                <td><?php echo $jumlah; ?>
+                </td>
+                <td><?php echo "Rp ".uang($harga); ?>
+                </td>
+                <td><?php echo "Rp ".uang($total); ?>
+                </td>
+                <td>
+                    <button class="btn btn-xs btn-warning"
+                        onclick="f_edit('<?php echo $id; ?>')">Edit</button>
+                    <button class="btn btn-xs btn-danger"
+                        onclick="f_hapus('<?php echo $id; ?>')">Hapus</button>
+                </td>
+            </tr>
         <?php
-        } ?>
+            } 
+        ?>
     </tbody>
 </table>
 <script>

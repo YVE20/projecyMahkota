@@ -37,7 +37,13 @@
     
         echo "sukses";
     }else if($tombol == "hapus"){
-        $sql = "delete from temppembeliandetil where id='$id'";
+
+        if($_POST['action'] == "edit"){
+            $sql = "delete from tbpembeliandetil where id='$id'";
+        }else{
+            $sql = "delete from temppembeliandetil where id='$id'";
+        }
+        
         $query = mysqli_query($con,$sql) or die ($sql);
     
         echo "sukses";
@@ -562,6 +568,15 @@
         $query = mysqli_query($con,$sql) or die ($sql);
     
         echo "sukses";
+    }else if($tombol == "tampilSupplier"){
+        $idPembelian = $_POST['idPembelian'];
+
+        $sql = "SELECT *FROM tbpembelian WHERE id_pembelian = '$idPembelian' ";
+        $query = mysqli_query($con,$sql);
+        $res = mysqli_fetch_array($query);
+
+        echo json_encode($res);
+        
     }
     
 ?>
