@@ -235,6 +235,28 @@ $icon = $res['icon'];
             </div>
          </div>
       </footer>
+      <!-- Alamat Modal -->
+   <div class="modal fade" style="margin-top: 100px;" id="alamatModal" tabindex="-1" role="dialog" aria-labelledby="alamatModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h3 class="modal-title" id="exampleModalLabel"> <i class="fa fa-bars" aria-hidden="true"></i> List Alamat </h3>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <div class="row">
+                  <div class="container">
+                     <div class="row" id="isiListAlamat">
+                        
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
       <!-- Login Modal -->
       <div class="modal fade" style="margin-top: 100px;" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
          <div class="modal-dialog" role="document">
@@ -395,7 +417,7 @@ $icon = $res['icon'];
                      </div>
                   </div>
                   <div class="modal-footer">
-                     <button type="button" onclick="beliByKeranjang()" class="btn btn-primary"> <i class="fa fa-shopping-cart" aria-hidden="true"></i> Checkout </button>
+                     <button type="button" onclick="detailListAlamat()" class="btn btn-primary"> <i class="fa fa-shopping-cart" aria-hidden="true"></i> Checkout </button>
                   </div>
                </form>
             </div>
@@ -965,6 +987,50 @@ $icon = $res['icon'];
                })
             }
          })
+      }
+      function detailListAlamat(){
+         $('#keranjangModal').modal('hide');
+         $('#alamatModal').modal('show');
+         var iduser = '<?= $_SESSION['iduser'] ?>';
+         $.post("cekprofile.php", {
+            iduser: iduser,
+            type: "checkListAlamat",
+            action : "choose"
+         }).done(function(data) {
+            $('#isiListAlamat').html(data);
+         })
+      }
+      function changeAlamat(alamat,action){
+         var iduser = '<?= $_SESSION['iduser'] ?>';
+
+         $.post("cekprofile.php", {
+            iduser: iduser,
+            type: "changeAlamat",
+            alamat : alamat,
+            action : action
+         }).done(function(data) {
+            if(data == "success"){
+               Swal.fire({
+                  icon: 'success',
+                  title: 'Berhasil',
+                  text: 'Alamat berhasil diganti',
+                  showConfirmButton: false,
+                  timer: 1500
+               });
+               $('#alamatModal').modal('hide');
+               setTimeout(showAlert,1500);
+               setTimeout(beliByKeranjang, 4500);
+            }
+         })
+      }
+      function showAlert(){
+         Swal.fire({
+            icon: 'warning',
+            title: 'Processing',
+            text: 'Sedang memproses pesanan',
+            showConfirmButton: false,
+            timer: 3000
+         });
       }
    </script>
 </body>

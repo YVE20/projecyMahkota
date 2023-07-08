@@ -500,7 +500,7 @@ $icon = $res['icon'];
                   </div>
                </div>
                <div class="modal-footer">
-                  <button type="button" onclick="beliByKeranjang()" class="btn btn-primary"> <i class="fa fa-shopping-cart" aria-hidden="true"></i> Checkout </button>
+                  <button type="button" onclick="detailListAlamat()" class="btn btn-primary"> <i class="fa fa-shopping-cart" aria-hidden="true"></i> Checkout </button>
                </div>
             </form>
          </div>
@@ -1089,6 +1089,7 @@ $icon = $res['icon'];
          })
       }
       function detailListAlamat(){
+         $('#keranjangModal').modal('hide');
          $('#alamatModal').modal('show');
          var iduser = '<?= $_SESSION['iduser'] ?>';
          $.post("cekprofile.php", {
