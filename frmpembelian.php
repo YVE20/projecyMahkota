@@ -231,6 +231,21 @@
                         loaddata();
                         f_bersih();
                     }
+                    var act = '<?= $_GET['act'] ?>';
+                    if(act == "edit"){
+                        $('#simpan').html('Save');
+                        $('#simpan').removeClass('btn-info');
+                        $('#simpan').addClass('btn-secondary');
+                        $('#simpan').prop('disabled',true);
+
+                        $('#reset').removeClass("btn-warning");
+                        $('#reset').addClass("btn-secondary");
+                        $('#reset').prop("disabled",true);
+                        
+                        $('#cmbproduk').val("-");
+                        $('.selectpicker').selectpicker('refresh');
+                        $("#cmbproduk").prop("disabled",true);
+                    }
                 });
         }else{
             alertify.alert("Peringatan","Pilih Barang Terlebih Dahulu!");
@@ -459,6 +474,12 @@
                     });
             }
         }else if(act == "edit"){
+            $('#txttanggal').click(function(){
+                return false;
+            });
+            $('#txttanggal').keypress(function(){
+                return false;
+            });
             $.post("savepembelian.php",
             {
                 idPembelian : '<?= $_GET['idPembelian'] ?>',

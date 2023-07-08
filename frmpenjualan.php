@@ -371,6 +371,17 @@ if ($act=="new") {
     //     }
     // }
 
+    $(document).ready(function(){
+        var action = '<?= $_GET['act'] ?>';
+        if(action == "edit"){
+            $('#txttanggal').click(function(){
+                return false;
+            });
+            $('#txttanggal').keypress(function(){
+                return false;
+            });
+        }
+    });
     function f_simpan() {
         // Swal.showLoading();
         var tombol = $("#simpan").val();
