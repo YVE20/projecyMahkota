@@ -1,10 +1,5 @@
 <?php
-/**
- * Created By :    
- * User: Welly
- * Date: 08/02/2017
- * Time: 15.39
- */
+
  
     $str = file_get_contents('../data.json');
 
