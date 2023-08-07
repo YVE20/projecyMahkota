@@ -84,6 +84,41 @@ $tahun = date("Y");
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-6 ">
+                        <div class="panel">
+                            <div class="panel-body">
+                                <?php
+                                    $sqlCekStock = "select *from tbproduk where jumlah <= 10";
+                                    $queryCekStock = mysqli_query($con,$sqlCekStock);
+                                    $rows = mysqli_num_rows($queryCekStock);
+                                ?>
+                                <div class="col-sm-8 col-xs-6">
+                                    <h3 class="text-info" style="color:#2196F3;">
+                                        <strong> Total : <?= $rows ?> </strong>
+                                    </h3>
+                                    <h5 class="text-left text-info-ket"> Jumlah Stock Dibawah 10  </h5>
+                                    <span>
+                                        <ol>
+                                            <?php 
+                                                if($rows == 0){
+                                                    echo "<center> <strong> Tidak ada data </strong> </center>";
+                                                }else{
+                                                    while($re = mysqli_fetch_array($queryCekStock)){
+                                                        echo "<li> ".$re['nama']." </li>";
+                                                    }
+                                                }
+                                            ?>
+                                        </ol>
+                                    </span>
+                                </div>
+                                <div class="col-sm-4 col-xs-6">
+                                    <h3 style="font-size:6rem;" class="text-right">
+                                        <i style="color:#2196F3;" class="fa fa-cubes" aria-hidden="true"></i>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <!-- end col-6 -->
                     <div class="clear-fix"></div>
                     

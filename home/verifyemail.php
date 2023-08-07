@@ -8,8 +8,9 @@ include "../asset/function/function.php";
 $getEmail = $_GET['email'];
 $getRetry = $_GET['retry'];
 $getAction = $_GET['action'];
+$getExpiredDate = $_GET['expiredDate'];
 
-$urlEcomm = "http://".$_SERVER['SERVER_NAME']."/mahkota/Home/index.php";
+$urlEcomm = "http://".$_SERVER['SERVER_NAME']."/home/index.php";
 
 
 if($getAction == "register"){
@@ -50,13 +51,22 @@ if(decryptIt($getAction) == "register"){
             $_SESSION['verified'] = "not";
             header('Location: '.$urlEcomm);
         }else{
-            //Update Status
-            $idKonsumen = $result['id'];
-            $sqlUpdateVerified = "Update tbkonsumen set verified='1', auth='', token='' WHERE id='$idKonsumen'";
-            $queryUpdateVerified = mysqli_query($con,$sqlUpdateVerified);
-    
-            $_SESSION['verified'] = "yes";
-            header('Location: '.$urlEcomm);
+            //Check Expired Token
+            $expiredDateAuth = $getExpiredDate;
+            $today = date("Y-m-d H:i:s");
+            if($today > date('Y-m-d H:i:s', strtotime($expiredDateAuth. ' + 1 days'))){
+                //   
+                 $_SESSION['verified'] = "expired";
+                 header('Location: '.$urlEcomm);
+            }else{
+                 //Update Status
+                $idKonsumen = $result['id'];
+                $sqlUpdateVerified = "Update tbkonsumen set verified='1', auth='', token='' WHERE id='$idKonsumen'";
+                $queryUpdateVerified = mysqli_query($con,$sqlUpdateVerified);
+        
+                $_SESSION['verified'] = "yes";
+                header('Location: '.$urlEcomm);
+            }
         }
     }
 }else if(decryptIt($getAction) == "forgetPassword"){
@@ -85,10 +95,11 @@ if(decryptIt($getAction) == "register"){
                 showLoaderOnConfirm: true,
                 preConfirm: (password) => {
                     //Proses kirim email
-                    $.post("verifyEmail.php", {
+                    $.post("verifyemail.php", {
                         password : password,
                         email : '<?= $getEmail ?>',
-                        action : "updateForgetPassword"
+                        action : "updateForgetPassword",
+                        expiredDate : '<?= $getExpiredDate ?>'
                     }).done(function(data) {
                         if(data == "success"){
                             Swal.fire({
@@ -150,8 +161,9 @@ if(decryptIt($getAction) == "register"){
         echo "notFound";
     }else{
         //Check Token dan Auth masih valid atau engga
+        $expiredDateAuth = $_POST['expiredDate'];
         $today = date("Y-m-d H:i:s");
-        if(date('Y-m-d H:i:s', strtotime($result['updated_at']. ' + 1 days')) >= $today){
+        if($today > date('Y-m-d H:i:s', strtotime($expiredDateAuth. ' + 1 days'))){
             echo "expired";
         }else{
             //Check password lama dan baru

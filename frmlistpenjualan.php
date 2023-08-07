@@ -44,7 +44,8 @@ include "Header.php";
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="detailPenjualanModalLabel"> Detail Penjualan </h5>
-                <p> Alamat : <span id="alamatPenjualan" style="font-weight: bold;"> </span> </p>
+                <p> No Hp : <strong> <span id="noHpPenjualan"></span> </strong>  <br>
+                    Alamat : <span id="alamatPenjualan" style="font-weight: bold;"> </span> </p>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -30px;">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -69,13 +70,51 @@ include "Header.php";
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal"> Tutup </button>
+                <button type="button" class="btn btn-primary"> <i class="fa fa-upload" aria-hidden="true"></i> </button>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Upload Foto -->
+<div class="modal fade" id="uploadFotoModal" tabindex="-1" role="dialog" aria-labelledby="uploadFotoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="savepenjualan.php" method="POST" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadFotoModalLabel"> Upload Foto </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -30px;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type='file' id="uploadPreview" name="uploadPreview" class="form-control" onchange="readURL(this);" />
+                    <img id="previewImage" alt="your image" />
+                    <input type="hidden" name="idPenjualan" id="idPenjualan">
+                    <input type="hidden" name="tombol" value="uploadFO">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"> Tutup </button>
+                    <button type="submit" class="btn btn-primary"> <i class="fa fa-upload" aria-hidden="true"></i> Upload  </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#previewImage').attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
     function f_load() {
         let tanggal = $('#txttanggal').val();
         if (tanggal == "") {
@@ -98,7 +137,7 @@ include "Header.php";
     function gantiStatus(idjual){
         var statusAntar = $('#status_pengantaran').val();
         Swal.fire({
-             title: 'Apakah anda yakin ?',
+            title: 'Apakah anda yakin ?',
             text: "Status pengantaran akan dirubah menjadi '"+statusAntar+"'",
             icon: 'warning',
             showCancelButton: true,
@@ -123,6 +162,14 @@ include "Header.php";
                             timer: 1500
                         });
                         f_load();   
+                    }else if(data == "selesai"){
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Batal',
+                            text: 'Status sudah selesai. Status tidak dapat dirubah.',
+                            showConfirmButton: false,   
+                            timer: 2500
+                        });
                     }else{
                         Swal.fire({
                             icon: 'error',
@@ -155,6 +202,42 @@ include "Header.php";
             $('#isiDetailPenjualan').html(split[0]);
             $('#detailPenjualanModal').modal('show');
             $('#alamatPenjualan').html(split[1] == "" ? "-" : split[1]);
+            $('#noHpPenjualan').html(split[2] == "" ? "-" : split[2]);
         });
     }
+
+    function uploadFoto(idPenjualan){
+        $.post("savepenjualan.php",
+        {
+            tombol : "checkUploadFoto",
+            idPenjualan : idPenjualan,
+        }).done(function(data){
+            if(data == "belum"){
+                Swal.fire({
+                    title: 'Apakah anda yakin ?',
+                    text: "Status pengantaran akan dirubah menjadi 'Selesai' jika anda melakukan proses upload",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya',
+                    cancelButtonText : 'Tidak'
+                }).then((result) => {
+                    if (result.value) {
+                        $('#uploadFotoModal').modal('show');
+                        $('#idPenjualan').val(idPenjualan);
+                    }
+                })
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Batal',
+                    text: 'Foto sudah pernah di upload',
+                    showConfirmButton: false,   
+                    timer: 1500
+                });
+            }
+        });
+    }
+
 </script>

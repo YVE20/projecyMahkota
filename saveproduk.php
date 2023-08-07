@@ -94,11 +94,12 @@ if ($tombol == "simpan") {
       $no = 1;
       $sqlsel = "SELECT * FROM tbproduk ORDER BY nama DESC";
       $querysel = mysqli_query($con, $sqlsel);
+
       while ($res = mysqli_fetch_array($querysel)) {
         $id = $res['id'];
         $kodebarang = $res['kode_barang'];
         $nama = $res['nama'];
-        $hargadalam = $res['harga_dk'];
+        $hargadalam = $res['harga_jual'];
         $satuan = $res['satuan'];
         $kategori = $res['kategori'];
         $stok = $res['jumlah'];

@@ -2,6 +2,7 @@
 
     include "Koneksi.php";
     include "asset/function/function.php";
+    include "asset/vendor/samayo/bulletproof/src/bulletproof.php";
     date_default_timezone_set("Asia/Jakarta");
 
 
@@ -1354,7 +1355,17 @@
                     }
                 ?>    
             <td> <?php echo date("d-m-Y", strtotime($tanggal)); ?> </td>
-            <td> <?php echo $user; ?> </td>
+            <td> 
+                <?php 
+                    if($user == "Processed by FO"){
+                ?>
+                    <a href="javascript:void(0)" style="text-decoration: none;color:#0581f5;" onclick="uploadFoto('<?= $idjual ?>')"> <?= $user ?> </a>
+                <?php
+                    }else{
+                        echo $user; 
+                    }
+                ?> 
+            </td>
             <!-- <td> <?php echo $supplier; ?> </td>--> 
             <td> <?php echo $referensi; ?></td>
             <td> <?php echo "Rp. ".number_format($grandtotal, 0, ',', '.'); ?>
@@ -1373,7 +1384,7 @@
                     $reSE = array_diff($statusArray, array($status));
                     foreach($reSE as $rSE){
                     ?>
-                        <option value="<?= $rSE ?>"> <?= $rSE ?> </option>';
+                        <option value="<?= $rSE ?>"> <?= $rSE ?> </option>;
                     <?php
                     }
                     ?>
@@ -1505,10 +1516,20 @@
         $statusAntar = $_POST['statusAntar'];
         $idjual = $_POST['idjual'];
         try{
-            $sqljual = "update tbjual set status_antar = '$statusAntar' where id = '$idjual'";
-            $queryjual = mysqli_query($con,$sqljual);
-            
-            echo "success";
+
+            //Cek di table, jika status udah selesai tidak bisa dirubah lagi
+            $sqlCekStatus = "select status_antar from tbjual where id = '$idjual'";
+            $queryCekStatus = mysqli_query($con,$sqlCekStatus);
+            $rows = mysqli_fetch_array($queryCekStatus);
+
+            if($rows['status_antar'] == "selesai"){
+                echo "selesai";
+            }else{
+                $sqljual = "update tbjual set status_antar = '$statusAntar' where id = '$idjual'";
+                $queryjual = mysqli_query($con,$sqljual);
+                
+                echo "success";
+            }
         }catch(Exception $ex){
             echo "error";
         }
@@ -1516,15 +1537,15 @@
         $idPenjualan = $_POST['idPenjualan'];
 
         $sqlDetailpenjualan = "SELECT *FROM tbjualdetil tbdt INNER JOIN tbproduk tp ON tbdt.idproduk = tp.id 
-        INNER JOIN tbjual tbp ON tbdt.idjual = tbp.id WHERE tbdt.idjual = '$idPenjualan' ";
+        INNER JOIN tbjual tbp ON tbdt.idjual = tbp.id INNER JOIN tbkonsumen tbk ON tbp.idkonsumen =  tbk.id WHERE tbdt.idjual = '$idPenjualan' ";
         $queryDetailpenjualan = mysqli_query($con,$sqlDetailpenjualan);
-
         $isi = "";
         $row = 1;
-        $hitung = 0; $alamat = "";
+        $hitung = 0; $alamat = ""; $noHp = "";
         while($re = mysqli_fetch_array($queryDetailpenjualan)){
             $hitung += $re['total'];
-            $alamat = $re['alamat'];
+            $alamat = $re['27'];
+            $noHp = $re['no_hp'];
             $isi .="
                 <tr>
                     <td> ".$row++." </td>
@@ -1543,7 +1564,7 @@
                 <th> Rp ".number_format($hitung,0,',','.')." </th>
             </tr>
         ";
-        $isi .='###'.$alamat;
+        $isi .='###'.$alamat.'###'.$noHp;
         echo $isi;
     }else if($tombol == "checkListAlamat"){
         $idKonsumen = $_POST['idKonsumen']; 
@@ -1623,5 +1644,46 @@
             $queryUpdateAlamat = mysqli_query($con,$sqlUpdateAlamat);
         
             echo "success";
+        }
+    }
+    else if($tombol == "uploadFO"){
+        $image = new Bulletproof\Image($_FILES);
+        $image->setLocation('asset/img/');
+
+        $image = $_FILES['uploadPreview'];
+        $namaFile = time() . '_' . basename($_FILES["uploadPreview"]["name"]);
+        $targetDir = "asset/img/";
+        $targetFilePath = $targetDir . $namaFile;
+
+        $ekstensiFile = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+        $ekstensiOk = array('jpg', 'png', 'jpeg', 'gif');
+
+        $idJual = $_POST['idPenjualan'];
+
+        if ($_FILES["uploadPreview"]["name"]) {
+            if (in_array($ekstensiFile, $ekstensiOk)) {
+                if (move_uploaded_file($_FILES["uploadPreview"]["tmp_name"], $targetFilePath)) {
+                    $sql = "update tbjual set upload='$namaFile', status_antar='selesai' where id='$idJual'";
+                    $query = mysqli_query($con, $sql) or  die($sql);
+            
+                    header("location:frmlistpenjualan.php");
+                } 
+            } else {
+                header("location:frmlistpenjualan.php");
+            }
+            echo "sukses";
+        } 
+    }
+    else if($tombol == "checkUploadFoto"){
+        $idJual = $_POST['idPenjualan'];
+
+        $sqlCheckFoto = "select upload from tbjual where id='$idJual'";
+        $queryCheckFoto = mysqli_query($con,$sqlCheckFoto);
+        $re = mysqli_fetch_array($queryCheckFoto);
+
+        if($re['upload'] != null){
+            echo "sudah";
+        }else{
+            echo "belum";
         }
     }

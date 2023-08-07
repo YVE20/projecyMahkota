@@ -187,6 +187,64 @@
                             <td colspan=3 style="max-width:160px !important;width:160px !important;text-align:center;padding-top:10px;font-weight:bold;"> "Terimakasih telah mengunjungi toko kami. Silahkan datang kembali."</td>
                         </tr>
                         
+                    </table> 
+                    --------------&#9986--------------
+                    <br>
+                    --------------&#9986--------------
+                    <table style="width:160px !important;border:none;font-size:8pt;font-family: Sans-Serif !important;">
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td colspan=3 style="max-width:160px !important;width:160px !important;text-align:center;font-size:16px !important;font-weight:bold;"> ` + namaperusahaan + ` </td>
+                        </tr>
+                        <tr>
+                            <td colspan=3 style="max-width:160px !important;width:160px !important;text-align:center;"> ` + alamat + ` </td>
+                        </tr>
+                        <tr>
+                            <td colspan=3 style="max-width:160px !important;width:160px !important;text-align:center;"> ------------------------------------------- </td>
+                        </tr>
+                        <tr>
+                            <td colspan=3 style="max-width:160px !important;width:160px !important;"> Kode : ` + pecah[12] + ` </td>
+                        </tr>
+                        <tr>
+                            <td colspan=3 style="max-width:160px !important;width:160px !important;"> Customer : ` + pecah[13] + ` </td>
+                        </tr>
+                        <tr>
+                            <td colspan=3 style="max-width:160px !important;width:160px !important;"> ` + tglwaktu + ` </td>
+                        </tr>
+                        <tr>
+                            <td colspan=3 style="max-width:160px !important;width:160px !important;text-align:center;"> ------------------------------------------- </td>
+                        </tr>
+
+                        ` + hasilloopingdetil + `
+
+                        <tr>
+                            <td colspan=3 style="max-width:160px !important;width:160px !important;text-align:center;"> ------------------------------------------- </td>
+                        </tr>
+                        <tr>
+                            <td width="85px" style="text-align: right;font-weight: bold;"> Total </td>
+                            <td colspan="2" style="text-align: right;font-weight: bold;"> Rp ` +(pecah[14] / 1000).toLocaleString('en-US', { minimumFractionDigits: 3 }) + ` </td>
+                        </tr>
+                        <tr>
+                            <td width="85px" style="text-align: right;font-weight: bold;"> Diskon </td>
+                            <td colspan="2" style="text-align: right;font-weight: bold;"> Rp ` +(diskon).toLocaleString('en-US', { minimumFractionDigits: 3 }) + ` </td>
+                        </tr>
+                        <tr>
+                            <td width="85px" style="text-align: right;font-weight: bold;"> Sub Total </td>
+                            <td colspan="2" style="text-align: right;font-weight: bold;"> Rp ` + (pecah[16] / 1000).toLocaleString('en-US', { minimumFractionDigits: 3 }) + ` </td>
+                        </tr>
+                        <tr>
+                        <tr>
+                            <td colspan=3 style="max-width:160px !important;width:160px !important;text-align:center;"> ------------------------------------------- </td>
+                        </tr>
+                        <td colspan=3 style="max-width:160px !important;width:160px !important;text-align:center;padding-top:10px;font-weight:bold;"> Tertanda , </td>
+                        </tr>
+                        <tr>
+                            <td colspan=3 style="max-width:160px !important;width:160px !important;text-align:center;padding-top:40px;font-weight:bold;"> ` + pecah[13] + ` </td>
+                        </tr>
                     </table>
                 `);
 

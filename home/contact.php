@@ -42,7 +42,7 @@ $icon = $res['icon'];
                   <div class="full">
                      <div class="center-desk">
                         <div class="logo">
-                           <a href="index.php"><img src="../asset/img/<?= $icon ?>" alt="#" style="width: 130px;height:70px;" /></a>
+                           <a href="index.php"><img src="../asset/img/<?= $icon ?>" alt="#" style="width: 150px;height:70px;" /></a>
                         </div>
                      </div>
                   </div>
@@ -118,19 +118,19 @@ $icon = $res['icon'];
                <form id="request" class="main_form">
                   <div class="row">
                      <div class="col-md-12 ">
-                        <input class="contactus" placeholder="Name" type="type" name="Name">
+                        <input class="contactus" placeholder="Name" type="type" name="Name" id="emailName">
                      </div>
                      <div class="col-md-12">
-                        <input class="contactus" placeholder="Email" type="type" name="Email">
+                        <input class="contactus" placeholder="Email" type="type" name="Email" id="email">
                      </div>
                      <div class="col-md-12">
-                        <input class="contactus" placeholder="Phone Number" type="type" name="Phone Number">
+                        <input class="contactus" placeholder="Phone Number" type="type" name="Phone Number" id="emailPhoneNumber">
                      </div>
                      <div class="col-md-12">
-                        <textarea class="textarea" placeholder="Message" type="type" Message="Name">Message </textarea>
+                        <textarea class="textarea" placeholder="Message" type="type" Message="Name" id="emailMessage"></textarea>
                      </div>
                      <div class="col-md-12">
-                        <button class="send_btn">Send</button>
+                        <button class="send_btn" type="button" onclick="sendEmail()">Send</button>
                      </div>
                   </div>
                </form>
@@ -163,7 +163,7 @@ $icon = $res['icon'];
                   <h3>Contact Us</h3>
                   <ul class="conta">
                      <li> <i class="fa fa-envelope" aria-hidden="true"></i>   mahkotapontianak@gmail.com </li>
-                     <li> <i class="fa fa-phone" aria-hidden="true"></i> 0214178 </li>
+                     <li> <i class="fa fa-phone" aria-hidden="true"></i> 0561-764253 </li>
                   </ul>
                </div>
             </div>
@@ -379,7 +379,16 @@ $icon = $res['icon'];
    <script src="js/custom.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
    <script>
-
+      function sendEmail(){
+         $.post("sendEmail.php",{
+            emailName : $('#emailName').val(),
+            email : $('#email').val(),
+            emailPhoneNumber : $('#emailPhoneNumber').val(),
+            emailMessage : $('#emailMessage').val(),
+            type : "contactUs"
+         }).done(function(data){
+         });
+      }
       function checkEmailVerified(){
          var verifiedStatus = $('#checkVerified').val();
          if(verifiedStatus == "yes"){

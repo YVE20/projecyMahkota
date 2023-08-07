@@ -56,7 +56,8 @@ if($_POST['type'] == "Register"){
     $email = $_POST['email'];
     $token = bin2hex(random_bytes(64));
     $action = encryptIt("forgetPassword");
-    $auth = "http://".$_SERVER['SERVER_NAME']."/mahkota/Home/verifyemail.php?email=$email&token=$token&retry=false&action=$action";
+    $expiredDate = date("Y-m-d H:i:s");
+    $auth = "http://".$_SERVER['SERVER_NAME']."/home/verifyemail.php?email=$email&token=$token&retry=false&action=$action&expiredDate=$expiredDate";
 
     //Check Email in DB
     $sqlCheckEmail = "SELECT *FROM tbkonsumen WHERE email='$email' AND verified='1'";
@@ -116,6 +117,18 @@ if($_POST['type'] == "Register"){
     }else{
         echo "notFound";
     }
+}else if($_POST['type'] == "contactUs"){
+    $name = $_POST['emailName'];
+    $email = $_POST['email'];
+    $phoneNumber = $_POST['emailPhoneNumber'];
+    $message = $_POST['emailMessage'];
+
+    $insertContactUs = "insert into tbcontactus (name,email,phoneNumber,message) value ('$name','$email','$phoneNumber','$message')";
+    $queryInsertContactUs = mysqli_query($con,$insertContactUs);
+
+    $subject = "Contact Us";
+
+    sendEmail($email,null,$name,$message,$subject);
 }
 
 function sendEmail($email = null,$auth = null,$nama = null,$body,$subject ){
@@ -143,6 +156,8 @@ function sendEmail($email = null,$auth = null,$nama = null,$body,$subject ){
         echo "sukses";
     }
 }
+
+
 
 
 ?>

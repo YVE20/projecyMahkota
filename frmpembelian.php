@@ -53,8 +53,8 @@
                         <div class="col-md-12 panel-body" style="padding-bottom:30px;">
                             
                             <div class="row">
-                                <div class="col-md-5">
-                                    <div class="col-md-6" style="padding-right:0px;padding-left:0px;">
+                                <div class="col-md-12">
+                                    <div class="col-md-3" style="padding-right:0px;padding-left:0px;">
                                         <div class="form-group form-element">
                                             <label style="top:-10px;">Nama Supplier</label>
                                             <select class="form-control col-md-7 col-xs-12 combobox selectpicker" data-live-search="true" data-size="5" name="cmbsupplier" id="cmbsupplier" require>
@@ -73,7 +73,14 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-6" style="margin-top:10px;padding-right:0px;">
+                                    <div class="col-md-3" style="margin-top:10px;padding-right:0px;">
+                                        <div class="form-group form-animate-text">
+                                            <label style="top:-10px;color:#918C8C;font-size:13px !important;font-weight:400;"> No Invoice </label>
+                                            <input type="text" class="form-text" placeholder="No Invoice" id="noInvoice" name="noInvoice">
+                                            <span class="bar"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3" style="margin-top:10px;padding-right:0px;">
                                         <div class="form-group form-animate-text">
                                             <input type="date" class="form-text" id="txttanggal" name="txttanggal" value="<?php echo $today; ?>">
                                             <span class="bar"></span>
@@ -256,21 +263,27 @@
     function f_proses(){
         var idpembelian = $("#txtidtransaksi").val();
         var idsupplier = $("#cmbsupplier").val();
+        var noInvoice = $('#noInvoice').val();
         var tanggal = $("#txttanggal").val();
         var subtotal = accounting.unformat($("#txtsubtotal").val(),',');
         var diskon = accounting.unformat($("#txttotaldiskon").val(),',');
         var pajak = accounting.unformat($("#txttotalpajak").val(),',');
         var grandtotal = accounting.unformat($("#txtgrandtotal").val(),',');
-        
-        /*  if(metodepembayaran == "" ) {
-            alertify.alert("Peringatan","Pilih Tanggal Jatuh Tempo!");
-        }else{ */
+
+        if(noInvoice == ""){
+            Swal.fire(
+                'Peringatan !',
+                'No Invoice tidak boleh kosong',
+                'warning'
+            )
+        }else{
             alertify.minimalDialog('');
             $.post("savepembelian.php", {
                 tombol: $('#proses').val(),
                 act: act,
                 idpembelian: idpembelian,
                 idsupplier: idsupplier,
+                noInvoice : noInvoice,
                 tanggal: tanggal,
                 subtotalakhir: subtotal,
                 diskonakhir: diskon,
@@ -300,7 +313,7 @@
                         })
                     }
                 });
-        //}
+        }
     }
 
     function f_bersih(){

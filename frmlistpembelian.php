@@ -189,4 +189,7 @@
     function editPembelian(idPembelian){
         location.href="frmpembelian.php?act=edit&idPembelian="+idPembelian;
     }
+    function printPembelian(idPembelian){
+        location.href="printPembelian.php?idPembelian="+idPembelian;
+    }
 </script>

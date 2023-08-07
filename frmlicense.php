@@ -190,7 +190,7 @@ if ($_SESSION['status'] != "Admin") {
                 $("#txttelp").val(pecah[3]);
                 //   $("#txticon").val(pecah[4]);
                 //   $('#img_profile').attr('src', "asset/img/"+pecah[4]);
-                $('.img-profile').prepend('<img id="img_profile" style="height:16rem;width:16rem" src="asset/img/' + pecah[4] + '" />')
+                $('.img-profile').prepend('<img id="img_profile" style="height:300px;width:150px" src="asset/img/' + pecah[4] + '" />')
                 if (pecah[5] == "Y") {
                     document.getElementById("Y").checked = true;
                 } else if (pecah[5] == "N") {

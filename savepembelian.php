@@ -131,8 +131,9 @@
         
             if($numcek > 0) {
                 if ($act == "po") {
-                    $sql = "insert into tbpembelian (id_pembelian,id_user,id_supplier,id_user_approve,tanggal,status,subtotal,diskon,pajak,grandtotal,statusApproved,alasan) 
-                    values ('$idpembelian','$iduser','$idsupplier','$iduser','$tanggal','Pembelian','$subtotalakhir','$diskonakhir','$pajakakhir','$grandtotalakhir','Approved','Penambahan Stock')";
+                    $noInvoice = $_POST['noInvoice'];
+                    $sql = "insert into tbpembelian (id_pembelian,id_user,id_supplier,noInvoice,id_user_approve,tanggal,status,subtotal,diskon,pajak,grandtotal,statusApproved,alasan) 
+                    values ('$idpembelian','$iduser','$idsupplier','$noInvoice','$iduser','$tanggal','Pembelian','$subtotalakhir','$diskonakhir','$pajakakhir','$grandtotalakhir','Approved','Penambahan Stock')";
 
                     $query = mysqli_query($con, $sql);
 
@@ -271,6 +272,7 @@
             <tr>
                 <th>No</th>
                 <th>ID Pembelian</th>
+                <th>No Invoice</th>
                 <th>Tanggal</th>
                 <th>User Input</th>
                 <th>Supplier</th>
@@ -304,6 +306,7 @@
                 $grandtotal = $res['grandtotal'];
                 $status = $res['status'];
                 $tanggal = $res['tanggal'];
+                $noInvoice = $res['noInvoice'];
                 ?>
                 <tr>
                     <td> <?php echo $no;?>. </td>
@@ -318,6 +321,7 @@
                     <?php
                         }
                     ?>
+                    <td> <?= $noInvoice != null ? $noInvoice : "-"; ?> </td>
                     <td> <?php echo date("d-m-Y", strtotime($tanggal));?> </td>
                     <td> <?php echo $user;?> </td>
                     <td> <?php echo $supplier;?> </td>
@@ -327,6 +331,7 @@
                     <td>
                         <button class="btn btn-sm btn-warning" onclick="editPembelian('<?= $idpembelian ?>')"> <span class="fa fa-pencil"></span> Edit </button>
                         <button class="btn btn-sm btn-danger" onclick="deletePembelian('<?= $idpembelian ?>')"> <span class="fa fa-times"></span> Delete </button>
+                        <button class="btn btn-primary" onclick="printPembelian('<?= $idpembelian ?>')"> <i class="fa fa-print" aria-hidden="true"></i> Print </button>
                     </td>
                 </tr>
                 <?php

@@ -24,7 +24,7 @@ if($_POST['page'] == "Index" || $_POST['page'] == "About" || $_POST['page'] == "
         $token = bin2hex(random_bytes(64));
         $alamat .= "|";
         $action = encryptIt("register");
-        $auth = "http://".$_SERVER['SERVER_NAME']."/mahkota/Home/verifyemail.php?email=$email&token=$token&retry=false&action=$action";
+        $auth = "http://".$_SERVER['SERVER_NAME']."/home/verifyemail.php?email=$email&token=$token&retry=false&action=$action&expiredDate=$expiredDate";
 
         $sqlInsert = "insert into tbkonsumen (nama,alamat,no_hp,password,email,token,auth) values ('$nama','$alamat','$no_hp','$passEncrypt','$email','$token','$auth')";
         $queryInsert = mysqli_query($con,$sqlInsert);

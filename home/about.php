@@ -32,7 +32,7 @@ $icon = $res['icon'];
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
 </head>
 <!-- body -->
-
+<input type="hidden" id="pageName" value="About">
 <body class="main-layout">
    <header class="">
       <!-- header inner -->
@@ -43,7 +43,7 @@ $icon = $res['icon'];
                   <div class="full">
                      <div class="center-desk">
                         <div class="logo">
-                           <a href="index.php"><img src="../asset/img/<?= $icon ?>" alt="#" style="width: 130px;height:70px;" /></a>
+                           <a href="index.php"><img src="../asset/img/<?= $icon ?>" alt="#" style="width: 150px;height:70px;" /></a>
                         </div>
                      </div>
                   </div>
@@ -115,7 +115,7 @@ $icon = $res['icon'];
                         <figure><img src="../asset/img/<?= $icon ?>" alt="#" style="height:40%;width:40%" /></figure>
                      </div>
                      <font>
-                        Kami toko Mahkota Komputer & ATK sudah berdiri selama lebih dari 10 tahun. Kami menyediakan barang original dan resmi sehingga pihak pembeli mendapatkan barang terbaik dari kami. Kami mengedepankan pelayanan dan kualitas produk sehingga pelanggan akan lebih percaya dan nyaman berbelanja dengan kami. Barang yang tidak terdapat pada etalase bisa di tanyakan langsung melalui DM, PM atau WA pada no hp yang tertera.
+                        Kami toko Mahkota Komputer & ATK sudah berdiri selama lebih dari 10 tahun. Kami menyediakan barang original dan resmi sehingga pihak pembeli mendapatkan barang terbaik dari kami. Kami mengedepankan pelayanan dan kualitas produk sehingga pelanggan akan lebih percaya dan nyaman berbelanja dengan kami.
                      </font>
                   </div>
                   <div class="col-md-12 mt-5" style="margin-bottom: -100px;">
@@ -139,7 +139,7 @@ $icon = $res['icon'];
                         <button onclick="minusAbout('1')" class="btn"> - </button>
                         <input type="text" id="qty" value="1" style="width:30px;text-align: center;border:none;" readonly>
                         <button onclick="plusAbout('1')" class="btn"> + </button>
-                        <button class="btn w-25" onclick="beli()"> Beli</button>
+                        <button class="btn w-25" onclick="keranjang('<?= $_GET['kode_barang'] ?>')"> Beli</button>
                      </div>
                   </div>
                   <div class="col-md-7 mt-5">
@@ -219,7 +219,7 @@ $icon = $res['icon'];
                      <h3>Contact Us</h3>
                      <ul class="conta">
                         <li> <i class="fa fa-envelope" aria-hidden="true"></i>   mahkotapontianak@gmail.com </li>
-                        <li> <i class="fa fa-phone" aria-hidden="true"></i> 0214178 </li>
+                        <li> <i class="fa fa-phone" aria-hidden="true"></i> 0561-764253 </li>
                      </ul>
                   </div>
                </div>
@@ -438,7 +438,6 @@ $icon = $res['icon'];
    <script src="js/custom.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
    <script>
-
       function checkEmailVerified(){
          var verifiedStatus = $('#checkVerified').val();
          if(verifiedStatus == "yes"){
@@ -605,13 +604,17 @@ $icon = $res['icon'];
       }
 
       function keranjang(kode_barang) {
+         var qty = 1;
+         if($('#pageName').val() == "About"){
+            qty = $('#qty').val();
+         }
          var iduser = '<?= $_SESSION['iduser'] ?>';
-         if (iduser != null) {
+         if (iduser != "") {
             $.post("cekkeranjang.php", {
                   iduser: iduser,
                   typeKeranjang: "add",
                   kode_barang: kode_barang,
-                  qty: 1
+                  qty: qty
                })
                .done(function(data) {
                   if (data == "success") {
@@ -633,6 +636,8 @@ $icon = $res['icon'];
                      });
                   }
                });
+         }else {
+            $('#loginModal').modal('show');
          }
       }
 

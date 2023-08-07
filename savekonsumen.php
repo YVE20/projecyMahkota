@@ -60,7 +60,7 @@
               $id = $res['id'];
               $nama = $res['nama'];
               $alamat = $res['alamat'];
-              $nohp = $res['nohp'];
+              $nohp = $res['no_hp'];
               $email = $res['email'];
               
               ?>

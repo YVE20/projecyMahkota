@@ -46,7 +46,7 @@ $icon = $res['icon'];
                   <div class="full">
                      <div class="center-desk">
                         <div class="logo">
-                           <a href="index.php"><img src="../asset/img/<?= $icon ?>" alt="#" style="width: 130px;height:70px;" /></a>
+                           <a href="index.php"><img src="../asset/img/<?= $icon ?>" alt="#" style="width: 150px;height:70px;" /></a>
                         </div>
                      </div>
                   </div>
@@ -169,7 +169,7 @@ $icon = $res['icon'];
                   <h3>Contact Us</h3>
                   <ul class="conta">
                      <li> <i class="fa fa-envelope" aria-hidden="true"></i>   mahkotapontianak@gmail.com </li>
-                     <li> <i class="fa fa-phone" aria-hidden="true"></i> 0214178 </li>
+                     <li> <i class="fa fa-phone" aria-hidden="true"></i> 0561-764253 </li>
                   </ul>
                </div>
             </div>
@@ -403,6 +403,14 @@ $icon = $res['icon'];
                icon: 'error',
                title: 'Gagal',
                text: 'Akun belum di verifikasi',
+               showConfirmButton: false,
+               timer: 3500
+            });
+         }else if(verifiedStatus == "expired"){
+             Swal.fire({
+               icon: 'error',
+               title: 'Gagal',
+               text: 'Maaf token anda sudah expired',
                showConfirmButton: false,
                timer: 3500
             });
