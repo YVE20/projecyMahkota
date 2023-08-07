@@ -1,36 +1,72 @@
-<?php
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+		html{
+			margin:30px;
+            margin: 0;
+		}
+		.table{
+			border-collapse: collapse;
+			width: 100%;
+		}
+		.table th, .table td{
+            font-size: 14px;
+            padding:4px;
+            border:1px solid #bebebe;
+            page-break-inside: avoid;
+        }
+	</style>
+</head>
+<body style="margin: 0;">
+    <div>
+        
+        <?php session_start();?>
+        <img src="asset/img/<?= $_SESSION['icon'] ?>" alt="Gambar" style="height:8em;width:15em">
+        <div style="margin-top: -50px;">
+            <center>
+                <strong> <font style="font-size: 30px;"> Mahkota </font> </strong> <br>
+                Jln. Patimura No 71 D, Kota Pontianak, Provinsi Kalimantan Barat . <br>
+                Email : mahkotapontianak@gmail.com<br>
+                Telp : 0818286025
+            </center>
+        </div>
+    </div>
+    <?php 
 
-include "Koneksi.php";
-include "asset/function/function.php";
+        include "Koneksi.php";
+        include "asset/function/function.php";
 
-$tombol = $_POST['tombol'];
-$tanggalmulai = $_POST['tanggalmulai'];
-$tanggalselesai = $_POST['tanggalselesai'];
-$produk = $_POST['produk'];
-$user = $_POST['user'];
-$konsumen = $_POST['konsumen'];
+        $tombol = $_GET['tombol'];
+        $tanggalmulai = $_GET['tanggalmulai'];
+        $tanggalselesai = $_GET['tanggalselesai'];
+        $produk = $_GET['produk'];
+        $user = $_GET['user'];
+        $konsumen = $_GET['konsumen'];
 
-
-if ($tombol == "tampilcari") {
-    $syarat = "";
-    $syaratdetil = "";
-    if ($tanggalmulai != "" && $tanggalselesai != "") {
-        $syarat = " AND (tj.tanggal BETWEEN '$tanggalmulai' AND '$tanggalselesai')";
-    }
-    if ($user != "ALL") {
-        $syarat .= " AND tj.iduser='$user'";
-    }
-    if ($konsumen != "ALL") {
-        $syarat .= " AND tj.idkonsumen='$konsumen'";
-    }
-    if ($produk != "ALL") {
-        $syarat .= " AND tjd.idproduk='$produk'";
-        $syaratdetil .= " AND tjd.idproduk='$produk'";
-    }
-    $sqlsel = "SELECT tj.id,tj.tanggal,tk.nama AS 'namakonsumen',tu.nama AS 'namauser', tj.created_at FROM tbjual tj LEFT JOIN tbuser tu on tj.iduser=tu.iduser LEFT JOIN tbkonsumen tk ON tj.idkonsumen=tk.id INNER JOIN tbjualdetil tjd ON tj.id=tjd.idjual WHERE tj.id!='' $syarat  GROUP BY tjd.idjual ORDER BY tj.created_at DESC";
-?>
-    <table id="datatable-fixed-header" class="table table-striped nowrap" cellspacing="0" style="width:100%">
-        <thead>
+        $syarat = "";
+        $syaratdetil = "";
+        if ($tanggalmulai != "" && $tanggalselesai != "") {
+            $syarat = " AND (tj.tanggal BETWEEN '$tanggalmulai' AND '$tanggalselesai')";
+        }
+        if ($user != "ALL") {
+            $syarat .= " AND tj.iduser='$user'";
+        }
+        if ($konsumen != "ALL") {
+            $syarat .= " AND tj.idkonsumen='$konsumen'";
+        }
+        if ($produk != "ALL") {
+            $syarat .= " AND tjd.idproduk='$produk'";
+            $syaratdetil .= " AND tjd.idproduk='$produk'";
+        }
+        $sqlsel = "SELECT tj.id,tj.tanggal,tk.nama AS 'namakonsumen',tu.nama AS 'namauser', tj.created_at FROM tbjual tj LEFT JOIN tbuser tu on tj.iduser=tu.iduser LEFT JOIN tbkonsumen tk ON tj.idkonsumen=tk.id INNER JOIN tbjualdetil tjd ON tj.id=tjd.idjual WHERE tj.id!='' $syarat  GROUP BY tjd.idjual ORDER BY tj.created_at DESC";
+    ?>
+    <table id="datatable-fixed-header" class="table table-striped nowrap" cellspacing="0" style="width:100%;margin-top:30px">
+    <thead>
             <tr>
                 <th>No.</th>
                 <th>ID Transaksi</th>
@@ -152,60 +188,11 @@ if ($tombol == "tampilcari") {
             </tr>
         </tfoot>
     </table>
-    <script>
-        var user = '<?php echo $_POST['user'] ?>';
-        var tanggalmulai = '<?php echo $tanggalmulai ?>';
-        var tanggalselesai = '<?php echo $tanggalselesai ?>';
-        var produk = '<?php echo $_POST['produk']; ?>';
-        var sales = '<?php echo $_POST['sales']; ?>';
-        var konsumen = '<?php echo $_POST['konsumen']; ?>';
-
-
-        $('#datatable-fixed-header').DataTable({
-
-            fixedHeader: true,
-            dom: 'Bfrtip',
-            "scrollX": true,
-            "scrollY": "true",
-            "ordering": false,
-            "searching": false,
-            "deferRender": true,
-            buttons: [
-                //                    'copy', 'csv', 'excel', 'pdf', 'print'
-                //                    'pageLength', 'excelFlash', 'print'
-                'pageLength',
-                {
-                    extend: 'excelFlash',
-                    footer: true
-                },
-                // {
-                //     extend: 'print',
-                //     footer: true
-                // },
-                {
-                    text: 'print',
-                    action: function() {
-                        window.location.href = "printLaporanPenjualanDetail.php?tanggalselesai=" + tanggalselesai + "&tanggalmasuk=" + tanggalmulai + "&user=" + user + "&sales=" + sales + "&konsumen=" + konsumen + "&produk=" + produk;
-                    }
-                }
-            ],
-            lengthMenu: [
-                [10, 25, 50, -1],
-                ['10 rows', '25 rows', '50 rows', 'Show all']
-            ],
-            iDisplayLength: -1,
-            rowReorder: {
-                selector: 'td:nth-child(2)'
-            }
-        });
-    </script>
-    <style>
-        .dataTables_scrollHead,
-        .dataTables_scrollBody,
-        .dataTables_scrollFoot {
-            width: 100% !important;
-
-        }
-    </style>
-<?php
-}
+</body>
+<script>
+    window.print();
+    onafterprint = function () {
+        window.location.href = "lappenjualan_detil.php";
+    }
+</script>
+</html>

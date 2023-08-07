@@ -1,16 +1,53 @@
-<?php
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+		html{
+			margin:30px;
+            margin: 0;
+		}
+		.table{
+			border-collapse: collapse;
+			width: 100%;
+		}
+		.table th, .table td{
+            font-size: 14px;
+            padding:4px;
+            border:1px solid #bebebe;
+            page-break-inside: avoid;
+        }
+	</style>
+</head>
+<body style="margin: 0;">
+    <div>
+        
+        <?php session_start();?>
+        <img src="asset/img/<?= $_SESSION['icon'] ?>" alt="Gambar" style="height:8em;width:15em">
+        <div style="margin-top: -50px;">
+            <center>
+                <strong> <font style="font-size: 30px;"> Mahkota </font> </strong> <br>
+                Jln. Patimura No 71 D, Kota Pontianak, Provinsi Kalimantan Barat . <br>
+                Email : mahkotapontianak@gmail.com<br>
+                Telp : 0818286025
+            </center>
+        </div>
+    </div>
+    <?php 
 
-    include "Koneksi.php";
-    include "asset/function/function.php";
+        include "Koneksi.php";
+        include "asset/function/function.php";
 
-    $tombol = $_POST['tombol'];
-    $tanggalmulai = $_POST['tanggalmulai'];
-    $tanggalselesai = $_POST['tanggalselesai'];
-    $produk = $_POST['produk'];
-    $supplier = $_POST['supplier'];
-    $user = $_POST['user'];
+        $tombol = $_GET['tombol'];
+        $tanggalmulai = $_GET['tanggalmulai'];
+        $tanggalselesai = $_GET['tanggalselesai'];
+        $produk = $_GET['produk'];
+        $user = $_GET['user'];
+        $konsumen = $_GET['konsumen'];
 
-    if($tombol == "tampilcari") {
         $syarat = "";
         $syaratdetil = "";
         if ($tanggalmulai != "" && $tanggalselesai != "") {
@@ -27,10 +64,8 @@
             $syaratdetil .= " and tbd.idproduk='$produk'";
         }
         $sqlsel = "select tb.id_pembelian,tb.tanggal,tk.nama as 'namasupplier',tu.nama as 'namauser' from tbpembelian tb left join tbsupplier tk on tb.id_supplier=tk.id left join tbuser tu on tb.id_user=tu.iduser inner join tbpembeliandetil tbd on tb.id_pembelian=tbd.id_pembelian where tb.id!='' $syarat group by tbd.id_pembelian order by tb.created_at desc";
-//        echo $sqlsel;
-
-        ?>
-        <table id="datatable-fixed-header" class="table table-striped nowrap" cellspacing="0" style="width:100%">
+    ?>
+    <table id="datatable-fixed-header" class="table table-striped nowrap" cellspacing="0" style="width:100%">
             <thead style="text-align: left !important;">
             <tr>
                 <th >No.</th>
@@ -147,53 +182,12 @@
                 </tr>
             </tfoot>
         </table>
-        <script>
-            var user = '<?php echo $_POST['user'] ?>';
-            var tanggalmulai = '<?php echo $tanggalmulai ?>';
-            var tanggalselesai = '<?php echo $tanggalselesai ?>';
-            var produk = '<?php echo $_POST['produk']; ?>';
-            var sales = '<?php echo $_POST['sales']; ?>';
-            var konsumen = '<?php echo $_POST['konsumen']; ?>';
-            $('#datatable-fixed-header').DataTable({ 
-                
-                fixedHeader: true,
-                dom: 'Bfrtip',
-                "scrollX": true,
-                "scrollY": "500px",
-                "ordering": false,
-                "searching": false,  
-                "deferRender": true,            
-                buttons: [
-//                    'copy', 'csv', 'excel', 'pdf', 'print'
-//                    'pageLength', 'excelFlash', 'print'
-                    'pageLength',
-                    {   extend: 'excelFlash', footer:true},
-                    // {   extend: 'print', footer:true},
-                    {
-                    text: 'print',
-                    action: function() {
-                        window.location.href = "printLaporanPembelianDetail.php?tanggalselesai=" + tanggalselesai + "&tanggalmasuk=" + tanggalmulai + "&user=" + user + "&sales=" + sales + "&konsumen=" + konsumen + "&produk=" + produk;
-                    }
-                }
-                  
-                ],
-                lengthMenu: [
-                    [10, 25, 50, -1],
-                    ['10 rows', '25 rows', '50 rows', 'Show all']
-                ],
-                iDisplayLength: -1,
-                rowReorder: {
-                    selector: 'td:nth-child(2)'
-                }
-               
-            });
-
-        </script>
-        <style>
-            .dataTables_scrollHead, .dataTables_scrollBody, .dataTables_scrollFoot{
-                width:100% !important;
-                
-            }
-        </style>
-        <?php
+    
+</body>
+<script>
+    window.print();
+    onafterprint = function () {
+        window.location.href = "lappembelian_detil.php";
     }
+</script>
+</html>
